@@ -1,0 +1,24 @@
+{
+  "name": "telirc-bot",
+  "version": "1.0.0",
+  "description": "A simple telegram bot",
+  "main": "telirc.js",
+  "scripts": {
+    "test": "node telirc.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RITlug/telirc.git"
+  },
+  "keywords": [
+    "telegram",
+    "irc",
+    "RITLug"
+  ],
+  "author": "Mark Repka",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.21.1",
+    "irc":"~0.5.0"
+  }
+}
