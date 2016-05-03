@@ -15,7 +15,10 @@ var config = {
     server: "irc.freenode.net",
     botName: "ritlugtg",
     channel: "#ritlug",
-    chatId: -13280454
+    chatId: -13280454,
+    irc_blacklist: [
+        'CowSayBot'
+        ]
 };
 
 // Create the IRC bot side with the settings specified in config object above
@@ -63,5 +66,8 @@ tgbot.on('message', function (msg) {
 ircbot.addListener('message', function (from, channel, message) {
     // Anything coming from IRC is going to be valid to display as text
     // in Telegram. Just do a quick passthrough. No checking. 
-    tgbot.sendMessage(config.chatId, from + ": " + message);
+    if (! config.irc_blacklist.indexOf(from)) {
+        tgbot.sendMessage(config.chatId, from + ": " + message);
+    }
+    
 });
