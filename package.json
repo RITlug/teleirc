@@ -1,14 +1,14 @@
 {
-  "name": "telirc-bot",
+  "name": "teleirc-bot",
   "version": "1.0.0",
   "description": "A simple telegram bot",
-  "main": "telirc.js",
+  "main": "teleirc.js",
   "scripts": {
-    "test": "node telirc.js"
+    "test": "node teleirc.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/RITlug/telirc.git"
+    "url": "https://github.com/RITlug/teleirc.git"
   },
   "keywords": [
     "telegram",
