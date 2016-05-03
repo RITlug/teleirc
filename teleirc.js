@@ -66,7 +66,7 @@ tgbot.on('message', function (msg) {
 ircbot.addListener('message', function (from, channel, message) {
     // Anything coming from IRC is going to be valid to display as text
     // in Telegram. Just do a quick passthrough. No checking. 
-    if (config.ircBlacklist.indexOf(from) > -1) {
+    if (config.ircBlacklist.indexOf(from) === -1) {
         tgbot.sendMessage(config.chatId, from + ": " + message);
     }
     
