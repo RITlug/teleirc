@@ -16,6 +16,7 @@ var config = {
     botName: "ritlugtg",
     channel: "#ritlug",
     chatId: -13280454,
+    // IRC users to not forward messages from
     ircBlacklist: [
         "CowSayBot"
         ]
@@ -65,8 +66,12 @@ tgbot.on('message', function (msg) {
 // Action to invoke on incoming messages from the IRC side
 ircbot.addListener('message', function (from, channel, message) {
     // Anything coming from IRC is going to be valid to display as text
-    // in Telegram. Just do a quick passthrough. No checking. 
-    if (config.ircBlacklist.indexOf(from) === -1) {
+    // in Telegram. Just do a quick passthrough. No checking.
+    var matchedNames = config.ircBlacklist.filter(function(name){
+        return from.toLowerCase() === name.toLowerCase();
+    });
+    
+    if (matchedNames.length <= 0) {
         tgbot.sendMessage(config.chatId, from + ": " + message);
     }
     
