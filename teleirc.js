@@ -50,7 +50,15 @@ tgbot.on('message', function (msg) {
         // and should not be passed to IRC
         var message = msg.text;
         if (msg.text === undefined) {
-            console.log("Ignoring non-text message: " + JSON.stringify(msg));
+            
+            // Check if this message is a new user joining the group chat:
+            if (msg.new_chat_member) {
+                var username = msg.new_chat_member.username;
+                var first_name = msg.new_chat_member.first_name;
+                ircbot.say(config.channel, "New user " + first_name + " ( @" + username + ") has joined the Telegram Group!");
+            } else {
+                console.log("Ignoring non-text message: " + JSON.stringify(msg));    
+            }
         } else {
             // Relay all text messages into IRC
             ircbot.say(config.channel, from + ": " + message);
