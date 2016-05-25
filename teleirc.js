@@ -19,7 +19,7 @@ var config = {
     // IRC users to not forward messages from
     ircBlacklist: [
         "CowSayBot"
-        ]
+    ]
 };
 
 // Create the IRC bot side with the settings specified in config object above
@@ -50,14 +50,14 @@ tgbot.on('message', function (msg) {
         // and should not be passed to IRC
         var message = msg.text;
         if (msg.text === undefined) {
-            
+
             // Check if this message is a new user joining the group chat:
             if (msg.new_chat_member) {
                 var username = msg.new_chat_member.username;
                 var first_name = msg.new_chat_member.first_name;
                 ircbot.say(config.channel, "New user " + first_name + " ( @" + username + ") has joined the Telegram Group!");
             } else {
-                console.log("Ignoring non-text message: " + JSON.stringify(msg));    
+                console.log("Ignoring non-text message: " + JSON.stringify(msg));
             }
         } else {
             // Relay all text messages into IRC
@@ -75,12 +75,27 @@ tgbot.on('message', function (msg) {
 ircbot.addListener('message', function (from, channel, message) {
     // Anything coming from IRC is going to be valid to display as text
     // in Telegram. Just do a quick passthrough. No checking.
-    var matchedNames = config.ircBlacklist.filter(function(name){
+    var matchedNames = config.ircBlacklist.filter(function (name) {
         return from.toLowerCase() === name.toLowerCase();
     });
-    
+
     if (matchedNames.length <= 0) {
         tgbot.sendMessage(config.chatId, from + ": " + message);
     }
-    
+
 });
+
+// Let the telegram chat know when a user joins the IRC channel
+ircbot.addListener('join', function (channel, username) {
+    tgbot.sendMessage(config.chatId, username + " has joined #ritlug channel");
+});
+
+/*
+// Adding these here for future reference
+ircbot.addListener('part', function(channel, who, reason) {
+    console.log('%s has left %s: %s', who, channel, reason);
+});
+ircbot.addListener('kick', function(channel, who, by, reason) {
+    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
+});
+*/
