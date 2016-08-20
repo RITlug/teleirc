@@ -15,7 +15,7 @@ var config = {
     server: "irc.freenode.net",
     botName: "ritlugtg",
     channel: "#ritlug",
-    chatId: -13280454,
+    chatId: -1001091915559,
     // IRC users to not forward messages from
     ircBlacklist: [
         "CowSayBot"
