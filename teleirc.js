@@ -67,7 +67,7 @@ tgbot.on('message', function (msg) {
         // Messages that are sent to the bot outside of the RITLug chat should just be dumped
         // to the console for potential testing and debugging to do things like check chat IDs
         // and verify the JSON formats of various messages
-        console.log("Debug: " + JSON.stringify(msg));
+        console.log("Debug TG: " + JSON.stringify(msg));
     }
 });
 
@@ -84,6 +84,26 @@ ircbot.addListener('message', function (from, channel, message) {
     }
 
 });
+
+ircbot.addListener('action', function (from, channel, message) {
+    // Anything coming from IRC is going to be valid to display as text
+    // in Telegram. Just do a quick passthrough. No checking.
+    var matchedNames = config.ircBlacklist.filter(function (name) {
+        return from.toLowerCase() === name.toLowerCase();
+    });
+
+    if (matchedNames.length <= 0) {
+        tgbot.sendMessage(config.chatId, from + " " + message);
+    }
+
+});
+
+ircbot.addListener('error', function (message) {
+    console.log("Debug IRC: " + JSON.stringify(message));
+});
+
+
+
 
 // Let the telegram chat know when a user joins the IRC channel
 ircbot.addListener('join', function (channel, username) {
