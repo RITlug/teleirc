@@ -1,7 +1,7 @@
 {
   "name": "teleirc-bot",
   "version": "1.0.0",
-  "description": "A simple telegram bot",
+  "description": "A simple Telegram <=> IRC bot",
   "main": "teleirc.js",
   "scripts": {
     "test": "node teleirc.js"
