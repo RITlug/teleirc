@@ -13,9 +13,9 @@ var token = settings.token;
 
 var config = {
     server: "irc.freenode.net",
-    botName: "ritlugtg",
-    channel: "#ritlug",
-    chatId: -1001091915559,
+    botName: "teleirc",
+    channel: "#mychannel",
+    chatId: -0000000000000,
     // IRC users to not forward messages from
     ircBlacklist: [
         "CowSayBot"
@@ -23,7 +23,7 @@ var config = {
 };
 
 // Create the IRC bot side with the settings specified in config object above
-console.log("Starting up bot on irc...");
+console.log("Starting up bot on IRC...");
 var ircbot = new irc.Client(config.server, config.botName, {
     channels: [config.channel],
     debug: false,
@@ -31,11 +31,11 @@ var ircbot = new irc.Client(config.server, config.botName, {
 });
 
 // Create the telegram bot side with the settings specified in config object above
-console.log("Starting up bot on telegram...");
+console.log("Starting up bot on Telegram...");
 var tgbot = new tg(token, { polling: true });
 
 tgbot.on('message', function (msg) {
-    // Only relay messages that come in through the RITLug telegram chat
+    // Only relay messages that come in through the Telegram chat
     if (msg.chat.id === config.chatId) {
         var from = msg.from.username;
 
@@ -64,10 +64,10 @@ tgbot.on('message', function (msg) {
             ircbot.say(config.channel, from + ": " + message);
         }
     } else {
-        // Messages that are sent to the bot outside of the RITLug chat should just be dumped
+        // Messages that are sent to the bot outside of the group chat should just be dumped
         // to the console for potential testing and debugging to do things like check chat IDs
         // and verify the JSON formats of various messages
-        console.log("Debug TG: " + JSON.stringify(msg));
+        console.log("[TG Debug] " + JSON.stringify(msg));
     }
 });
 
@@ -99,7 +99,7 @@ ircbot.addListener('action', function (from, channel, message) {
 });
 
 ircbot.addListener('error', function (message) {
-    console.log("Debug IRC: " + JSON.stringify(message));
+    console.log("[IRC Debug] " + JSON.stringify(message));
 });
 
 
@@ -107,7 +107,7 @@ ircbot.addListener('error', function (message) {
 
 // Let the telegram chat know when a user joins the IRC channel
 ircbot.addListener('join', function (channel, username) {
-    tgbot.sendMessage(config.chatId, username + " has joined #ritlug channel");
+    tgbot.sendMessage(config.chatId, username + " has joined " + config.channel + " channel.");
 });
 
 /*
