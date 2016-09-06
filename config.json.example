@@ -1,3 +1,19 @@
 {
-    "token": "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA"
+    "token": "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
+    "ircBlacklist": [
+        "CowSayBot"
+    ],
+    "irc": {
+        "server": "irc.freenode.net",
+        "channel": "#channel",
+        "botName": "teleirc"
+    },
+    "tg": {
+        "chatId": "-0000000000000",
+        "spacer": ":",
+        "showJoinMessage": true,
+        "showActionMessage": true,
+        "showLeaveMessage": false,
+        "showKickMessage": false
+    }
 }
