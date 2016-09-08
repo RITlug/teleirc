@@ -1,43 +1,97 @@
-var tg = require("node-telegram-bot-api");
-var irc = require("irc");
-var fs = require("fs");
+const tg = require("node-telegram-bot-api");
+const irc = require("irc");
+
+const config = require("./config.js");
 
 // Read in the config file to hide the bot API token
 console.log("Reading config.json file to get bot API token...");
-var settings = JSON.parse(fs.readFileSync('config.json', 'utf8'));
-if (settings.token) {
-    console.error("Token value not found in config.json file");
+
+// Check for a telegram token
+if (!config.token) {
+    setupError("Unable to find a telegram bot token in config.js");
 }
 
-var token = settings.token;
+// Check for required IRC settings:
+let ircooptions = ["server", "channel", "botName"];
+if (config.irc) {
+    ircooptions.forEach(option => {
+        if (!config.irc[option]) {
+            setupError("Unable to find IRC settings for " + option);
+        }
+    });
 
-var config = {
-    server: "irc.freenode.net",
-    botName: "teleirc",
-    channel: "#mychannel",
-    chatId: -0000000000000,
-    // IRC users to not forward messages from
-    ircBlacklist: [
-        "CowSayBot"
-    ]
-};
+    // The following settings are optional. If there are no 
+    // options set for them, set default values.
+
+    if (!config.irc.hasOwnProperty("prefix")) {
+        console.log("Using default value for prefix");
+        config.irc.prefix = "";
+    }
+
+    if (!config.irc.hasOwnProperty("suffix")) {
+        console.log("Using default value for suffix");
+        config.irc.suffix = "";
+    }
+
+} else {
+    setupError("Unable to find IRC settings in config.js");
+}
+
+// Check for required Telegram settings:
+let tgoptions = ["chatId"];
+if (config.tg) {
+    tgoptions.forEach(option => {
+        if (!config.tg[option]) {
+            setupError("Unable to find Telegram settings for " + option);
+        }
+    });
+
+    // The following settings are optional. If there are no 
+    // options set for them, default to false.
+
+    // Read config file for showJoinMessage
+    if (!config.tg.hasOwnProperty("showJoinMessage")) {
+        console.log("Using default 'false' value for showJoinMessage");
+        config.tg.showJoinMessage = false;
+    }
+
+    // Read config file for showLeaveMessage
+    if (!config.tg.hasOwnProperty("showLeaveMessage")) {
+        console.log("Using default 'false' value for showLeaveMessage");
+        config.tg.showLeaveMessage = false;
+    }
+
+    // Read config file for showKickMessage
+    if (!config.tg.hasOwnProperty("showKickMessage")) {
+        console.log("Using default 'false' value for showKickMessage");
+        config.tg.showKickMessage = false;
+    }
+
+    if (!config.tg.hasOwnProperty("showActionMessage")) {
+        console.log("Using default 'false' value for showActionMessage");
+        config.tg.showActionMessage = false;
+    }
+
+} else {
+    setupError("Unable to find Telegram settings in config.js");
+}
 
 // Create the IRC bot side with the settings specified in config object above
 console.log("Starting up bot on IRC...");
-var ircbot = new irc.Client(config.server, config.botName, {
-    channels: [config.channel],
+let ircbot = new irc.Client(config.irc.server, config.irc.botName, {
+    channels: [config.irc.channel],
     debug: false,
-    username: config.botName
+    username: config.irc.botName
 });
 
 // Create the telegram bot side with the settings specified in config object above
 console.log("Starting up bot on Telegram...");
-var tgbot = new tg(token, { polling: true });
+let tgbot = new tg(config.token, { polling: true });
 
 tgbot.on('message', function (msg) {
     // Only relay messages that come in through the Telegram chat
-    if (msg.chat.id === config.chatId) {
-        var from = msg.from.username;
+    if (msg.chat.id == config.tg.chatId) {
+        let from = msg.from.username;
 
         // Do some basic cleanup if the user does not have a username
         // on telegram. Replace with first_name instead.
@@ -48,20 +102,20 @@ tgbot.on('message', function (msg) {
         // Check that this message has a text field. If it does not,
         // it is something special to telegram like a file or sticker
         // and should not be passed to IRC
-        var message = msg.text;
+        let message = msg.text;
         if (msg.text === undefined) {
 
             // Check if this message is a new user joining the group chat:
             if (msg.new_chat_member) {
-                var username = msg.new_chat_member.username;
-                var first_name = msg.new_chat_member.first_name;
+                let username = msg.new_chat_member.username;
+                let first_name = msg.new_chat_member.first_name;
                 ircbot.say(config.channel, "New user " + first_name + " ( @" + username + ") has joined the Telegram Group!");
             } else {
                 console.log("Ignoring non-text message: " + JSON.stringify(msg));
             }
         } else {
             // Relay all text messages into IRC
-            ircbot.say(config.channel, from + ": " + message);
+            ircbot.say(config.irc.channel, config.irc.prefix + from + config.irc.suffix + " " + message);
         }
     } else {
         // Messages that are sent to the bot outside of the group chat should just be dumped
@@ -72,50 +126,58 @@ tgbot.on('message', function (msg) {
 });
 
 // Action to invoke on incoming messages from the IRC side
-ircbot.addListener('message', function (from, channel, message) {
-    // Anything coming from IRC is going to be valid to display as text
-    // in Telegram. Just do a quick passthrough. No checking.
-    var matchedNames = config.ircBlacklist.filter(function (name) {
+ircbot.addListener('message', (from, channel, message) => {
+    let matchedNames = config.ircBlacklist.filter(function (name) {
         return from.toLowerCase() === name.toLowerCase();
     });
 
     if (matchedNames.length <= 0) {
-        tgbot.sendMessage(config.chatId, from + ": " + message);
+        tgbot.sendMessage(config.tg.chatId, from + ": " + message);
     }
 
 });
 
-ircbot.addListener('action', function (from, channel, message) {
-    // Anything coming from IRC is going to be valid to display as text
-    // in Telegram. Just do a quick passthrough. No checking.
-    var matchedNames = config.ircBlacklist.filter(function (name) {
-        return from.toLowerCase() === name.toLowerCase();
-    });
-
-    if (matchedNames.length <= 0) {
-        tgbot.sendMessage(config.chatId, from + " " + message);
-    }
-
-});
-
-ircbot.addListener('error', function (message) {
+ircbot.addListener('error', (message) => {
     console.log("[IRC Debug] " + JSON.stringify(message));
 });
 
+// These additional alerts can be turned on in the config file
+if (config.tg.showActionMessage) {
+    ircbot.addListener('action', (from, channel, message) => {
+        let matchedNames = config.ircBlacklist.filter(function (name) {
+            return from.toLowerCase() === name.toLowerCase();
+        });
 
+        if (matchedNames.length <= 0) {
+            tgbot.sendMessage(config.tg.chatId, from + " " + message);
+        }
+    });
+}
 
+if (config.tg.showJoinMessage) {
+    // Let the telegram chat know when a user joins the IRC channel
+    ircbot.addListener('join', (channel, username) => {
+        tgbot.sendMessage(config.tg.chatId, username + " has joined " + channel + " channel.");
+    });
+}
 
-// Let the telegram chat know when a user joins the IRC channel
-ircbot.addListener('join', function (channel, username) {
-    tgbot.sendMessage(config.chatId, username + " has joined " + config.channel + " channel.");
-});
+if (config.tg.showLeaveMessage) {
+    // Let the telegram chat know when a user leaves the IRC channel
+    ircbot.addListener('part', (channel, username, reason) => {
+        tgbot.sendMessage(config.tg.chatId, username + " has left " + channel + ": " + reason + ".");
+    });
+}
 
-/*
-// Adding these here for future reference
-ircbot.addListener('part', function(channel, who, reason) {
-    console.log('%s has left %s: %s', who, channel, reason);
-});
-ircbot.addListener('kick', function(channel, who, by, reason) {
-    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
-});
-*/
+if (config.tg.showKickMessage) {
+    // Let the telegram chat know when a user is kicked from the IRC channel
+    ircbot.addListener('kick', (channel, username, by, reason) => {
+        tgbot.sendMessage(config.tg.chatId, username + " was kicked by " + by + " from " + channel + ": " + reason + ".");
+    });
+}
+
+// Quick function to print an error message and bail out if the 
+// config is missing any required settings in the config file.
+function setupError(message) {
+    console.warn("[setup] " + message);
+    process.exit(1);
+}

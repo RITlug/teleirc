@@ -1,0 +1,23 @@
+var settings = {
+    token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
+    ircBlacklist: [
+        "CowSayBot"
+    ],
+    irc: {
+        server: "irc.freenode.net",
+        channel: "#channel",
+        botName: "teleirc",
+        prefix: "<",
+        suffix: ">"
+    },
+    tg: {
+        chatId: "-0000000000000",
+        showJoinMessage: false,
+        showActionMessage: true,
+        showLeaveMessage: false,
+        showKickMessage: false
+    }
+}
+
+
+module.exports = settings;
