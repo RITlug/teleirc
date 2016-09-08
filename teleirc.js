@@ -115,7 +115,7 @@ tgbot.on('message', function (msg) {
             }
         } else {
             // Relay all text messages into IRC
-            ircbot.say(config.channel, config.irc.prefix + from + config.irc.suffix + " " + message);
+            ircbot.say(config.irc.channel, config.irc.prefix + from + config.irc.suffix + " " + message);
         }
     } else {
         // Messages that are sent to the bot outside of the group chat should just be dumped
