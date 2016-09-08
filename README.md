@@ -14,6 +14,7 @@ Ask any of our successful users!
 * [RITlug](http://ritlug.com) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=ritlug))
 * [Fedora Project](https://fedoraproject.org/wiki/Overview) ([Telegram](https://telegram.me/fedora) | [IRC](https://webchat.freenode.net/?channels=fedora-telegram))
 * [LIBOCon 2016](http://libocon.com/) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=libocon))
+* [FOSS@MAGIC at RIT](http://foss.rit.edu) ([Telegram](https://telegram.me/fossrit) | [IRC](https://webchat.freenode.net/?channels=rit-foss))
 
 
 ## Installation
