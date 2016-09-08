@@ -49,7 +49,7 @@ To get teleirc working, you will need a server to run it on, git, and the latest
 
 Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
 
-#### Example: config.json
+#### Example: config.js
 
 ```javascript
 {
