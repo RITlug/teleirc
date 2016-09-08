@@ -1,7 +1,7 @@
 const tg = require("node-telegram-bot-api");
 const irc = require("irc");
 
-const config = require("config.js");
+const config = require("./config.js");
 
 // Read in the config file to hide the bot API token
 console.log("Reading config.json file to get bot API token...");
@@ -34,23 +34,27 @@ if (config.tg) {
 
     // The following settings are optional. If there are no 
     // options set for them, default to false.
-    
+
     // Read config file for showJoinMessage
     if (!config.tg.hasOwnProperty("showJoinMessage")) {
+        console.log("Using default 'false' value for showJoinMessage");
         config.tg.showJoinMessage = false;
     }
 
     // Read config file for showLeaveMessage
     if (!config.tg.hasOwnProperty("showLeaveMessage")) {
+        console.log("Using default 'false' value for showLeaveMessage");
         config.tg.showLeaveMessage = false;
     }
 
     // Read config file for showKickMessage
     if (!config.tg.hasOwnProperty("showKickMessage")) {
+        console.log("Using default 'false' value for showKickMessage");
         config.tg.showKickMessage = false;
     }
 
     if (!config.tg.hasOwnProperty("showActionMessage")) {
+        console.log("Using default 'false' value for showActionMessage");
         config.tg.showActionMessage = false;
     }
 
@@ -97,7 +101,7 @@ tgbot.on('message', function (msg) {
             }
         } else {
             // Relay all text messages into IRC
-            ircbot.say(config.channel, from + config.spacer + " " + message);
+            ircbot.say(config.channel, from + config.tg.spacer + " " + message);
         }
     } else {
         // Messages that are sent to the bot outside of the group chat should just be dumped
@@ -114,7 +118,7 @@ ircbot.addListener('message', (from, channel, message) => {
     });
 
     if (matchedNames.length <= 0) {
-        tgbot.sendMessage(config.chatId, from + ": " + message);
+        tgbot.sendMessage(config.tg.chatId, from + ": " + message);
     }
 
 });
@@ -122,9 +126,6 @@ ircbot.addListener('message', (from, channel, message) => {
 ircbot.addListener('error', (message) => {
     console.log("[IRC Debug] " + JSON.stringify(message));
 });
-
-
-
 
 // These additional alerts can be turned on in the config file
 if (config.tg.showActionMessage) {
@@ -134,7 +135,7 @@ if (config.tg.showActionMessage) {
         });
 
         if (matchedNames.length <= 0) {
-            tgbot.sendMessage(config.chatId, from + " " + message);
+            tgbot.sendMessage(config.tg.chatId, from + " " + message);
         }
     });
 }
