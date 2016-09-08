@@ -38,21 +38,39 @@ To get teleirc working, you will need a server to run it on, git, and the latest
 
 1. Clone this repository to the server you wish to run teleirc on. `git clone git@github.com:RITlug/teleirc.git`
 2. Install dependencies for teleirc with _npm_. This pulls down required NPM packages for Telegram and IRC connections. `npm install`
-3. Rename `config.json.example` to `config.json`. Change the token configuration value to the bot token you received from the BotFather. An example of what that file looks like is farther below.
+3. Rename `config.js.example` to `config.js`. Change the token configuration value to the bot token you received from the BotFather. An example of what that file looks like is farther below.
 4. **This API key should be kept private!** This config file is listed in the .gitignore file so it is not accidentially added to source control.
-5. Edit `teleirc.js` and update `server`, `botName`, `channel`, and `chatId` for your uses.
+5. Edit `config.js` and update `server`, `botName`, `channel`, and `chatId` for your uses.
  * _server_: IRC server you wish to connect to (default: irc.freenode.net)
  * _botName_: Nickname for your bot to use on IRC
  * _channel_: IRC channel you want your bot to join
  * _chatId_: Telegram chat ID of the group you are bridging ([how do I get this?](http://stackoverflow.com/a/32572159))
+6. Optional settings are available to customize teleirc to respond to extra irc events such as join, leave, kick, action messages. You can also set a custom prefix and suffix that will be inserted when a messages from Telegram is sent to IRC.
 
 Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
 
 #### Example: config.json
 
-```json
+```javascript
 {
-    "token": "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA"
+    token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
+    ircBlacklist: [
+        "CowSayBot"
+    ],
+    irc: {
+        server: "irc.freenode.net",
+        channel: "#channel",
+        botName: "teleirc",
+        prefix: "<",
+        suffix: ">"
+    },
+    tg: {
+        chatId: "-0000000000000",
+        showJoinMessage: false,
+        showActionMessage: true,
+        showLeaveMessage: false,
+        showKickMessage: false
+    }
 }
 ```
 
