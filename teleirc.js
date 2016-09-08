@@ -19,12 +19,26 @@ if (config.irc) {
             setupError("Unable to find IRC settings for " + option);
         }
     });
+
+    // The following settings are optional. If there are no 
+    // options set for them, set default values.
+
+    if (!config.irc.hasOwnProperty("prefix")) {
+        console.log("Using default value for prefix");
+        config.irc.prefix = "";
+    }
+
+    if (!config.irc.hasOwnProperty("suffix")) {
+        console.log("Using default value for suffix");
+        config.irc.suffix = "";
+    }
+
 } else {
     setupError("Unable to find IRC settings in config.js");
 }
 
 // Check for required Telegram settings:
-let tgoptions = ["chatId", "spacer"];
+let tgoptions = ["chatId"];
 if (config.tg) {
     tgoptions.forEach(option => {
         if (!config.tg[option]) {
@@ -101,7 +115,7 @@ tgbot.on('message', function (msg) {
             }
         } else {
             // Relay all text messages into IRC
-            ircbot.say(config.channel, from + config.tg.spacer + " " + message);
+            ircbot.say(config.channel, config.irc.prefix + from + config.irc.suffix + " " + message);
         }
     } else {
         // Messages that are sent to the bot outside of the group chat should just be dumped

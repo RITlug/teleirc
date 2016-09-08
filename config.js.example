@@ -6,12 +6,13 @@ var settings = {
     irc: {
         server: "irc.freenode.net",
         channel: "#channel",
-        botName: "teleirc"
+        botName: "teleirc",
+        prefix: "<",
+        suffix: ">"
     },
     tg: {
         chatId: "-0000000000000",
-        spacer: ":",
-        showJoinMessage: true,
+        showJoinMessage: false,
         showActionMessage: true,
         showLeaveMessage: false,
         showKickMessage: false
