@@ -164,6 +164,9 @@ if (config.tg.showJoinMessage) {
 if (config.tg.showLeaveMessage) {
     // Let the telegram chat know when a user leaves the IRC channel
     ircbot.addListener('part', (channel, username, reason) => {
+        if (typeof reason != "string") {
+            reason = "Parting...";
+        }
         tgbot.sendMessage(config.tg.chatId, username + " has left " + channel + ": " + reason + ".");
     });
 }
@@ -171,6 +174,9 @@ if (config.tg.showLeaveMessage) {
 if (config.tg.showKickMessage) {
     // Let the telegram chat know when a user is kicked from the IRC channel
     ircbot.addListener('kick', (channel, username, by, reason) => {
+        if (typeof reason != "string") {
+            reason = "Kicked";
+        }
         tgbot.sendMessage(config.tg.chatId, username + " was kicked by " + by + " from " + channel + ": " + reason + ".");
     });
 }
