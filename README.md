@@ -30,7 +30,10 @@ For the Telegram side, you will need to create a new Telegram bot that will sit 
 2. Create a bot with the `/newbot` command in a chat window with BotFather. You will then be prompted to enter a bot name. Once you have done this, you will get a bot token from the BotFather for accessing the Telegram API. Make note of the token for later configuration.
 3. Before this bot can enter any group chats, you will need to configure it with correct permissions. Send the `/setprivacy` command to the BotFather, specify which bot this command is for, then **disable** the privacy so the bot receives all messages sent in the group chat.
 4. Optionally, you can supply a different bot name, description, and picture to make it more obvious what the bot is in the group chat.
-5. Add the bot to the Telegram group chat you want to bridge.
+5. This bot supports adhering to Telegram's bot rate limits. You can set messages per minute in the config. As of this writing, the limit
+from Telegram is 20, which is the default. If you don't want to use rate limiting, set the option to 0. The bot will bundle messages and
+send them together with a delay while rate limiting in hopes of avoiding dropped messages.
+6. Add the bot to the Telegram group chat you want to bridge.
 
 Now that you have a bot created, have its Telegram API token, and have it in your group, you can start using this bridge.
 
@@ -71,7 +74,8 @@ Alternatively, if you start up the bot with no Telegram chat ID set, it will sit
         showJoinMessage: false,
         showActionMessage: true,
         showLeaveMessage: false,
-        showKickMessage: false
+        showKickMessage: false,
+        maxMessagesPerMinute: 20
     }
 }
 ```
