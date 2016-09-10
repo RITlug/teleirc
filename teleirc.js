@@ -123,7 +123,7 @@ class MessageRateLimiter {
         this.rate = rate;
         this.per = per;
         this.allowance = rate;
-        this.last_check = Date.now();
+        this.last_check = Date.now()/1000;
         this.bundle = new MessageBundle();
         this.sendAction = sendAction;
 
@@ -157,8 +157,9 @@ class MessageRateLimiter {
     }
 
     bumpAllowance() {
-        let current = Date.now();
+        let current = Date.now()/1000;
         let timePassed = current - this.last_check;
+        this.last_check = current;
         this.allowance = this.allowance + (timePassed * this.rate/this.per);
 
         // Make sure we don't get to an allowance that's higher than the
