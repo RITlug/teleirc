@@ -72,6 +72,11 @@ if (config.tg) {
         config.tg.showActionMessage = false;
     }
 
+    if (!config.tg.hasOwnProperty("maxMessagesPerMinue")) {
+        console.log("Using default of 20 for maxMessagesPerMinute");
+        config.tg.maxMessagesPerMinute = 20;
+    }
+
 } else {
     setupError("Unable to find Telegram settings in config.js");
 }
@@ -87,6 +92,93 @@ let ircbot = new irc.Client(config.irc.server, config.irc.botName, {
 // Create the telegram bot side with the settings specified in config object above
 console.log("Starting up bot on Telegram...");
 let tgbot = new tg(config.token, { polling: true });
+
+class MessageBundle {
+
+    constructor() {
+        this.queue = [];
+    }
+
+    addMessage(message) {
+        this.queue.push(message);
+    }
+
+    implodeAndClear() {
+        let m = this.queue.join("\n");
+        this.queue = [];
+        return m;
+    }
+}
+
+class MessageRateLimiter {
+
+    /**
+     * rate: how many messages we can send...
+     * per: ...per this many seconds
+     * sendAction: function to send a message
+     *
+     * Providing a rate of "0" disables rate limiting.
+     */
+    constructor(rate, per, sendAction) {
+        this.rate = rate;
+        this.per = per;
+        this.allowance = rate;
+        this.last_check = Date.now();
+        this.bundle = new MessageBundle();
+        this.sendAction = sendAction;
+
+        // We need to run periodically to make sure messages don't get stuck
+        // in the queue.
+        if (rate === 0) {
+            setInterval(this.run.bind(this), 2000);
+        }
+    }
+
+    queueMessage(message) {
+        this.bundle.addMessage(message);
+        // We call run here just in case we can immediately send
+        // the message, instead of waiting for the setInterval to call
+        // run for us.
+        this.run();
+    }
+
+    run() {
+        this.bumpAllowance();
+
+        if (this.rate > 0 && this.allowance < 1) {
+            console.log("A message has been received and rate limited");
+            // Currently rate-limiting, so don't do anything.
+        } else {
+            if (this.bundle.queue.length > 0) {
+                this.sendAction(this.bundle.implodeAndClear());
+                this.allowance--;
+            }
+        }
+    }
+
+    bumpAllowance() {
+        let current = Date.now();
+        let timePassed = current - this.last_check;
+        this.allowance = this.allowance + (timePassed * this.rate/this.per);
+
+        // Make sure we don't get to an allowance that's higher than the
+        // rate we're actually allowed to send.
+        if (this.allowance > this.rate) {
+            this.allowance = this.rate;
+        }
+    }
+}
+
+let tgRateLimiter = new MessageRateLimiter(
+        config.tg.maxMessagesPerMinute,
+        60,
+        function(message) {
+            tgbot.sendMessage(config.tg.chatID, message);
+        });
+
+function sendTelegramMessage(chatID, messageString) {
+    tgRateLimiter.queueMessage(messageString);
+}
 
 tgbot.on('message', function (msg) {
     // Only relay messages that come in through the Telegram chat
@@ -132,7 +224,7 @@ ircbot.addListener('message', (from, channel, message) => {
     });
 
     if (matchedNames.length <= 0) {
-        tgbot.sendMessage(config.tg.chatId, from + ": " + message);
+        sendTelegramMessage(config.tg.chatId, from + ": " + message);
     }
 
 });
@@ -149,7 +241,7 @@ if (config.tg.showActionMessage) {
         });
 
         if (matchedNames.length <= 0) {
-            tgbot.sendMessage(config.tg.chatId, from + " " + message);
+            sendTelegramMessage(config.tg.chatId, from + " " + message);
         }
     });
 }
@@ -157,7 +249,7 @@ if (config.tg.showActionMessage) {
 if (config.tg.showJoinMessage) {
     // Let the telegram chat know when a user joins the IRC channel
     ircbot.addListener('join', (channel, username) => {
-        tgbot.sendMessage(config.tg.chatId, username + " has joined " + channel + " channel.");
+        sendTelegramMessage(config.tg.chatId, username + " has joined " + channel + " channel.");
     });
 }
 
@@ -167,7 +259,7 @@ if (config.tg.showLeaveMessage) {
         if (typeof reason != "string") {
             reason = "Parting...";
         }
-        tgbot.sendMessage(config.tg.chatId, username + " has left " + channel + ": " + reason + ".");
+        sendTelegramMessage(config.tg.chatId, username + " has left " + channel + ": " + reason + ".");
     });
 }
 
@@ -177,7 +269,7 @@ if (config.tg.showKickMessage) {
         if (typeof reason != "string") {
             reason = "Kicked";
         }
-        tgbot.sendMessage(config.tg.chatId, username + " was kicked by " + by + " from " + channel + ": " + reason + ".");
+        sendTelegramMessage(config.tg.chatId, username + " was kicked by " + by + " from " + channel + ": " + reason + ".");
     });
 }
 

@@ -15,7 +15,8 @@ var settings = {
         showJoinMessage: false,
         showActionMessage: true,
         showLeaveMessage: false,
-        showKickMessage: false
+        showKickMessage: false,
+        maxMessagesPerMinute: 20
     }
 }
 
