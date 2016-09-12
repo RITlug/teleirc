@@ -16,6 +16,7 @@ Ask any of our successful users!
 * [LIBOCon 2016](http://libocon.com/) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=libocon))
 * [FOSS@MAGIC at RIT](http://foss.rit.edu) ([Telegram](https://telegram.me/fossrit) | [IRC](https://webchat.freenode.net/?channels=rit-foss))
 * [Fedora LATAM](http://fedoracommunity.org/latam) ([Telegram](https://telegram.me/fedoralatam) | [IRC](https://webchat.freenode.net/?channels=fedora-latam))
+* [MINECON Agents](https://mojang.com/2016/06/calling-all-agents-help-us-run-minecon-2016/) (_Telegram invite-only_ | [IRC](https://webchat.esper.net/?channels=MineconAgents))
 
 
 ## Installation
