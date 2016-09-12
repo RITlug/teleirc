@@ -8,9 +8,18 @@ NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://e
 
 This project was written by [Mark Repka](https://github.com/repkam09) to help bridge communication between [RITlug](http://ritlug.com)'s IRC channel with our Telegram group. The project is a lightweight NodeJS application. This is also being used in various IRC channels and Telegram groups than just RITlug.
 
-**Who's using this app?**
+### Try it out
+
+A public Telegram supergroup and IRC channel are available for you to see it live in action. This is also where our developers and community hang out as well.
+
+* **[Telegram](https://telegram.me/teleirc)**
+* **[IRC](https://webchat.freenode.net/?channels=ritlug-teleirc)** (#ritlug-teleirc @ irc.freenode.net)
+
+### Who's using this app?
+
 Ask any of our successful users!
 
+* [RITlug teleirc](https://github.com/RITlug/teleirc) ([Telegram](https://telegram.me/teleirc) | [IRC](https://webchat.freenode.net/?channels=ritlug-teleirc))
 * [RITlug](http://ritlug.com) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=ritlug))
 * [Fedora Project](https://fedoraproject.org/wiki/Overview) ([Telegram](https://telegram.me/fedora) | [IRC](https://webchat.freenode.net/?channels=fedora-telegram))
 * [LIBOCon 2016](http://libocon.com/) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=libocon))
