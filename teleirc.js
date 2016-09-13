@@ -129,7 +129,7 @@ class MessageRateLimiter {
 
         // We need to run periodically to make sure messages don't get stuck
         // in the queue.
-        if (rate === 0) {
+        if (this.rate > 0) {
             setInterval(this.run.bind(this), 2000);
         }
     }
