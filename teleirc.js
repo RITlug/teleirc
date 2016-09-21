@@ -132,7 +132,9 @@ ircbot.addListener('message', (from, channel, message) => {
     });
 
     if (matchedNames.length <= 0) {
-        tgbot.sendMessage(config.tg.chatId, from + ": " + message);
+        tgbot.sendMessage(config.tg.chatId, "*" + from + "*: " + message, {
+            parse_mode: "Markdown"
+        });
     }
 
 });
