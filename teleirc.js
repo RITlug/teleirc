@@ -106,10 +106,15 @@ tgbot.on('message', function (msg) {
         if (msg.text === undefined) {
 
             // Check if this message is a new user joining the group chat:
-            if (msg.new_chat_member) {
+            if (msg.new_chat_member  && config.irc.showJoinMessage) {
                 let username = msg.new_chat_member.username;
                 let first_name = msg.new_chat_member.first_name;
                 ircbot.say(config.channel, "New user " + first_name + " ( @" + username + ") has joined the Telegram Group!");
+            // Check if this message is a user leaving the telegram group chat:
+            } else if (msg.left_chat_member && config.irc.showLeaveMessage) {
+                let username = msg.left_chat_member.username;
+                let first_name = msg.left_chat_member.first_name;
+                ircbot.say(config.channel, "User " + first_name + " ( @" + username + ") has left the Telegram Group.");
             } else {
                 console.log("Ignoring non-text message: " + JSON.stringify(msg));
             }
