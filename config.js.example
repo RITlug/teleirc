@@ -7,6 +7,7 @@ var settings = {
         server: "irc.freenode.net",
         channel: "#channel",
         botName: "teleirc",
+        sendStickerEmoji: false,
         prefix: "<",
         suffix: ">"
     },
