@@ -174,10 +174,10 @@ let tgRateLimiter = new MessageRateLimiter(
         config.tg.maxMessagesPerMinute,
         60,
         function(message) {
-            tgbot.sendMessage(config.tg.chatID, message);
+            tgbot.sendMessage(config.tg.chatId, message);
         });
 
-function sendTelegramMessage(chatID, messageString) {
+function sendTelegramMessage(chatId, messageString) {
     tgRateLimiter.queueMessage(messageString);
 }
 
