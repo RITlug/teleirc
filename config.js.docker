@@ -1,0 +1,22 @@
+var settings = {
+    token: process.env.TELEIRC_TOKEN,
+    ircBlacklist: process.env.IRC_BLACKLIST ?
+        process.env.IRC_BLACKLIST.split(",") : [],
+    irc: {
+        server: process.env.IRC_SERVER || "irc.freenode.net",
+        channel: process.env.IRC_CHANNEL,
+        botName: process.env.IRC_BOT_NAME,
+        prefix: process.env.IRC_PREFIX || "<",
+        suffix: process.env.IRC_SUFFIX || ">"
+    },
+    tg: {
+        chatId: process.env.TELEGRAM_CHAT_ID,
+        showJoinMessage: process.env.SHOW_JOIN_MESSAGE || false,
+        showActionMessage: process.env.SHOW_ACTION_MESSAGE || true,
+        showLeaveMessage: process.env.SHOW_LEAVE_MESSAGE || false,
+        showKickMessage: process.env.SHOW_KICK_MESSAGE || false,
+        maxMessagesPerMinute: process.env.MAX_MESSAGES_PER_MINUTE || 20
+    }
+};
+
+module.exports = settings;
