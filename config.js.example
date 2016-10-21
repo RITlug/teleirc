@@ -9,7 +9,9 @@ var settings = {
         botName: "teleirc",
         sendStickerEmoji: false,
         prefix: "<",
-        suffix: ">"
+        suffix: ">",
+        showJoinMessage: false,
+        showLeaveMessage: false
     },
     tg: {
         chatId: "-0000000000000",
