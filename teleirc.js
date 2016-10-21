@@ -181,6 +181,25 @@ function sendTelegramMessage(chatId, messageString) {
     tgRateLimiter.queueMessage(messageString);
 }
 
+/**
+ * Generates the "User has joined" or "User has left" message that goes from telegram
+ * to IRC in a way that does not cause undefines to appear from an undefined username.
+ * The result is if a user has a user name, it will return:
+ *     SomeUser (@SomeUserName) suffixHere
+ * But if the user does not have a user name, it will return:
+ *     SomeUSer suffixHere
+ * @param {String} firstName - The telegram user's first name.
+ * @param {String} userName - The telegram user's username.
+ * @param {String} suffix - The message that appears after the firstname and username.
+ */
+function getTelegramToIrcJoinLeaveMsg(firstName, userName, suffix) {
+    if (userName === undefined) {
+        return firstName + " " + suffix;
+    } else {
+        return firstName + " (@" + userName + ") " + suffix;
+    }
+}
+
 tgbot.on('message', function (msg) {
     // Only relay messages that come in through the Telegram chat
     if (msg.chat.id == config.tg.chatId) {
@@ -197,17 +216,16 @@ tgbot.on('message', function (msg) {
         // and should not be passed to IRC
         let message = msg.text;
         if (msg.text === undefined) {
-
-            // Check if this message is a new user joining the group chat:
             if (msg.new_chat_member && config.irc.showJoinMessage) {
+                // Check if this message is a new user joining the group chat:
                 let username = msg.new_chat_member.username;
                 let first_name = msg.new_chat_member.first_name;
-                ircbot.say(config.irc.channel, first_name + " (@" + username + ") has joined the Telegram Group!");
-            // Check if this message is a user leaving the telegram group chat:
+                ircbot.say(config.irc.channel, getTelegramToIrcJoinLeaveMsg(first_name, username, "has joined the Telegram Group!"));
             } else if (msg.left_chat_member && config.irc.showLeaveMessage) {
+                // Check if this message is a user leaving the telegram group chat:
                 let username = msg.left_chat_member.username;
                 let first_name = msg.left_chat_member.first_name;
-                ircbot.say(config.irc.channel, first_name + " (@" + username + ") has left the Telegram Group.");
+                ircbot.say(config.irc.channel, getTelegramToIrcJoinLeaveMsg(first_name, username, "has left the Telegram Group."));
             } else if (msg.sticker !== undefined) {
                 // If we have a sticker, we should send it to IRC... sort of...
                 // The best way to get a sticker to IRC would be to send a URL to the sticker, but that doesn't
