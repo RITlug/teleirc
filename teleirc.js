@@ -20,7 +20,7 @@ if (config.irc) {
         }
     });
 
-    // The following settings are optional. If there are no 
+    // The following settings are optional. If there are no
     // options set for them, set default values.
 
     if (!config.irc.hasOwnProperty("prefix")) {
@@ -46,7 +46,7 @@ if (config.tg) {
         }
     });
 
-    // The following settings are optional. If there are no 
+    // The following settings are optional. If there are no
     // options set for them, default to false.
 
     // Read config file for showJoinMessage
@@ -72,6 +72,11 @@ if (config.tg) {
         config.tg.showActionMessage = false;
     }
 
+    if (!config.tg.hasOwnProperty("maxMessagesPerMinue")) {
+        console.log("Using default of 20 for maxMessagesPerMinute");
+        config.tg.maxMessagesPerMinute = 20;
+    }
+
 } else {
     setupError("Unable to find Telegram settings in config.js");
 }
@@ -87,6 +92,94 @@ let ircbot = new irc.Client(config.irc.server, config.irc.botName, {
 // Create the telegram bot side with the settings specified in config object above
 console.log("Starting up bot on Telegram...");
 let tgbot = new tg(config.token, { polling: true });
+
+class MessageBundle {
+
+    constructor() {
+        this.queue = [];
+    }
+
+    addMessage(message) {
+        this.queue.push(message);
+    }
+
+    implodeAndClear() {
+        let m = this.queue.join("\n");
+        this.queue = [];
+        return m;
+    }
+}
+
+class MessageRateLimiter {
+
+    /**
+     * rate: how many messages we can send...
+     * per: ...per this many seconds
+     * sendAction: function to send a message
+     *
+     * Providing a rate of "0" disables rate limiting.
+     */
+    constructor(rate, per, sendAction) {
+        this.rate = rate;
+        this.per = per;
+        this.allowance = rate;
+        this.last_check = Date.now()/1000;
+        this.bundle = new MessageBundle();
+        this.sendAction = sendAction;
+
+        // We need to run periodically to make sure messages don't get stuck
+        // in the queue.
+        if (this.rate > 0) {
+            setInterval(this.run.bind(this), 2000);
+        }
+    }
+
+    queueMessage(message) {
+        this.bundle.addMessage(message);
+        // We call run here just in case we can immediately send
+        // the message, instead of waiting for the setInterval to call
+        // run for us.
+        this.run();
+    }
+
+    run() {
+        this.bumpAllowance();
+
+        if (this.rate > 0 && this.allowance < 1) {
+            console.log("A message has been received and rate limited");
+            // Currently rate-limiting, so don't do anything.
+        } else {
+            if (this.bundle.queue.length > 0) {
+                this.sendAction(this.bundle.implodeAndClear());
+                this.allowance--;
+            }
+        }
+    }
+
+    bumpAllowance() {
+        let current = Date.now()/1000;
+        let timePassed = current - this.last_check;
+        this.last_check = current;
+        this.allowance = this.allowance + (timePassed * this.rate/this.per);
+
+        // Make sure we don't get to an allowance that's higher than the
+        // rate we're actually allowed to send.
+        if (this.allowance > this.rate) {
+            this.allowance = this.rate;
+        }
+    }
+}
+
+let tgRateLimiter = new MessageRateLimiter(
+        config.tg.maxMessagesPerMinute,
+        60,
+        function(message) {
+            tgbot.sendMessage(config.tg.chatId, message);
+        });
+
+function sendTelegramMessage(chatId, messageString) {
+    tgRateLimiter.queueMessage(messageString);
+}
 
 tgbot.on('message', function (msg) {
     // Only relay messages that come in through the Telegram chat
@@ -115,6 +208,19 @@ tgbot.on('message', function (msg) {
                 let username = msg.left_chat_member.username;
                 let first_name = msg.left_chat_member.first_name;
                 ircbot.say(config.irc.channel, first_name + " (@" + username + ") has left the Telegram Group.");
+            } else if (msg.sticker !== undefined) {
+                // If we have a sticker, we should send it to IRC... sort of...
+                // The best way to get a sticker to IRC would be to send a URL to the sticker, but that doesn't
+                // seem to exist.  My guess as to how telegram handles stickers is it sends the file ID of the sticker
+                // to its servers and downloads it directly from its servers, similar to how photo downloads are done.
+                // That won't work in IRC.
+                //
+                // The only thing we can do if we see a sticker is grab its corresponding emoji and send that to IRC.
+                // That is, if the config allows us to do that of course.
+                let emoji = msg.sticker.emoji;
+                if (emoji !== undefined && config.irc.sendStickerEmoji) {
+                    ircbot.say(config.irc.channel, config.irc.prefix + from + config.irc.suffix + " " + emoji);
+                }
             } else {
                 console.log("Ignoring non-text message: " + JSON.stringify(msg));
             }
@@ -137,7 +243,7 @@ ircbot.addListener('message', (from, channel, message) => {
     });
 
     if (matchedNames.length <= 0) {
-        tgbot.sendMessage(config.tg.chatId, from + ": " + message);
+        sendTelegramMessage(config.tg.chatId, from + ": " + message);
     }
 
 });
@@ -154,7 +260,7 @@ if (config.tg.showActionMessage) {
         });
 
         if (matchedNames.length <= 0) {
-            tgbot.sendMessage(config.tg.chatId, from + " " + message);
+            sendTelegramMessage(config.tg.chatId, from + " " + message);
         }
     });
 }
@@ -162,7 +268,7 @@ if (config.tg.showActionMessage) {
 if (config.tg.showJoinMessage) {
     // Let the telegram chat know when a user joins the IRC channel
     ircbot.addListener('join', (channel, username) => {
-        tgbot.sendMessage(config.tg.chatId, username + " has joined " + channel + " channel.");
+        sendTelegramMessage(config.tg.chatId, username + " has joined " + channel + " channel.");
     });
 }
 
@@ -172,7 +278,7 @@ if (config.tg.showLeaveMessage) {
         if (typeof reason != "string") {
             reason = "Parting...";
         }
-        tgbot.sendMessage(config.tg.chatId, username + " has left " + channel + ": " + reason + ".");
+        sendTelegramMessage(config.tg.chatId, username + " has left " + channel + ": " + reason + ".");
     });
 }
 
@@ -182,11 +288,11 @@ if (config.tg.showKickMessage) {
         if (typeof reason != "string") {
             reason = "Kicked";
         }
-        tgbot.sendMessage(config.tg.chatId, username + " was kicked by " + by + " from " + channel + ": " + reason + ".");
+        sendTelegramMessage(config.tg.chatId, username + " was kicked by " + by + " from " + channel + ": " + reason + ".");
     });
 }
 
-// Quick function to print an error message and bail out if the 
+// Quick function to print an error message and bail out if the
 // config is missing any required settings in the config file.
 function setupError(message) {
     console.warn("[setup] " + message);

@@ -7,6 +7,7 @@ var settings = {
         server: "irc.freenode.net",
         channel: "#channel",
         botName: "teleirc",
+        sendStickerEmoji: false,
         prefix: "<",
         suffix: ">",
         showJoinMessage: false,
@@ -17,7 +18,8 @@ var settings = {
         showJoinMessage: false,
         showActionMessage: true,
         showLeaveMessage: false,
-        showKickMessage: false
+        showKickMessage: false,
+        maxMessagesPerMinute: 20
     }
 }
 
