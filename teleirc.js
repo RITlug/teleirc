@@ -110,7 +110,7 @@ tgbot.on('message', function (msg) {
                 let username = msg.new_chat_member.username;
                 let first_name = msg.new_chat_member.first_name;
                 ircbot.say(config.channel, "New user " + first_name + " ( @" + username + ") has joined the Telegram Group!");
-            } else if (msg.sticker != undefined) {
+            } else if (msg.sticker !== undefined) {
                 // If we have a sticker, we should send it to IRC... sort of...
                 // The best way to get a sticker to IRC would be to send a URL to the sticker, but that doesn't
                 // seem to exist.  My guess as to how telegram handles stickers is it sends the file ID of the sticker
@@ -120,7 +120,7 @@ tgbot.on('message', function (msg) {
                 // The only thing we can do if we see a sticker is grab its corresponding emoji and send that to IRC.
                 // That is, if the config allows us to do that of course.
                 let emoji = msg.sticker.emoji;
-                if (emoji != undefined && config.irc.sendStickerEmoji) {
+                if (emoji !== undefined && config.irc.sendStickerEmoji) {
                     ircbot.say(config.irc.channel, config.irc.prefix + from + config.irc.suffix + " " + emoji);
                 }
             } else {
