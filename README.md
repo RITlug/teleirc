@@ -22,7 +22,7 @@ Ask any of our successful users!
 * [RITlug teleirc](https://github.com/RITlug/teleirc) ([Telegram](https://telegram.me/teleirc) | [IRC](https://webchat.freenode.net/?channels=ritlug-teleirc))
 * [RITlug](http://ritlug.com) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=ritlug))
 * [Fedora Project](https://fedoraproject.org/wiki/Overview) ([Telegram](https://telegram.me/fedora) | [IRC](https://webchat.freenode.net/?channels=fedora-telegram))
-* [LibreOffice](https://www.libreoffice.org/) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=libreoffice-telegram))
+* [LibreOffice Community](https://www.libreoffice.org/) ([Telegram](https://telegram.me/libreofficecommunity) | [IRC](https://webchat.freenode.net/?channels=libreoffice-telegram))
 * [FOSS@MAGIC at RIT](http://foss.rit.edu) ([Telegram](https://telegram.me/fossrit) | [IRC](https://webchat.freenode.net/?channels=rit-foss))
 * [Fedora LATAM](http://fedoracommunity.org/latam) ([Telegram](https://telegram.me/fedoralatam) | [IRC](https://webchat.freenode.net/?channels=fedora-latam))
 * [MINECON Agents](https://mojang.com/2016/06/calling-all-agents-help-us-run-minecon-2016/) (_Telegram invite-only_ | [IRC](https://webchat.esper.net/?channels=MineconAgents))
