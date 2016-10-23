@@ -102,7 +102,10 @@ There is not real configuration needed on the IRC side, as IRC is generally very
 
 # Running Teleirc
 
-Before running teleirc, you will need to decide how you want to run it persistently. An easy way to keep this service running in the background on your server is through `pm2`. pm2 is an npm package that can keep node services running in the background, restart them if they crash, and restart them if the server reboots.
+Before running teleirc, you will need to decide how you want to run it persistently. Several options are available:
+
+* pm2: An easy way to keep this service running in the background on your server is through `pm2`. pm2 is an npm package that can keep node services running in the background, restart them if they crash, and restart them if the server reboots.
+* systemd: A systemd service file is provided (`teleirc.service`) which can be installed into `/usr/lib/systemd/system` and managed through standard systemd commands. The systemd service assumes you've created a dedicated user called `teleirc` with the home directory `/var/lib/teleirc` which contains teleirc.js, config.js, and node_modules.
 
 Alternatively, you can handle this yourself by using something like `screen` or `tmux`, and a quick shell script and starting the program manually with `node teleirc.js`.
 
