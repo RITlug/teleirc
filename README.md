@@ -32,6 +32,10 @@ Ask any of our successful users!
 
 In order to use this bridge, you will need several pieces of information. This guide is broken up into Telegram, teleirc, and IRC sections.
 
+On an ArchLinux based distro, teleirc can be installed [from the AUR](https://aur.archlinux.org/packages/teleirc/). You will still need to
+follow the configuration steps from below. If you install from the AUR, teleirc's files will be located at `/var/lib/teleirc` and teleirc
+can be managed via systemd.
+
 ### Telegram
 
 For the Telegram side, you will need to create a new Telegram bot that will sit inside your Telegram group. You will need to do a little configuration and information gathering with the bot.
