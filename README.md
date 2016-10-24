@@ -54,6 +54,40 @@ Now that you have a bot created, have its Telegram API token, and have it in you
 
 ### Teleirc
 
+#### Run using Docker
+
+To get teleirc working, you will need a server to run it on and a recent version of Docker installed.
+
+```bash
+docker run -d --name teleirc --restart always \
+	-e TELEIRC_TOKEN="000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA" \
+	-e IRC_CHANNEL="#channel" \
+	-e IRC_BOT_NAME="teleirc" \
+	-e IRC_BLACKLIST="CowSayBot,AnotherNickToIgnore" \
+	-e TELEGRAM_CHAT_ID="-0000000000000" \
+	burke/teleirc
+```
+
+##### Configuration Settings
+
+* `TELEIRC_TOKEN`: Private API key for Telegram bot
+* `IRC_BLACKLIST`: Comma-separated list of IRC nicks to ignore (default: "")
+* `IRC_BOT_NAME`: Nickname for your bot to use on IRC
+* `IRC_CHANNEL`: IRC channel you want your bot to join
+* `IRC_PREFIX`: Text displayed before Telegram name in IRC (default: <)
+* `IRC_SERVER`: IRC server you wish to connect to (default: irc.freenode.net)
+* `IRC_SUFFIX`: Text displayed after Telegram name in IRC (default: >)
+* `MAX_MESSAGES_PER_MINUTE`: Maximum rate at which to relay messages (default: 20) 
+* `SHOW_ACTION_MESSAGE`: Relay action messages (default: true)
+* `SHOW_JOIN_MESSAGE`: Relay join messages (default: false)
+* `SHOW_KICK_MESSAGE`: Relay kick messages (default: false)
+* `SHOW_LEAVE_MESSAGE`: Relay leave messages (default: false)
+* `TELEGRAM_CHAT_ID`: Telegram chat ID of the group you are bridging ([how do I get this?](http://stackoverflow.com/a/32572159))
+
+Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
+
+#### Run natively
+
 To get teleirc working, you will need a server to run it on, git, and the latest version of NodeJS installed.
 
 1. Clone this repository to the server you wish to run teleirc on. `git clone git@github.com:RITlug/teleirc.git`
@@ -69,13 +103,14 @@ To get teleirc working, you will need a server to run it on, git, and the latest
 
 Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
 
-#### Example: config.js
+##### Example: config.js
 
 ```javascript
-{
+var settings = {
     token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
     ircBlacklist: [
-        "CowSayBot"
+        "CowSayBot",
+        "AnotherNickToIgnore"
     ],
     irc: {
         server: "irc.freenode.net",
@@ -92,30 +127,14 @@ Alternatively, if you start up the bot with no Telegram chat ID set, it will sit
         showKickMessage: false,
         maxMessagesPerMinute: 20
     }
-}
+};
+
+module.exports = settings;
 ```
 
 ### IRC
 
 There is not real configuration needed on the IRC side, as IRC is generally very open. It might be a good idea to [register the channel](https://infrastructure.fedoraproject.org/infra/docs/freenode-irc-channel.rst) you are using.
-
-
-# Running Teleirc
-
-Before running teleirc, you will need to decide how you want to run it persistently. An easy way to keep this service running in the background on your server is through `pm2`. pm2 is an npm package that can keep node services running in the background, restart them if they crash, and restart them if the server reboots.
-
-Alternatively, you can handle this yourself by using something like `screen` or `tmux`, and a quick shell script and starting the program manually with `node teleirc.js`.
-
-## tmux
-
-1. Install tmux to your server.
- * _RHEL / CentOS_: `sudo yum install tmux` ([No package found? Get EPEL](https://fedoraproject.org/wiki/EPEL))
- * _Fedora_: `sudo dnf install tmux`
- * _Debian / Ubuntu_: `sudo apt-get install tmux`
-2. Create a new tmux session. `tmux new-session -s teleirc`
-3. Navigate to the directory where you have teleirc and start it with node. `node teleirc.js`
-4. Exit tmux by typing `CTRL+B`, then the `d` key.
-
 
 # Hey, I use this project too!
 
