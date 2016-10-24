@@ -1,5 +1,6 @@
 const tg = require("node-telegram-bot-api");
 const irc = require("irc");
+const MessageRateLimiter = require("./src/MessageRateLimiter.js");
 
 const config = require("./config.js");
 
@@ -93,83 +94,6 @@ let ircbot = new irc.Client(config.irc.server, config.irc.botName, {
 console.log("Starting up bot on Telegram...");
 let tgbot = new tg(config.token, { polling: true });
 
-class MessageBundle {
-
-    constructor() {
-        this.queue = [];
-    }
-
-    addMessage(message) {
-        this.queue.push(message);
-    }
-
-    implodeAndClear() {
-        let m = this.queue.join("\n");
-        this.queue = [];
-        return m;
-    }
-}
-
-class MessageRateLimiter {
-
-    /**
-     * rate: how many messages we can send...
-     * per: ...per this many seconds
-     * sendAction: function to send a message
-     *
-     * Providing a rate of "0" disables rate limiting.
-     */
-    constructor(rate, per, sendAction) {
-        this.rate = rate;
-        this.per = per;
-        this.allowance = rate;
-        this.last_check = Date.now()/1000;
-        this.bundle = new MessageBundle();
-        this.sendAction = sendAction;
-
-        // We need to run periodically to make sure messages don't get stuck
-        // in the queue.
-        if (this.rate > 0) {
-            setInterval(this.run.bind(this), 2000);
-        }
-    }
-
-    queueMessage(message) {
-        this.bundle.addMessage(message);
-        // We call run here just in case we can immediately send
-        // the message, instead of waiting for the setInterval to call
-        // run for us.
-        this.run();
-    }
-
-    run() {
-        this.bumpAllowance();
-
-        if (this.rate > 0 && this.allowance < 1) {
-            console.log("A message has been received and rate limited");
-            // Currently rate-limiting, so don't do anything.
-        } else {
-            if (this.bundle.queue.length > 0) {
-                this.sendAction(this.bundle.implodeAndClear());
-                this.allowance--;
-            }
-        }
-    }
-
-    bumpAllowance() {
-        let current = Date.now()/1000;
-        let timePassed = current - this.last_check;
-        this.last_check = current;
-        this.allowance = this.allowance + (timePassed * this.rate/this.per);
-
-        // Make sure we don't get to an allowance that's higher than the
-        // rate we're actually allowed to send.
-        if (this.allowance > this.rate) {
-            this.allowance = this.rate;
-        }
-    }
-}
-
 let tgRateLimiter = new MessageRateLimiter(
         config.tg.maxMessagesPerMinute,
         60,
@@ -200,7 +124,10 @@ function getTelegramToIrcJoinLeaveMsg(firstName, userName, suffix) {
     }
 }
 
-tgbot.on('message', function (msg) {
+/**
+ * Handles a message from telegram.
+ */
+function handleTelegramMsg(msg) {
     // Only relay messages that come in through the Telegram chat
     if (msg.chat.id == config.tg.chatId) {
         let from = msg.from.username;
@@ -252,7 +179,8 @@ tgbot.on('message', function (msg) {
         // and verify the JSON formats of various messages
         console.log("[TG Debug] " + JSON.stringify(msg));
     }
-});
+}
+tgbot.on('message', handleTelegramMsg);
 
 // Action to invoke on incoming messages from the IRC side
 ircbot.addListener('message', (from, channel, message) => {
