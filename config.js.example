@@ -7,11 +7,11 @@ var settings = {
         server: "irc.freenode.net",
         channel: "#channel",
         botName: "teleirc",
-        sendStickerEmoji: false,
+        sendStickerEmoji: true,
         prefix: "<",
         suffix: ">",
-        showJoinMessage: false,
-        showLeaveMessage: false
+        showJoinMessage: true,
+        showLeaveMessage: true
     },
     tg: {
         chatId: "-0000000000000",
