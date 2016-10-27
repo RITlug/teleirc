@@ -7,7 +7,9 @@ const config = require("./config.js");
 console.log("Reading config.json file to get bot API token...");
 
 let teleIrc = new TeleIrc(config);
+console.log("Reading in IRC Configuration...");
 teleIrc.initStage1_ircConfigValidation();
+console.log("Reading in Telegram Configuration...");
 teleIrc.initStage2_telegramConfigValidation();
 
 // Create the IRC bot side with the settings specified in config object above
@@ -23,5 +25,11 @@ console.log("Starting up bot on Telegram...");
 let tgbot = new tg(config.token, { polling: true });
 
 teleIrc.initStage3_initBots(ircbot, tgbot);
+
+console.log("Adding IRC Listeners...");
 teleIrc.initStage4_addIrcListeners();
+
+console.log("Enabling Telegram message sending...");
 teleIrc.initStage5_initTelegramMessageSending();
+
+console.log("Setup complete! Teleirc now running.");
