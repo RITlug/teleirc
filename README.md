@@ -54,6 +54,40 @@ Now that you have a bot created, have its Telegram API token, and have it in you
 
 ### Teleirc
 
+#### Run using Docker
+
+To get teleirc working, you will need a server to run it on and a recent version of Docker installed.
+
+```bash
+docker run -d --name teleirc --restart always \
+	-e TELEIRC_TOKEN="000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA" \
+	-e IRC_CHANNEL="#channel" \
+	-e IRC_BOT_NAME="teleirc" \
+	-e IRC_BLACKLIST="CowSayBot,AnotherNickToIgnore" \
+	-e TELEGRAM_CHAT_ID="-0000000000000" \
+	RITlug/teleirc
+```
+
+##### Configuration Settings
+
+* `TELEIRC_TOKEN`: Private API key for Telegram bot
+* `IRC_BLACKLIST`: Comma-separated list of IRC nicks to ignore (default: "")
+* `IRC_BOT_NAME`: Nickname for your bot to use on IRC
+* `IRC_CHANNEL`: IRC channel you want your bot to join
+* `IRC_PREFIX`: Text displayed before Telegram name in IRC (default: <)
+* `IRC_SERVER`: IRC server you wish to connect to (default: irc.freenode.net)
+* `IRC_SUFFIX`: Text displayed after Telegram name in IRC (default: >)
+* `MAX_MESSAGES_PER_MINUTE`: Maximum rate at which to relay messages (default: 20) 
+* `SHOW_ACTION_MESSAGE`: Relay action messages (default: true)
+* `SHOW_JOIN_MESSAGE`: Relay join messages (default: false)
+* `SHOW_KICK_MESSAGE`: Relay kick messages (default: false)
+* `SHOW_LEAVE_MESSAGE`: Relay leave messages (default: false)
+* `TELEGRAM_CHAT_ID`: Telegram chat ID of the group you are bridging ([how do I get this?](http://stackoverflow.com/a/32572159))
+
+Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
+
+#### Run natively
+
 To get teleirc working, you will need a server to run it on, git, and the latest version of NodeJS installed.
 
 1. Clone this repository to the server you wish to run teleirc on. `git clone git@github.com:RITlug/teleirc.git`
@@ -69,13 +103,14 @@ To get teleirc working, you will need a server to run it on, git, and the latest
 
 Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
 
-#### Example: config.js
+##### Example: config.js
 
 ```javascript
-{
+let settings = {
     token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
     ircBlacklist: [
-        "CowSayBot"
+        "CowSayBot",
+        "AnotherNickToIgnore"
     ],
     irc: {
         server: "irc.freenode.net",
@@ -92,7 +127,9 @@ Alternatively, if you start up the bot with no Telegram chat ID set, it will sit
         showKickMessage: false,
         maxMessagesPerMinute: 20
     }
-}
+};
+
+module.exports = settings;
 ```
 
 ### IRC
