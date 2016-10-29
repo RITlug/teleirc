@@ -1,0 +1,14 @@
+FROM fedora
+
+COPY . /opt/teleirc/
+
+RUN dnf -y update  --setopt=deltarpm=false && \
+	dnf -y install procps-ng git nodejs libicu-devel python @development-tools gcc-c++ --setopt=deltarpm=false && \
+	cd /opt/teleirc && \
+	npm install
+
+COPY config.js.docker /opt/teleirc/config.js
+
+WORKDIR /opt/teleirc
+
+CMD ["node","--use_strict", "teleirc.js"]
