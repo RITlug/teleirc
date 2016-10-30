@@ -78,6 +78,100 @@ exports.ircConfigValidation_MissingIrcConfig= function(assert) {
     assert.done();
 };
 
+// -------- Required Settings Tests --------
+
+function doRequiredSettingsTest(assert, uut, expectedErrorCode) {
+    shouldThrow(
+        assert,
+        uut.initStage1_ircConfigValidation.bind(uut),
+        expectedErrorCode
+    );
+}
+
+/**
+ * Ensures if the IRC config is missing its server config, an
+ * exception gets thrown.
+ */
+exports.ircConfigValidation_missingServerConfig= function(assert) {
+    // Copy our default settings, but ignore the server.
+    var testSettings = {
+        token: sampleSettings.token,
+        irc: {
+            // No Server.
+            channel: sampleSettings.irc.channel,
+            botName: sampleSettings.irc.botName,
+            sendStickerEmoji: sampleSettings.sendStickerEmoji,
+            prefix: sampleSettings.prefix,
+            suffix: sampleSettings.suffix,
+            showJoinMessage: sampleSettings.showJoinMessage,
+            showLeaveMessage: sampleSettings.showLeaveMessage
+        },
+        ircBlacklist: sampleSettings.ircBlacklist,
+        tg: sampleSettings.tg
+    }
+
+    var uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
+
+    assert.done();
+}
+
+/**
+ * Ensures if the IRC config is missing its channel config, an
+ * exception gets thrown.
+ */
+exports.ircConfigValidation_missingChannelConfig= function(assert) {
+    // Copy our default settings, but ignore the server.
+    var testSettings = {
+        token: sampleSettings.token,
+        irc: {
+            server : sampleSettings.irc.server,
+            // No channel
+            botName: sampleSettings.irc.botName,
+            sendStickerEmoji: sampleSettings.sendStickerEmoji,
+            prefix: sampleSettings.prefix,
+            suffix: sampleSettings.suffix,
+            showJoinMessage: sampleSettings.showJoinMessage,
+            showLeaveMessage: sampleSettings.showLeaveMessage
+        },
+        ircBlacklist: sampleSettings.ircBlacklist,
+        tg: sampleSettings.tg
+    }
+
+    var uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
+
+    assert.done();
+}
+
+/**
+ * Ensures if the IRC config is missing its channel config, an
+ * exception gets thrown.
+ */
+exports.ircConfigValidation_missingBotNameConfig= function(assert) {
+    // Copy our default settings, but ignore the server.
+    var testSettings = {
+        token: sampleSettings.token,
+        irc: {
+            server : sampleSettings.irc.server,
+            channel: sampleSettings.irc.channel,
+            // No bot name.
+            sendStickerEmoji: sampleSettings.sendStickerEmoji,
+            prefix: sampleSettings.prefix,
+            suffix: sampleSettings.suffix,
+            showJoinMessage: sampleSettings.showJoinMessage,
+            showLeaveMessage: sampleSettings.showLeaveMessage
+        },
+        ircBlacklist: sampleSettings.ircBlacklist,
+        tg: sampleSettings.tg
+    }
+
+    var uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
+
+    assert.done();
+}
+
 // -------- Default Settings Tests --------
 
 function doDefaultSettingsTest(assert, testSettings) {
