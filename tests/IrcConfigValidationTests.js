@@ -110,7 +110,18 @@ exports.ircConfigValidation_missingServerConfig= function(assert) {
         tg: sampleSettings.tg
     }
 
+    // Missing server should result in exception.
     var uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
+
+    // Set server to undefined, should also cause exception.
+    testSettings.server = undefined;
+    uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
+
+    // Set server to null, should also cause exception.
+    testSettings.server = null;
+    uut = new TeleIrc(testSettings);
     doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
 
     assert.done();
@@ -138,7 +149,18 @@ exports.ircConfigValidation_missingChannelConfig= function(assert) {
         tg: sampleSettings.tg
     }
 
+    // Missing channel should result in exception.
     var uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
+
+    // Set channel to undefined, should also cause exception.
+    testSettings.channel = undefined;
+    uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
+
+    // Set channel to null, should also cause exception.
+    testSettings.channel = null;
+    uut = new TeleIrc(testSettings);
     doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
 
     assert.done();
@@ -166,7 +188,18 @@ exports.ircConfigValidation_missingBotNameConfig= function(assert) {
         tg: sampleSettings.tg
     }
 
+    // Missing Bot Name should result in exception.
     var uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
+
+    // Set bot name to undefined, should also cause exception.
+    testSettings.botName = undefined;
+    uut = new TeleIrc(testSettings);
+    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
+
+    // Set bot name to null, should also cause exception.
+    testSettings.botName = null;
+    uut = new TeleIrc(testSettings);
     doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
 
     assert.done();
