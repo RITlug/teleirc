@@ -1,27 +1,25 @@
-var settings = {
-    token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
-    ircBlacklist: [
-        "CowSayBot"
-    ],
+let settings = {
+    token: process.env.TELEIRC_TOKEN || "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
+    ircBlacklist: process.env.IRC_BLACKLIST ?
+        process.env.IRC_BLACKLIST.split(",") : [],
     irc: {
-        server: "irc.freenode.net",
-        channel: "#channel",
-        botName: "teleirc",
-        sendStickerEmoji: true,
-        prefix: "<",
-        suffix: ">",
-        showJoinMessage: true,
-        showLeaveMessage: true
+        server: process.env.IRC_SERVER || "irc.freenode.net",
+        channel: process.env.IRC_CHANNEL || "",
+        botName: process.env.IRC_BOT_NAME || "teleirc",
+        sendStickerEmoji: process.env.IRC_SEND_STICKER_EMOJI || true,
+        prefix: process.env.IRC_PREFIX || "<",
+        suffix: process.env.IRC_SUFFIX || ">",
+        showJoinMessage: process.env.IRC_SHOW_JOIN_MESSAGE || true,
+        showLeaveMessage: process.env.IRC_SHOW_LEAVE_MESSAGE || true,
     },
     tg: {
-        chatId: "-0000000000000",
-        showJoinMessage: false,
-        showActionMessage: true,
-        showLeaveMessage: false,
-        showKickMessage: false,
-        maxMessagesPerMinute: 20
+        chatId: process.env.TELEGRAM_CHAT_ID,
+        showJoinMessage: process.env.SHOW_JOIN_MESSAGE || false,
+        showActionMessage: process.env.SHOW_ACTION_MESSAGE || true,
+        showLeaveMessage: process.env.SHOW_LEAVE_MESSAGE || false,
+        showKickMessage: process.env.SHOW_KICK_MESSAGE || false,
+        maxMessagesPerMinute: process.env.MAX_MESSAGES_PER_MINUTE || 20,
     }
 }
-
 
 module.exports = settings;
