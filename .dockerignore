@@ -1,0 +1,6 @@
+.git*
+teleirc.service
+README.md
+LICENSE
+Dockerfile*
+docker-compose*

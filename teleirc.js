@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const tg = require("node-telegram-bot-api");
 const irc = require("irc");
 const TeleIrc = require("./lib/libteleirc.js");
