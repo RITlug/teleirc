@@ -1,0 +1,12 @@
+[Unit]
+Description=Teleirc Telegram to IRC bridge bot
+After=network.target
+
+[Service]
+User=teleirc
+WorkingDirectory=/var/lib/teleirc
+ExecStart=/usr/bin/node teleirc.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
