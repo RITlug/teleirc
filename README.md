@@ -37,6 +37,7 @@ On an ArchLinux based distro, teleirc can be installed [from the AUR](https://au
 follow the configuration steps from below. If you install from the AUR, teleirc's files will be located at `/var/lib/teleirc` and teleirc
 can be managed via systemd.
 
+
 ### Telegram
 
 For the Telegram side, you will need to create a new Telegram bot that will sit inside your Telegram group. You will need to do a little configuration and information gathering with the bot.
@@ -54,13 +55,87 @@ Now that you have a bot created, have its Telegram API token, and have it in you
 
 ### Teleirc
 
+#### Run using Docker
+
+To get teleirc working, you will need a server to run it on and a recent version of Docker installed.
+
+##### Which image do I choose?
+
+Fedora, Ubuntu and Alpine Linux images are provided.
+
+Their sizes may be deal breakers (ordered ascending by size):
+
+| **Image**                                                                            | **Size** |
+|--------------------------------------------------------------------------------------|----------|
+| Alpine Linux(uses [mhart/alpine-node:6](https://hub.docker.com/r/mhart/alpine-node)) | 345 MB   |
+| Ubuntu                                                                               | 598.4 MB |
+| Fedora                                                                               | 1.13 GB  |
+
+The below example uses alpine, replace `alpine` with `fedora` or `ubuntu` if you so choose.
+
+You will see errors during `npm install`, ignore them. They are not fatal.
+
+```bash
+docker build . -f Dockerfile.alpine -t teleirc
+docker run -d --name teleirc --restart always \
+	-e TELEIRC_TOKEN="000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA" \
+	-e IRC_CHANNEL="#channel" \
+	-e IRC_BOT_NAME="teleirc" \
+	-e IRC_BLACKLIST="CowSayBot,AnotherNickToIgnore" \
+	-e TELEGRAM_CHAT_ID="-0000000000000" \
+	teleirc
+```
+
+Optionally you may use [docker-compose](https://docs.docker.com/compose):
+
+``` yaml
+version: '2'
+services:
+  teleirc:
+    build:
+      context: .
+      dockerfile: Dockerfile.alpine
+    env_file: .env
+```
+
+We provide an example compose file (`docker-compose.yml.example`). You can optionally, tell Docker Compose to use the Fedora or Ubuntu base by changing dockerfile to use `Dockerfile.ubuntu` for Ubuntu, or `Dockerfile.fedora` for Fedora, but Fedora is a rather large image topping out at over 1GB. We recommend you not use it, but it is provided if you choose to use it.
+
+We ignore the `docker-compose.yml` file in gitignore.
+
+Either of the following will work fine:
+
+- copy `docker-compose.yml.example` to `docker-compose.yml` and do `docker-compose up -d teleirc`
+- do `docker-compose -f docker-compose.yml.example up -d teleirc`
+
+##### Configuration Settings
+
+* `TELEIRC_TOKEN`: Private API key for Telegram bot
+* `IRC_BLACKLIST`: Comma-separated list of IRC nicks to ignore (default: "")
+* `IRC_BOT_NAME`: Nickname for your bot to use on IRC (default: teleirc)
+* `IRC_CHANNEL`: IRC channel you want your bot to join (default: #channel)
+* `IRC_SEND_STICKER_EMOJI`: Send the emoji associated with a sticker on IRC (default: true)
+* `IRC_PREFIX`: Text displayed before Telegram name in IRC (default: <)
+* `IRC_SERVER`: IRC server you wish to connect to (default: irc.freenode.net)
+* `IRC_SUFFIX`: Text displayed after Telegram name in IRC (default: >)
+* `MAX_MESSAGES_PER_MINUTE`: Maximum rate at which to relay messages (default: 20)
+* `SHOW_ACTION_MESSAGE`: Relay action messages (default: true)
+* `SHOW_JOIN_MESSAGE`: Relay join messages (default: false)
+* `SHOW_KICK_MESSAGE`: Relay kick messages (default: false)
+* `SHOW_LEAVE_MESSAGE`: Relay leave messages (default: false)
+* `TELEGRAM_CHAT_ID`: Telegram chat ID of the group you are bridging ([how do I get this?](http://stackoverflow.com/a/32572159))
+
+Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
+
+#### Run natively
+
 To get teleirc working, you will need a server to run it on, git, and the latest version of NodeJS installed.
 
 1. Clone this repository to the server you wish to run teleirc on. `git clone git@github.com:RITlug/teleirc.git`
 2. Install dependencies for teleirc with _npm_. This pulls down required NPM packages for Telegram and IRC connections. `npm install`
-3. Rename `config.js.example` to `config.js`. Change the token configuration value to the bot token you received from the BotFather. An example of what that file looks like is farther below.
+3. Rename `config.js.example` to `config.js`.
 4. **This API key should be kept private!** This config file is listed in the .gitignore file so it is not accidentially added to source control.
-5. Edit `config.js` and update `server`, `botName`, `channel`, and `chatId` for your uses.
+5. We use [dotenv](https://www.npmjs.com/package/dotenv) to allow for easy management of api keys and settings. Copy `.env.example` to `.env` -- this is in the gitignore file so it is not accidentally added to git. This file will automatically be loaded by teleirc into environmental variables.
+6. Edit `.env` and update `server`, `botName`, `channel`, and `chatId` for your uses. Change the token configuration value to the bot token you received from the BotFather and put it in the value for `TELEIRC_TOKEN`. Other optional values include:
  * _server_: IRC server you wish to connect to (default: irc.freenode.net)
  * _botName_: Nickname for your bot to use on IRC
  * _channel_: IRC channel you want your bot to join
@@ -69,30 +144,32 @@ To get teleirc working, you will need a server to run it on, git, and the latest
 
 Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
 
-#### Example: config.js
-
-```javascript
-{
-    token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
-    ircBlacklist: [
-        "CowSayBot"
-    ],
+``` javascript
+let settings = {
+    token: process.env.TELEIRC_TOKEN || "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
+    ircBlacklist: process.env.IRC_BLACKLIST ?
+        process.env.IRC_BLACKLIST.split(",") : [],
     irc: {
-        server: "irc.freenode.net",
-        channel: "#channel",
-        botName: "teleirc",
-        prefix: "<",
-        suffix: ">"
+        server: process.env.IRC_SERVER || "irc.freenode.net",
+        channel: process.env.IRC_CHANNEL || "",
+        botName: process.env.IRC_BOT_NAME || "teleirc",
+        sendStickerEmoji: process.env.IRC_SEND_STICKER_EMOJI || true,
+        prefix: process.env.IRC_PREFIX || "<",
+        suffix: process.env.IRC_SUFFIX || ">",
+        showJoinMessage: process.env.IRC_SHOW_JOIN_MESSAGE || true,
+        showLeaveMessage: process.env.IRC_SHOW_LEAVE_MESSAGE || true,
     },
     tg: {
-        chatId: "-0000000000000",
-        showJoinMessage: false,
-        showActionMessage: true,
-        showLeaveMessage: false,
-        showKickMessage: false,
-        maxMessagesPerMinute: 20
+        chatId: process.env.TELEGRAM_CHAT_ID,
+        showJoinMessage: process.env.SHOW_JOIN_MESSAGE || false,
+        showActionMessage: process.env.SHOW_ACTION_MESSAGE || true,
+        showLeaveMessage: process.env.SHOW_LEAVE_MESSAGE || false,
+        showKickMessage: process.env.SHOW_KICK_MESSAGE || false,
+        maxMessagesPerMinute: process.env.MAX_MESSAGES_PER_MINUTE || 20,
     }
 }
+
+module.exports = settings;
 ```
 
 ### IRC
@@ -102,7 +179,10 @@ There is not real configuration needed on the IRC side, as IRC is generally very
 
 # Running Teleirc
 
-Before running teleirc, you will need to decide how you want to run it persistently. An easy way to keep this service running in the background on your server is through `pm2`. pm2 is an npm package that can keep node services running in the background, restart them if they crash, and restart them if the server reboots.
+Before running teleirc, you will need to decide how you want to run it persistently. Several options are available:
+
+* pm2: An easy way to keep this service running in the background on your server is through `pm2`. pm2 is an npm package that can keep node services running in the background, restart them if they crash, and restart them if the server reboots.
+* systemd: A systemd service file is provided (`teleirc.service`) which can be installed into `/usr/lib/systemd/system` and managed through standard systemd commands. The systemd service assumes you've created a dedicated user called `teleirc` with the home directory `/var/lib/teleirc` which contains teleirc.js, config.js, and node_modules.
 
 Alternatively, you can handle this yourself by using something like `screen` or `tmux`, and a quick shell script and starting the program manually with `node teleirc.js`.
 
