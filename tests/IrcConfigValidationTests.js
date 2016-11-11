@@ -1,7 +1,7 @@
 const TeleIrc = require("../lib/libteleirc.js");
 const TeleIrcConfigException = require("../lib/libteleirc.js");
 
-var sampleSettings = {
+let sampleSettings = {
     token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
     ircBlacklist: [
         "CowSayBot"
@@ -40,15 +40,15 @@ function shouldThrow(assert, block, errorCode) {
 /**
  * Ensures if the IRC config is missing completely from our settings, an exception gets thrown.
  */
-exports.ircConfigValidation_MissingIrcConfig= function(assert) {
+exports.ircConfigValidation_MissingIrcConfig = function(assert) {
     // Copy our default settings, but ignore the IRC portion.
-    var testSettings = {
+    let testSettings = {
         token: sampleSettings.token,
         ircBlacklist: sampleSettings.ircBlacklist,
         tg: sampleSettings.tg
     }
 
-    var uut = new TeleIrc(testSettings);
+    let uut = new TeleIrc(testSettings);
 
     // Ensure a missing IRC config results in an exception.
     shouldThrow(
@@ -92,9 +92,9 @@ function doRequiredSettingsTest(assert, uut, expectedErrorCode) {
  * Ensures if the IRC config is missing its server config, an
  * exception gets thrown.
  */
-exports.ircConfigValidation_missingServerConfig= function(assert) {
+exports.ircConfigValidation_missingServerConfig = function(assert) {
     // Copy our default settings, but ignore the server.
-    var testSettings = {
+    let testSettings = {
         token: sampleSettings.token,
         irc: {
             // No Server.
@@ -111,7 +111,7 @@ exports.ircConfigValidation_missingServerConfig= function(assert) {
     }
 
     // Missing server should result in exception.
-    var uut = new TeleIrc(testSettings);
+    let uut = new TeleIrc(testSettings);
     doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
 
     // Set server to undefined, should also cause exception.
@@ -131,9 +131,9 @@ exports.ircConfigValidation_missingServerConfig= function(assert) {
  * Ensures if the IRC config is missing its channel config, an
  * exception gets thrown.
  */
-exports.ircConfigValidation_missingChannelConfig= function(assert) {
+exports.ircConfigValidation_missingChannelConfig = function(assert) {
     // Copy our default settings, but ignore the server.
-    var testSettings = {
+    let testSettings = {
         token: sampleSettings.token,
         irc: {
             server : sampleSettings.irc.server,
@@ -150,7 +150,7 @@ exports.ircConfigValidation_missingChannelConfig= function(assert) {
     }
 
     // Missing channel should result in exception.
-    var uut = new TeleIrc(testSettings);
+    let uut = new TeleIrc(testSettings);
     doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
 
     // Set channel to undefined, should also cause exception.
@@ -170,9 +170,9 @@ exports.ircConfigValidation_missingChannelConfig= function(assert) {
  * Ensures if the IRC config is missing its channel config, an
  * exception gets thrown.
  */
-exports.ircConfigValidation_missingBotNameConfig= function(assert) {
+exports.ircConfigValidation_missingBotNameConfig = function(assert) {
     // Copy our default settings, but ignore the server.
-    var testSettings = {
+    let testSettings = {
         token: sampleSettings.token,
         irc: {
             server : sampleSettings.irc.server,
@@ -189,7 +189,7 @@ exports.ircConfigValidation_missingBotNameConfig= function(assert) {
     }
 
     // Missing Bot Name should result in exception.
-    var uut = new TeleIrc(testSettings);
+    let uut = new TeleIrc(testSettings);
     doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
 
     // Set bot name to undefined, should also cause exception.
@@ -208,7 +208,7 @@ exports.ircConfigValidation_missingBotNameConfig= function(assert) {
 // -------- Default Settings Tests --------
 
 function doDefaultSettingsTest(assert, testSettings) {
-    var uut = new TeleIrc(testSettings);
+    let uut = new TeleIrc(testSettings);
 
     uut.initStage1_ircConfigValidation();
 
@@ -233,9 +233,9 @@ function doDefaultSettingsTest(assert, testSettings) {
  * Ensures if the IRC config is missing optional values, it gets
  * added in as a default.
  */
-exports.ircConfigValidation_defaultSettingsTest_notDefined= function(assert) {
+exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
     // Copy our default settings, but ignore the IRC showEmoji.
-    var testSettings = {
+    let testSettings = {
         token: sampleSettings.token,
         irc: {
             // These three options are required, everything else is optional.
@@ -262,9 +262,9 @@ exports.ircConfigValidation_defaultSettingsTest_notDefined= function(assert) {
  * Ensures if the IRC config is missing optional values, it gets
  * added in as a default.
  */
-exports.ircConfigValidation_defaultSettingsTest_setToNull= function(assert) {
+exports.ircConfigValidation_defaultSettingsTest_setToNull = function(assert) {
     // Copy our default settings, but ignore the IRC showEmoji.
-    var testSettings = {
+    let testSettings = {
         token: sampleSettings.token,
         irc: {
             // These three options are required, everything else is optional.
@@ -291,9 +291,9 @@ exports.ircConfigValidation_defaultSettingsTest_setToNull= function(assert) {
  * Ensures if the IRC config's optional values are set to undefined, it gets
  * set to its default.
  */
-exports.ircConfigValidation_defaultSettingsTest_missingSettings= function(assert) {
+exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(assert) {
     // Copy our default settings, but ignore the IRC showEmoji.
-    var testSettings = {
+    let testSettings = {
         token: sampleSettings.token,
         irc: {
             // These three options are required, everything else is optional.
