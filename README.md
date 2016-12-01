@@ -26,7 +26,7 @@ Ask any of our successful users!
 * [FOSS@MAGIC at RIT](http://foss.rit.edu) ([Telegram](https://telegram.me/fossrit) | [IRC](https://webchat.freenode.net/?channels=rit-foss))
 * [Fedora LATAM](http://fedoracommunity.org/latam) ([Telegram](https://telegram.me/fedoralatam) | [IRC](https://webchat.freenode.net/?channels=fedora-latam))
 * [MINECON Agents](https://mojang.com/2016/06/calling-all-agents-help-us-run-minecon-2016/) (_Telegram invite-only_ | [IRC](https://webchat.esper.net/?channels=MineconAgents))
-* [Sugar Labs](https://sugarlabs.org/) ([Telegram](https://telegram.me/joinchat/ChlKrUFguA_rOmoq-zOsFw) | [IRC](https://webchat.freenode.net/?channels=sugar))
+* [Sugar Labs](https://sugarlabs.org/) ([Telegram](https://telegram.me/sugarirc) | [IRC](https://webchat.freenode.net/?channels=sugar))
 * [Partido Pirata de Argentina](https://github.com/piratas-ar) (_Telegram invite-only_ | [IRC](https://webchat.pirateirc.net/?channels=PPar))
 
 
