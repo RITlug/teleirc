@@ -20,6 +20,6 @@
   "dependencies": {
     "dotenv": "^2.0.0",
     "irc": "~0.5.0",
-    "node-telegram-bot-api": "^0.21.1"
+    "node-telegram-bot-api": "^0.24.0"
   }
 }
