@@ -3,6 +3,7 @@ teleirc
 
 NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge for use with any IRC channel and Telegram group
 
+[![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=master)](https://travis-ci.org/RITlug/teleirc)
 
 ## About
 
