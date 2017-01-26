@@ -8,3 +8,4 @@ services:
       context: .
       dockerfile: Dockerfile.alpine
     env_file: .env
+    user: teleirc
