@@ -1,16 +1,15 @@
-FROM mhart/alpine-node:6
+FROM node:6-alpine
 
-RUN apk add --update bash icu-dev openssl git perl python build-base \
-&& apk add gosu --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
-&& adduser -s /bin/bash -h /opt/teleirc -D -H teleirc
+RUN apk add --no-cache --update bash \
+&& addgroup -g 99999 teleirc
+&& adduser -s /bin/bash -h /opt/teleirc -D -H teleirc -u 99999 -G teleirc
 
+WORKDIR /opt/teleirc
+CMD ["node", "teleirc.js"]
 
 COPY . /opt/teleirc
 COPY config.js.example /opt/teleirc/config.js
-RUN chown -R teleirc:teleirc /opt/teleirc \
-&& cd /opt/teleirc \
-&& npm install
+RUN chown -R teleirc:teleirc /opt/teleirc
 
-WORKDIR /opt/teleirc
-
-CMD ["gosu", "teleirc", "node", "teleirc.js"]
+USER teleirc
+RUN npm install

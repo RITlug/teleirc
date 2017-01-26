@@ -1,3 +1,5 @@
+'use strict';
+
 const TeleIrc = require("../lib/libteleirc.js");
 const TeleIrcConfigException = require("../lib/libteleirc.js");
 

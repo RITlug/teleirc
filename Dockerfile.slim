@@ -1,0 +1,12 @@
+FROM node:6-slim
+
+RUN groupadd teleirc -g 99999 ; useradd -u 99999 -g teleirc -s /bin/bash -M -d /opt/teleirc teleirc
+WORKDIR /opt/teleirc
+CMD ["node", "teleirc.js"]
+
+COPY . /opt/teleirc/
+COPY config.js.example /opt/teleirc/config.js
+RUN  chown -R teleirc:teleirc /opt/teleirc
+
+USER teleirc
+RUN npm install

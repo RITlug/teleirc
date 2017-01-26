@@ -4,7 +4,7 @@
   "description": "A simple Telegram <=> IRC bot",
   "main": "teleirc.js",
   "scripts": {
-    "test": "node teleirc.js"
+    "test": "nodeunit ./tests"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^2.0.0",
+    "iconv": "^2.2.1",
     "irc": "~0.5.0",
     "node-telegram-bot-api": "^0.24.0"
   }

@@ -63,23 +63,23 @@ To get teleirc working, you will need a server to run it on and a recent version
 
 ##### Which image do I choose?
 
-Fedora, Ubuntu and Alpine Linux images are provided.
+Official Node 6 Slim, Official Node 6 Alpine Linux, and Fedora and images are provided.
 
 Their sizes may be deal breakers (ordered ascending by size):
 
-| **Image**                                                                            | **Size** |
-|--------------------------------------------------------------------------------------|----------|
-| Alpine Linux(uses [mhart/alpine-node:6](https://hub.docker.com/r/mhart/alpine-node)) | 345 MB   |
-| Ubuntu                                                                               | 598.4 MB |
-| Fedora                                                                               | 1.13 GB  |
+| **Image**                                                                                                    | **Size** |
+|--------------------------------------------------------------------------------------------------------------|----------|
+| [Official Node 6 Alpine Linux](https://hub.docker.com/r/_/node/)(`node:6-alpine`) -- See `Dockerfile.alpine` | 66.9 MB  |
+| [Offical Node 6 Slim](https://hub.docker.com/r/_/node/) (`node:6-slim`) -- See `Dockerfile.slim`             | 256 MB   |
+| [Official Fedora Latest](https://hub.docker.com/r/_/fedora/) -- See `Dockerfile.fedora`                      | 569 MB   |
 
-The below example uses alpine, replace `alpine` with `fedora` or `ubuntu` if you so choose.
+The below example uses alpine, replace `alpine` with `fedora`, or `slim` for the `node:6-slim` base, if you so choose.
 
 You will see errors during `npm install`, ignore them. They are not fatal.
 
 ```bash
 docker build . -f Dockerfile.alpine -t teleirc
-docker run -d --name teleirc --restart always \
+docker run -d -u teleirc --name teleirc --restart always \
 	-e TELEIRC_TOKEN="000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA" \
 	-e IRC_CHANNEL="#channel" \
 	-e IRC_BOT_NAME="teleirc" \
@@ -94,13 +94,16 @@ Optionally you may use [docker-compose](https://docs.docker.com/compose):
 version: '2'
 services:
   teleirc:
+    user: teleirc
     build:
       context: .
       dockerfile: Dockerfile.alpine
     env_file: .env
 ```
 
-We provide an example compose file (`docker-compose.yml.example`). You can optionally, tell Docker Compose to use the Fedora or Ubuntu base by changing dockerfile to use `Dockerfile.ubuntu` for Ubuntu, or `Dockerfile.fedora` for Fedora, but Fedora is a rather large image topping out at over 1GB. We recommend you not use it, but it is provided if you choose to use it.
+We provide an example compose file (`docker-compose.yml.example`).
+
+You can optionally, tell Docker Compose to use the Fedora or the official `node:6-slim` image as well by simply replacing the `Dockerfile.alpine` with `Dockerfile.fedora` or `Dockerfile.slim`. It is worth noting that the Fedora image is rather large at over **560 MB** and thus we recommend you use either `Dockerfile.alpine` or `Dockerfile.slim`.
 
 We ignore the `docker-compose.yml` file in gitignore.
 

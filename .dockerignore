@@ -4,3 +4,5 @@ README.md
 LICENSE
 Dockerfile*
 docker-compose*
+node_modules*
+tests/*
