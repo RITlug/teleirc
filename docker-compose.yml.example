@@ -1,4 +1,4 @@
--*- mode: yaml-*-
+# -*- mode: yaml-*-
 # vim: ft=yaml
 
 version: '2'
@@ -8,3 +8,4 @@ services:
       context: .
       dockerfile: Dockerfile.alpine
     env_file: .env
+    user: teleirc
