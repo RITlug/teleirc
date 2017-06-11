@@ -13,7 +13,7 @@ let settings = {
         showLeaveMessage: process.env.IRC_SHOW_LEAVE_MESSAGE || true,
     },
     tg: {
-        chatId: process.env.TELEGRAM_CHAT_ID,
+        chatId: process.env.TELEGRAM_CHAT_ID || "-000000000",
         showJoinMessage: process.env.SHOW_JOIN_MESSAGE || false,
         showActionMessage: process.env.SHOW_ACTION_MESSAGE || true,
         showLeaveMessage: process.env.SHOW_LEAVE_MESSAGE || false,
