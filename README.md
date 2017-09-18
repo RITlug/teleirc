@@ -20,15 +20,24 @@ A public Telegram supergroup and IRC channel are available for you to see it liv
 
 Ask any of our successful users!
 
-* [RITlug teleirc](https://github.com/RITlug/teleirc) ([Telegram](https://telegram.me/teleirc) | [IRC](https://webchat.freenode.net/?channels=ritlug-teleirc))
-* [RITlug](http://ritlug.com) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=ritlug))
 * [Fedora Project](https://fedoraproject.org/wiki/Overview) ([Telegram](https://telegram.me/fedora) | [IRC](https://webchat.freenode.net/?channels=fedora-telegram))
-* [LibreOffice Community](https://www.libreoffice.org/) ([Telegram](https://telegram.me/libreofficecommunity) | [IRC](https://webchat.freenode.net/?channels=libreoffice-telegram))
+    * [Fedora Albania](https://www.facebook.com/fedorasq/) ([Telegram](https://t.me/FedoraAlbania) | [IRC](https://webchat.freenode.net/?channels=fedora-sq))
+    * [Fedora LATAM](http://fedoracommunity.org/latam) ([Telegram](https://telegram.me/fedoralatam) | [IRC](https://webchat.freenode.net/?channels=fedora-latam))
+    * [Flock to Fedora](https://flocktofedora.org) ([Telegram](https://t.me/flocktofedora) | [IRC](https://webchat.freenode.net/?channels=fedora-flock))
 * [FOSS@MAGIC at RIT](http://foss.rit.edu) ([Telegram](https://telegram.me/fossrit) | [IRC](https://webchat.freenode.net/?channels=rit-foss))
-* [Fedora LATAM](http://fedoracommunity.org/latam) ([Telegram](https://telegram.me/fedoralatam) | [IRC](https://webchat.freenode.net/?channels=fedora-latam))
+* [LibreOffice Community](https://www.libreoffice.org/) ([Telegram](https://telegram.me/libreofficecommunity) | [IRC](https://webchat.freenode.net/?channels=libreoffice-telegram))
+    * [LibreLadies](https://www.mail-archive.com/libreladies@documentfoundation.org/info.html) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=libreladies))
+    * [LibreOffice AppImage](https://appimage.org/) (_No Telegram @groupname_ | [IRC](https://webchat.freenode.net/?channels=libreoffice-appimage))
+    * [LibreOffice Design Team](https://www.libreoffice.org/community/qa/) (_No Telegram @groupname_ | [IRC](https://webchat.freenode.net/?channels=libreoffice-design))
+    * [LibreOffice QA Team]() (_No Telegram @groupname_ | [IRC](https://webchat.freenode.net/?channels=libreoffice-qa))
 * [MINECON Agents](https://mojang.com/2016/06/calling-all-agents-help-us-run-minecon-2016/) (_Telegram invite-only_ | [IRC](https://webchat.esper.net/?channels=MineconAgents))
-* [Sugar Labs](https://sugarlabs.org/) ([Telegram](https://telegram.me/sugarirc) | [IRC](https://webchat.freenode.net/?channels=sugar))
+* [MetaBrainz]() ([Telegram](https://t.me/metabrainz) | [IRC](https://webchat.freenode.net/?channels=metabrainz-telegram))
+    * [MusicBrainz]() ([Telegram](https://t.me/musicbrainz) | [IRC](https://webchat.freenode.net/?channels=musicbrainz-telegram))
+* [Open Labs Hackerspace](https://openlabs.cc) ([Telegram](https://t.me/openlabs) | [IRC](https://webchat.freenode.net/?channels=openlabs-albania))
 * [Partido Pirata de Argentina](https://github.com/piratas-ar) (_Telegram invite-only_ | [IRC](https://webchat.pirateirc.net/?channels=PPar))
+* [RITlug](http://ritlug.com) (_Telegram invite-only_ | [IRC](https://webchat.freenode.net/?channels=ritlug))
+    * [RITlug teleirc](https://github.com/RITlug/teleirc) ([Telegram](https://telegram.me/teleirc) | [IRC](https://webchat.freenode.net/?channels=ritlug-teleirc))
+* [Sugar Labs](https://sugarlabs.org/) ([Telegram](https://telegram.me/sugarirc) | [IRC](https://webchat.freenode.net/?channels=sugar))
 
 
 ## Installation
