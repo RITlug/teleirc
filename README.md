@@ -1,22 +1,30 @@
-teleirc
+Teleirc [![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=devel)](https://travis-ci.org/RITlug/teleirc)
 =======
 
-NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge for use with any IRC channel and Telegram group
+NodeJS implementation of a [Telegram](https://telegram.org/) <=>
+[IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge for use with
+any IRC channel and Telegram group
 
-[![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=master)](https://travis-ci.org/RITlug/teleirc)
 
 ## About
 
-This project was written by [Mark Repka](https://github.com/repkam09) to help bridge communication between [RITlug](http://ritlug.com)'s IRC channel with our Telegram group. The project is a lightweight NodeJS application. This is also being used in various IRC channels and Telegram groups than just RITlug.
+**Teleirc** helps bridge communication between a Telegram group and IRC
+channels. The project is a lightweight NodeJS application.
 
-### Try it out
+This bot was originally written for [RITlug](http://ritlug.com) and
+our own Telegram group and IRC channel. Today, it is used by various
+communities other than just RITlug.
 
-A public Telegram supergroup and IRC channel are available for you to see it live in action. This is also where our developers and community hang out as well.
+### Live demo
+
+A public Telegram supergroup and IRC channel (on freenode) are available for
+you to test. Our (small) development community is also found in these channels
+too.
 
 * **[Telegram](https://telegram.me/teleirc)**
 * **[IRC](https://webchat.freenode.net/?channels=ritlug-teleirc)** (#ritlug-teleirc @ irc.freenode.net)
 
-### Who's using this app?
+### Who uses Teleirc?
 
 Ask any of our successful users!
 
@@ -42,29 +50,44 @@ Ask any of our successful users!
 
 ## Installation
 
-In order to use this bridge, you will need several pieces of information. This guide is broken up into Telegram, teleirc, and IRC sections.
+There are three parts to configuring Teleirc.
+
+1. Creating a Telegram bot
+2. Configuring Teleirc
+3. Setting up the IRC channel
+
+### Telegram
+
+Create a new Telegram bot to act as the bridge from the Telegram side. You will
+need a token key for the bot and you will also use the bot to discover the
+unique chat ID of the Telegram you are adding it to.
+
+#### Create the bot
+
+1. Send `/start` in a message to the @BotFather¹ user on Telegram
+2. Follow instructions to create a new bot (e.g. name, username, etc.)
+3. Receive token key for new bot (used for accessing Telegram API)
+4. _Optional_: Add descriptions / profile picture for your bot on Telegram
+5. **Required**: Change `/setprivacy` to _Disabled_ so bot can see messages²
+6. Add bot to Telegram group you want to bridge
+7. _Optional_: After adding, block bot from being added to more groups
+(`/setjoingroups`)
+
+You have now set up the Telegram side for Teleirc.
+
+¹ @BotFather is the [Telegram bot](https://core.telegram.org/bots) for
+[creating Telegram bots](https://core.telegram.org/bots#6-botfather).
+
+² Privacy setting must be changed for the bot to see messages in the Telegram
+group. By default, bots can't see messages unless they use a command to
+interact with the bot. Since Teleirc is forwarding all messages, it needs to
+see all the messages, which is why this setting has to be changed.
+
+### Teleirc
 
 On an ArchLinux based distro, teleirc can be installed [from the AUR](https://aur.archlinux.org/packages/teleirc/). You will still need to
 follow the configuration steps from below. If you install from the AUR, teleirc's files will be located at `/var/lib/teleirc` and teleirc
 can be managed via systemd.
-
-
-### Telegram
-
-For the Telegram side, you will need to create a new Telegram bot that will sit inside your Telegram group. You will need to do a little configuration and information gathering with the bot.
-
-1. Send a `/start` Telegram message to the @BotFather, the [Telegram bot](https://core.telegram.org/bots) for [creating Telegram bots](https://core.telegram.org/bots#6-botfather).
-2. Create a bot with the `/newbot` command in a chat window with BotFather. You will then be prompted to enter a bot name. Once you have done this, you will get a bot token from the BotFather for accessing the Telegram API. Make note of the token for later configuration.
-3. Before this bot can enter any group chats, you will need to configure it with correct permissions. Send the `/setprivacy` command to the BotFather, specify which bot this command is for, then **disable** the privacy so the bot receives all messages sent in the group chat.
-4. Optionally, you can supply a different bot name, description, and picture to make it more obvious what the bot is in the group chat.
-5. This bot supports adhering to Telegram's bot rate limits. You can set messages per minute in the config. As of this writing, the limit
-from Telegram is 20, which is the default. If you don't want to use rate limiting, set the option to 0. The bot will bundle messages and
-send them together with a delay while rate limiting in hopes of avoiding dropped messages.
-6. Add the bot to the Telegram group chat you want to bridge.
-
-Now that you have a bot created, have its Telegram API token, and have it in your group, you can start using this bridge.
-
-### Teleirc
 
 #### Run using Docker
 
@@ -188,40 +211,49 @@ module.exports = settings;
 
 ### IRC
 
-There is not real configuration needed on the IRC side, as IRC is generally very open. It might be a good idea to [register the channel](https://infrastructure.fedoraproject.org/infra/docs/freenode-irc-channel.rst) you are using.
+Depending on your network, there is no real configuration needed on the IRC
+side. There are a few good ideas you can use to set up your IRC channel:
+
+* [Register your channel](https://infrastructure.fedoraproject.org/infra/docs/freenode-irc-channel.rst)
+* Give permanent voice to your bridge bot (for most networks, the `+Vv` flags)
 
 
-# Running Teleirc
+## Usage
 
-Before running teleirc, you will need to decide how you want to run it persistently. Several options are available:
+First, choose how you want to run Teleirc persistently. There are several options.
 
-* pm2: An easy way to keep this service running in the background on your server is through `pm2`. pm2 is an npm package that can keep node services running in the background, restart them if they crash, and restart them if the server reboots.
-* systemd: A systemd service file is provided (`teleirc.service`) which can be installed into `/usr/lib/systemd/system` and managed through standard systemd commands. The systemd service assumes you've created a dedicated user called `teleirc` with the home directory `/var/lib/teleirc` which contains teleirc.js, config.js, and node_modules.
+* **pm2**: `pm2` is a NPM package that…
+    * Keeps NodeJS services running in background
+    * Restarts them if they crash
+    * Restarts them if server reboots
+* **systemd**: Use provided systemd service file (`teleirc.service`) to run
+    * Install provided file into `/usr/lib/systemd/system/`
+    * Manage Teleirc through standard `systemctl` commands
+    * `teleirc.service` assumes…
+        * Using a dedicated user (`teleirc`)
+        * Home directory at `/var/lib/teleirc/` with `teleirc.js`, `config.js`,
+`node_modules`, etc.
+* **screen / tmux**: Manually run or use a shell script to start Teleirc in a
+persistent window
 
-Alternatively, you can handle this yourself by using something like `screen` or `tmux`, and a quick shell script and starting the program manually with `node teleirc.js`.
 
-## tmux
+## Hey, I use Teleirc too!
 
-1. Install tmux to your server.
- * _RHEL / CentOS_: `sudo yum install tmux` ([No package found? Get EPEL](https://fedoraproject.org/wiki/EPEL))
- * _Fedora_: `sudo dnf install tmux`
- * _Debian / Ubuntu_: `sudo apt-get install tmux`
-2. Create a new tmux session. `tmux new-session -s teleirc`
-3. Navigate to the directory where you have teleirc and start it with node. `node teleirc.js`
-4. Exit tmux by typing `CTRL+B`, then the `d` key.
-
-
-# Hey, I use this project too!
-
-Want to have your name added to the list in this README? Let us know you're using teleirc too! [Submit an issue](https://github.com/RITlug/teleirc/issues/new) against this repo with the following info:
+Want to have your community added to the README? Let us know you're using
+teleirc too! [Submit an issue](https://github.com/RITlug/teleirc/issues/new)
+against this repo with the following info:
 
 * Organization / group name and website
 * Telegram group URL
 * Your IRC channel
 
-Please note, to be added, your group must not discuss / contain inappropriate or explicit content.
+To be added, your group must not discuss illegal, illicit, or generally
+inappropriate content.
 
 
-# License
+## License
 
-Licensed under the [MIT License](https://github.com/RITlug/teleirc/blob/master/LICENSE). If you're hacking on teleirc, we'd love to see you bring your improvements back upstream!
+Teleirc is provided under the
+[MIT License](https://github.com/RITlug/teleirc/blob/master/LICENSE). If you're
+hacking on teleirc, we'd love to see you submit improvements back upstream!
+
