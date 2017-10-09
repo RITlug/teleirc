@@ -199,6 +199,15 @@ side. There are a few good ideas you can use to set up your IRC channel:
 * [Register your channel](https://infrastructure.fedoraproject.org/infra/docs/freenode-irc-channel.rst)
 * Give permanent voice to your bridge bot (for most networks, the `+Vv` flags)
 
+### Imgur
+
+The bot has the ability to upload images from the telegram API to Imgur before sending an IRC message with a link to the image.
+In order to do this, a client ID from Imgur is needed. This can be obtained by doing the following:
+
+1. Create an Imgur account if you do not already have one
+2. [Register your bot](https://api.imgur.com/oauth2/addclient) with the imgur api, using the 'OAuth2 without callback' option.
+3. Put the client ID into the .env file and enable using imgur for images.
+
 
 ## Usage
 
