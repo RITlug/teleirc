@@ -25,6 +25,10 @@ let sampleSettings = {
         showLeaveMessage: false,
         showKickMessage: false,
         maxMessagesPerMinute: 20
+    },
+    imgur: {
+        useImgurForImageLinks: false,
+        imgurClientId: "12345"
     }
 }
 
@@ -47,7 +51,8 @@ exports.ircConfigValidation_MissingIrcConfig = function(assert) {
     let testSettings = {
         token: sampleSettings.token,
         ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg
+        tg: sampleSettings.tg,
+        imgur: sampleSettings.imgur
     }
 
     let uut = new TeleIrc(testSettings);
@@ -109,7 +114,8 @@ exports.ircConfigValidation_missingServerConfig = function(assert) {
             showLeaveMessage: sampleSettings.showLeaveMessage
         },
         ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg
+        tg: sampleSettings.tg,
+        imgur: sampleSettings.imgur
     }
 
     // Missing server should result in exception.
@@ -148,7 +154,8 @@ exports.ircConfigValidation_missingChannelConfig = function(assert) {
             showLeaveMessage: sampleSettings.showLeaveMessage
         },
         ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg
+        tg: sampleSettings.tg,
+        imgur: sampleSettings.imgur
     }
 
     // Missing channel should result in exception.
@@ -187,7 +194,8 @@ exports.ircConfigValidation_missingBotNameConfig = function(assert) {
             showLeaveMessage: sampleSettings.showLeaveMessage
         },
         ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg
+        tg: sampleSettings.tg,
+        imgur: sampleSettings.imgur
     }
 
     // Missing Bot Name should result in exception.
@@ -252,7 +260,8 @@ exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
             showLeaveMessage: undefined
         },
         ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg
+        tg: sampleSettings.tg,
+        imgur: sampleSettings.imgur
     }
 
     doDefaultSettingsTest(assert, testSettings);
@@ -281,7 +290,8 @@ exports.ircConfigValidation_defaultSettingsTest_setToNull = function(assert) {
             showLeaveMessage: null
         },
         ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg
+        tg: sampleSettings.tg,
+        imgur: sampleSettings.imgur
     }
 
     doDefaultSettingsTest(assert, testSettings);
@@ -305,7 +315,8 @@ exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(asser
             botName: sampleSettings.irc.botName
         },
         ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg
+        tg: sampleSettings.tg,
+        imgur: sampleSettings.imgur
     }
 
     doDefaultSettingsTest(assert, testSettings);

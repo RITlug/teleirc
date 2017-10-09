@@ -19,6 +19,10 @@ let settings = {
         showLeaveMessage: process.env.SHOW_LEAVE_MESSAGE || false,
         showKickMessage: process.env.SHOW_KICK_MESSAGE || false,
         maxMessagesPerMinute: process.env.MAX_MESSAGES_PER_MINUTE || 20,
+    },
+    imgur: {
+        useImgurForImageLinks: process.env.USE_IMGUR_FOR_IMAGES || false,
+        imgurClientId: process.env.IMGUR_CLIENT_ID || "12345"
     }
 }
 
