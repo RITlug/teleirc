@@ -163,34 +163,6 @@ To get teleirc working, you will need a server to run it on, git, and the latest
 
 Alternatively, if you start up the bot with no Telegram chat ID set, it will sit waiting for messages to be sent to it. If you invite the bot to your group chat, you should see a "Debug TG" message with some information about the invite that was sent. One of the fields here will be the chatId. This is the value that needs to be put in the config object. Be careful not to get the user ID of a specific user when reading these messages.
 
-``` javascript
-let settings = {
-    token: process.env.TELEIRC_TOKEN || "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
-    ircBlacklist: process.env.IRC_BLACKLIST ?
-        process.env.IRC_BLACKLIST.split(",") : [],
-    irc: {
-        server: process.env.IRC_SERVER || "irc.freenode.net",
-        channel: process.env.IRC_CHANNEL || "",
-        botName: process.env.IRC_BOT_NAME || "teleirc",
-        sendStickerEmoji: process.env.IRC_SEND_STICKER_EMOJI || true,
-        prefix: process.env.IRC_PREFIX || "<",
-        suffix: process.env.IRC_SUFFIX || ">",
-        showJoinMessage: process.env.IRC_SHOW_JOIN_MESSAGE || true,
-        showLeaveMessage: process.env.IRC_SHOW_LEAVE_MESSAGE || true,
-    },
-    tg: {
-        chatId: process.env.TELEGRAM_CHAT_ID,
-        showJoinMessage: process.env.SHOW_JOIN_MESSAGE || false,
-        showActionMessage: process.env.SHOW_ACTION_MESSAGE || true,
-        showLeaveMessage: process.env.SHOW_LEAVE_MESSAGE || false,
-        showKickMessage: process.env.SHOW_KICK_MESSAGE || false,
-        maxMessagesPerMinute: process.env.MAX_MESSAGES_PER_MINUTE || 20,
-    }
-}
-
-module.exports = settings;
-```
-
 ### IRC
 
 Depending on your network, there is no real configuration needed on the IRC
@@ -233,4 +205,3 @@ persistent window
 Teleirc is provided under the
 [MIT License](https://github.com/RITlug/teleirc/blob/master/LICENSE). If you're
 hacking on teleirc, we'd love to see you submit improvements back upstream!
-

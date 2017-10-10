@@ -3,11 +3,11 @@
 const dotenv = require('dotenv').config();
 const tg = require("node-telegram-bot-api");
 const irc = require("irc");
-const TeleIrc = require("./lib/libteleirc.js");
-const config = require("./config.js");
+const TeleIrc = require("./lib/TeleIrc");
+const config = require("./config");
 
 // Read in the config file to hide the bot API token
-console.log("Reading config.json file to get bot API token...");
+console.log("Reading config file to get bot API token...");
 
 let teleIrc = new TeleIrc(config);
 console.log("Reading in IRC Configuration...");
