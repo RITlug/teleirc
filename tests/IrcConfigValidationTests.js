@@ -6,12 +6,12 @@ const TeleIrcConfigException = require("../lib/TeleIrcException");
 const config = require('../config');
 
 function shouldThrow(assert, block, errorCode) {
-    assert.throws(
-        block,
-        function(exception) {
-            return exception.errorCode === errorCode
-        }
-    );
+  assert.throws(
+    block,
+    function(exception) {
+      return exception.errorCode === errorCode
+    }
+  );
 }
 
 // -------- Missing IRC Config Tests --------
@@ -20,52 +20,52 @@ function shouldThrow(assert, block, errorCode) {
  * Ensures if the IRC config is missing completely from our settings, an exception gets thrown.
  */
 exports.ircConfigValidation_MissingIrcConfig = function(assert) {
-    // Copy our default settings, but ignore the IRC portion.
-    let testSettings = {
-        token: config.token,
-        ircBlacklist: config.ircBlacklist,
-        tg: config.tg,
-        imgur: config.imgur
-    }
+  // Copy our default settings, but ignore the IRC portion.
+  let testSettings = {
+    token: config.token,
+    ircBlacklist: config.ircBlacklist,
+    tg: config.tg,
+    imgur: config.imgur
+  }
 
-    let uut = new TeleIrc(testSettings);
+  let uut = new TeleIrc(testSettings);
 
-    // Ensure a missing IRC config results in an exception.
-    shouldThrow(
-        assert,
-        uut.initStage1_ircConfigValidation.bind(uut),
-        uut.errorCodes.MissingIrcConfig
-    );
+  // Ensure a missing IRC config results in an exception.
+  shouldThrow(
+    assert,
+    uut.initStage1_ircConfigValidation.bind(uut),
+    uut.errorCodes.MissingIrcConfig
+  );
 
-    // Undefined should also fail.
-    testSettings.irc = undefined;
-    uut = new TeleIrc(testSettings);
-    shouldThrow(
-        assert,
-        uut.initStage1_ircConfigValidation.bind(uut),
-        uut.errorCodes.MissingIrcConfig
-    );
+  // Undefined should also fail.
+  testSettings.irc = undefined;
+  uut = new TeleIrc(testSettings);
+  shouldThrow(
+    assert,
+    uut.initStage1_ircConfigValidation.bind(uut),
+    uut.errorCodes.MissingIrcConfig
+  );
 
-    // Ditto for null.
-    testSettings.irc = null;
-    uut = new TeleIrc(testSettings);
-    shouldThrow(
-        assert,
-        uut.initStage1_ircConfigValidation.bind(uut),
-        uut.errorCodes.MissingIrcConfig
-    );
+  // Ditto for null.
+  testSettings.irc = null;
+  uut = new TeleIrc(testSettings);
+  shouldThrow(
+    assert,
+    uut.initStage1_ircConfigValidation.bind(uut),
+    uut.errorCodes.MissingIrcConfig
+  );
 
-    assert.done();
+  assert.done();
 };
 
 // -------- Required Settings Tests --------
 
 function doRequiredSettingsTest(assert, uut, expectedErrorCode) {
-    shouldThrow(
-        assert,
-        uut.initStage1_ircConfigValidation.bind(uut),
-        expectedErrorCode
-    );
+  shouldThrow(
+    assert,
+    uut.initStage1_ircConfigValidation.bind(uut),
+    expectedErrorCode
+  );
 }
 
 /**
@@ -73,39 +73,39 @@ function doRequiredSettingsTest(assert, uut, expectedErrorCode) {
  * exception gets thrown.
  */
 exports.ircConfigValidation_missingServerConfig = function(assert) {
-    // Copy our default settings, but ignore the server.
-    let testSettings = {
-        token: config.token,
-        irc: {
-            // No Server.
-            channel: config.irc.channel,
-            botName: config.irc.botName,
-            sendStickerEmoji: config.sendStickerEmoji,
-            prefix: config.prefix,
-            suffix: config.suffix,
-            showJoinMessage: config.showJoinMessage,
-            showLeaveMessage: config.showLeaveMessage
-        },
-        ircBlacklist: config.ircBlacklist,
-        tg: config.tg,
-        imgur: config.imgur
-    }
+  // Copy our default settings, but ignore the server.
+  let testSettings = {
+    token: config.token,
+    irc: {
+      // No Server.
+      channel: config.irc.channel,
+      botName: config.irc.botName,
+      sendStickerEmoji: config.sendStickerEmoji,
+      prefix: config.prefix,
+      suffix: config.suffix,
+      showJoinMessage: config.showJoinMessage,
+      showLeaveMessage: config.showLeaveMessage
+    },
+    ircBlacklist: config.ircBlacklist,
+    tg: config.tg,
+    imgur: config.imgur
+  }
 
-    // Missing server should result in exception.
-    let uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
+  // Missing server should result in exception.
+  let uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
 
-    // Set server to undefined, should also cause exception.
-    testSettings.server = undefined;
-    uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
+  // Set server to undefined, should also cause exception.
+  testSettings.server = undefined;
+  uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
 
-    // Set server to null, should also cause exception.
-    testSettings.server = null;
-    uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
+  // Set server to null, should also cause exception.
+  testSettings.server = null;
+  uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcServerConfig);
 
-    assert.done();
+  assert.done();
 }
 
 /**
@@ -113,39 +113,39 @@ exports.ircConfigValidation_missingServerConfig = function(assert) {
  * exception gets thrown.
  */
 exports.ircConfigValidation_missingChannelConfig = function(assert) {
-    // Copy our default settings, but ignore the server.
-    let testSettings = {
-        token: config.token,
-        irc: {
-            server : config.irc.server,
-            // No channel
-            botName: config.irc.botName,
-            sendStickerEmoji: config.sendStickerEmoji,
-            prefix: config.prefix,
-            suffix: config.suffix,
-            showJoinMessage: config.showJoinMessage,
-            showLeaveMessage: config.showLeaveMessage
-        },
-        ircBlacklist: config.ircBlacklist,
-        tg: config.tg,
-        imgur: config.imgur
-    }
+  // Copy our default settings, but ignore the server.
+  let testSettings = {
+    token: config.token,
+    irc: {
+      server: config.irc.server,
+      // No channel
+      botName: config.irc.botName,
+      sendStickerEmoji: config.sendStickerEmoji,
+      prefix: config.prefix,
+      suffix: config.suffix,
+      showJoinMessage: config.showJoinMessage,
+      showLeaveMessage: config.showLeaveMessage
+    },
+    ircBlacklist: config.ircBlacklist,
+    tg: config.tg,
+    imgur: config.imgur
+  }
 
-    // Missing channel should result in exception.
-    let uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
+  // Missing channel should result in exception.
+  let uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
 
-    // Set channel to undefined, should also cause exception.
-    testSettings.channel = undefined;
-    uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
+  // Set channel to undefined, should also cause exception.
+  testSettings.channel = undefined;
+  uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
 
-    // Set channel to null, should also cause exception.
-    testSettings.channel = null;
-    uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
+  // Set channel to null, should also cause exception.
+  testSettings.channel = null;
+  uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcChannelConfig);
 
-    assert.done();
+  assert.done();
 }
 
 /**
@@ -153,63 +153,63 @@ exports.ircConfigValidation_missingChannelConfig = function(assert) {
  * exception gets thrown.
  */
 exports.ircConfigValidation_missingBotNameConfig = function(assert) {
-    // Copy our default settings, but ignore the server.
-    let testSettings = {
-        token: config.token,
-        irc: {
-            server : config.irc.server,
-            channel: config.irc.channel,
-            // No bot name.
-            sendStickerEmoji: config.sendStickerEmoji,
-            prefix: config.prefix,
-            suffix: config.suffix,
-            showJoinMessage: config.showJoinMessage,
-            showLeaveMessage: config.showLeaveMessage
-        },
-        ircBlacklist: config.ircBlacklist,
-        tg: config.tg,
-        imgur: config.imgur
-    }
+  // Copy our default settings, but ignore the server.
+  let testSettings = {
+    token: config.token,
+    irc: {
+      server: config.irc.server,
+      channel: config.irc.channel,
+      // No bot name.
+      sendStickerEmoji: config.sendStickerEmoji,
+      prefix: config.prefix,
+      suffix: config.suffix,
+      showJoinMessage: config.showJoinMessage,
+      showLeaveMessage: config.showLeaveMessage
+    },
+    ircBlacklist: config.ircBlacklist,
+    tg: config.tg,
+    imgur: config.imgur
+  }
 
-    // Missing Bot Name should result in exception.
-    let uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
+  // Missing Bot Name should result in exception.
+  let uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
 
-    // Set bot name to undefined, should also cause exception.
-    testSettings.botName = undefined;
-    uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
+  // Set bot name to undefined, should also cause exception.
+  testSettings.botName = undefined;
+  uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
 
-    // Set bot name to null, should also cause exception.
-    testSettings.botName = null;
-    uut = new TeleIrc(testSettings);
-    doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
+  // Set bot name to null, should also cause exception.
+  testSettings.botName = null;
+  uut = new TeleIrc(testSettings);
+  doRequiredSettingsTest(assert, uut, uut.errorCodes.MissingIrcBotNameConfig);
 
-    assert.done();
+  assert.done();
 }
 
 // -------- Default Settings Tests --------
 
 function doDefaultSettingsTest(assert, testSettings) {
-    let uut = new TeleIrc(testSettings);
+  let uut = new TeleIrc(testSettings);
 
-    uut.initStage1_ircConfigValidation();
+  uut.initStage1_ircConfigValidation();
 
-    // Everything should be set to default values, and NOT undefined.
+  // Everything should be set to default values, and NOT undefined.
 
-    // Undefined check:
-    assert.notStrictEqual(undefined, testSettings.irc.sendStickerEmoji);
-    assert.notStrictEqual(undefined, testSettings.irc.prefix);
-    assert.notStrictEqual(undefined, testSettings.irc.suffix);
-    assert.notStrictEqual(undefined, testSettings.irc.showJoinMessage);
-    assert.notStrictEqual(undefined, testSettings.irc.showLeaveMessage);
+  // Undefined check:
+  assert.notStrictEqual(undefined, testSettings.irc.sendStickerEmoji);
+  assert.notStrictEqual(undefined, testSettings.irc.prefix);
+  assert.notStrictEqual(undefined, testSettings.irc.suffix);
+  assert.notStrictEqual(undefined, testSettings.irc.showJoinMessage);
+  assert.notStrictEqual(undefined, testSettings.irc.showLeaveMessage);
 
-    // Default values check:
-    assert.strictEqual(uut.defaultSendStickerEmoji, testSettings.irc.sendStickerEmoji);
-    assert.strictEqual(uut.defaultIrcPrefix, testSettings.irc.prefix);
-    assert.strictEqual(uut.defaultIrcSuffix, testSettings.irc.suffix);
-    assert.strictEqual(uut.defaultShowJoinMessage, testSettings.irc.showJoinMessage);
-    assert.strictEqual(uut.defaultShowLeaveMessage, testSettings.irc.showLeaveMessage);
+  // Default values check:
+  assert.strictEqual(uut.defaultSendStickerEmoji, testSettings.irc.sendStickerEmoji);
+  assert.strictEqual(uut.defaultIrcPrefix, testSettings.irc.prefix);
+  assert.strictEqual(uut.defaultIrcSuffix, testSettings.irc.suffix);
+  assert.strictEqual(uut.defaultShowJoinMessage, testSettings.irc.showJoinMessage);
+  assert.strictEqual(uut.defaultShowLeaveMessage, testSettings.irc.showLeaveMessage);
 }
 
 /**
@@ -217,29 +217,29 @@ function doDefaultSettingsTest(assert, testSettings) {
  * added in as a default.
  */
 exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
-    // Copy our default settings, but ignore the IRC showEmoji.
-    let testSettings = {
-        token: config.token,
-        irc: {
-            // These three options are required, everything else is optional.
-            // If missing, we should use a default setting.
-            server: config.irc.server,
-            channel: config.irc.channel,
-            botName: config.irc.botName,
-            sendStickerEmoji: undefined,
-            prefix: undefined,
-            suffix: undefined,
-            showJoinMessage: undefined,
-            showLeaveMessage: undefined
-        },
-        ircBlacklist: config.ircBlacklist,
-        tg: config.tg,
-        imgur: config.imgur
-    }
+  // Copy our default settings, but ignore the IRC showEmoji.
+  let testSettings = {
+    token: config.token,
+    irc: {
+      // These three options are required, everything else is optional.
+      // If missing, we should use a default setting.
+      server: config.irc.server,
+      channel: config.irc.channel,
+      botName: config.irc.botName,
+      sendStickerEmoji: undefined,
+      prefix: undefined,
+      suffix: undefined,
+      showJoinMessage: undefined,
+      showLeaveMessage: undefined
+    },
+    ircBlacklist: config.ircBlacklist,
+    tg: config.tg,
+    imgur: config.imgur
+  }
 
-    doDefaultSettingsTest(assert, testSettings);
+  doDefaultSettingsTest(assert, testSettings);
 
-    assert.done();
+  assert.done();
 };
 
 /**
@@ -247,52 +247,66 @@ exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
  * added in as a default.
  */
 exports.ircConfigValidation_defaultSettingsTest_setToNull = function(assert) {
-    // Copy our default settings, but ignore the IRC showEmoji.
-    let testSettings = {
-        token: config.token,
-        irc: {
-            // These three options are required, everything else is optional.
-            // If missing, we should use a default setting.
-            server: config.irc.server,
-            channel: config.irc.channel,
-            botName: config.irc.botName,
-            sendStickerEmoji: null,
-            prefix: null,
-            suffix: null,
-            showJoinMessage: null,
-            showLeaveMessage: null
-        },
-        ircBlacklist: config.ircBlacklist,
-        tg: config.tg,
-        imgur: config.imgur
-    }
+  // Copy our default settings, but ignore the IRC showEmoji.
+  let testSettings = {
+    token: config.token,
+    irc: {
+      // These three options are required, everything else is optional.
+      // If missing, we should use a default setting.
+      server: config.irc.server,
+      channel: config.irc.channel,
+      botName: config.irc.botName,
+      sendStickerEmoji: null,
+      prefix: null,
+      suffix: null,
+      showJoinMessage: null,
+      showLeaveMessage: null
+    },
+    ircBlacklist: config.ircBlacklist,
+    tg: config.tg,
+    imgur: config.imgur
+  }
 
-    doDefaultSettingsTest(assert, testSettings);
+  doDefaultSettingsTest(assert, testSettings);
 
-    assert.done();
+  assert.done();
 };
 
 /**
  * Ensures if the IRC config's optional values are set to undefined, it gets
  * set to its default.
  */
-exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(assert) {
-    // Copy our default settings, but ignore the IRC showEmoji.
-    let testSettings = {
-        token: config.token,
-        irc: {
-            // These three options are required, everything else is optional.
-            // If missing, we should use a default setting.
-            server: config.irc.server,
-            channel: config.irc.channel,
-            botName: config.irc.botName
-        },
-        ircBlacklist: config.ircBlacklist,
-        tg: config.tg,
-        imgur: config.imgur
-    }
+exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(
+  assert) {
+  // Copy our default settings, but ignore the IRC showEmoji.
+  let testSettings = {
+    token: config.token,
+    irc: {
+      // These three options are required, everything else is optional.
+      // If missing, we should use a default setting.
+      server: config.irc.server,
+      channel: config.irc.channel,
+      botName: config.irc.botName
+    },
+    ircBlacklist: config.ircBlacklist,
+    tg: config.tg,
+    imgur: config.imgur
+  }
 
-    doDefaultSettingsTest(assert, testSettings);
+  doDefaultSettingsTest(assert, testSettings);
 
-    assert.done();
+  assert.done();
 };
+
+exports.ircConfigValidation_checkTypes = (assert) => {
+  assert.strictEqual(typeof config.irc.sendStickerEmoji, 'boolean');
+  assert.strictEqual(typeof config.irc.showJoinMessage, 'boolean');
+  assert.strictEqual(typeof config.irc.showLeaveMessage, 'boolean');
+  assert.strictEqual(typeof config.tg.showJoinMessage, 'boolean');
+  assert.strictEqual(typeof config.tg.showLeaveMessage, 'boolean');
+  assert.strictEqual(typeof config.tg.showKickMessage, 'boolean');
+  assert.strictEqual(typeof config.tg.maxMessagesPerMinute, 'number');
+  assert.strictEqual(typeof config.imgur.useImgurForImageLinks, 'boolean');
+  assert.done();
+
+}
