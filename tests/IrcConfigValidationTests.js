@@ -1,36 +1,9 @@
 'use strict';
 
-const TeleIrc = require("../lib/libteleirc.js");
-const TeleIrcConfigException = require("../lib/libteleirc.js");
-
-let sampleSettings = {
-    token: "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
-    ircBlacklist: [
-        "CowSayBot"
-    ],
-    irc: {
-        server: "irc.freenode.net",
-        channel: "#channel",
-        botName: "teleirc",
-        sendStickerEmoji: false,
-        prefix: "<",
-        suffix: ">",
-        showJoinMessage: false,
-        showLeaveMessage: false
-    },
-    tg: {
-        chatId: "-0000000000000",
-        showJoinMessage: false,
-        showActionMessage: true,
-        showLeaveMessage: false,
-        showKickMessage: false,
-        maxMessagesPerMinute: 20
-    },
-    imgur: {
-        useImgurForImageLinks: false,
-        imgurClientId: "12345"
-    }
-}
+const dotenv = require('dotenv').config();
+const TeleIrc = require("../lib/TeleIrc");
+const TeleIrcConfigException = require("../lib/TeleIrcException");
+const config = require('../config');
 
 function shouldThrow(assert, block, errorCode) {
     assert.throws(
@@ -49,10 +22,10 @@ function shouldThrow(assert, block, errorCode) {
 exports.ircConfigValidation_MissingIrcConfig = function(assert) {
     // Copy our default settings, but ignore the IRC portion.
     let testSettings = {
-        token: sampleSettings.token,
-        ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg,
-        imgur: sampleSettings.imgur
+        token: config.token,
+        ircBlacklist: config.ircBlacklist,
+        tg: config.tg,
+        imgur: config.imgur
     }
 
     let uut = new TeleIrc(testSettings);
@@ -102,20 +75,20 @@ function doRequiredSettingsTest(assert, uut, expectedErrorCode) {
 exports.ircConfigValidation_missingServerConfig = function(assert) {
     // Copy our default settings, but ignore the server.
     let testSettings = {
-        token: sampleSettings.token,
+        token: config.token,
         irc: {
             // No Server.
-            channel: sampleSettings.irc.channel,
-            botName: sampleSettings.irc.botName,
-            sendStickerEmoji: sampleSettings.sendStickerEmoji,
-            prefix: sampleSettings.prefix,
-            suffix: sampleSettings.suffix,
-            showJoinMessage: sampleSettings.showJoinMessage,
-            showLeaveMessage: sampleSettings.showLeaveMessage
+            channel: config.irc.channel,
+            botName: config.irc.botName,
+            sendStickerEmoji: config.sendStickerEmoji,
+            prefix: config.prefix,
+            suffix: config.suffix,
+            showJoinMessage: config.showJoinMessage,
+            showLeaveMessage: config.showLeaveMessage
         },
-        ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg,
-        imgur: sampleSettings.imgur
+        ircBlacklist: config.ircBlacklist,
+        tg: config.tg,
+        imgur: config.imgur
     }
 
     // Missing server should result in exception.
@@ -142,20 +115,20 @@ exports.ircConfigValidation_missingServerConfig = function(assert) {
 exports.ircConfigValidation_missingChannelConfig = function(assert) {
     // Copy our default settings, but ignore the server.
     let testSettings = {
-        token: sampleSettings.token,
+        token: config.token,
         irc: {
-            server : sampleSettings.irc.server,
+            server : config.irc.server,
             // No channel
-            botName: sampleSettings.irc.botName,
-            sendStickerEmoji: sampleSettings.sendStickerEmoji,
-            prefix: sampleSettings.prefix,
-            suffix: sampleSettings.suffix,
-            showJoinMessage: sampleSettings.showJoinMessage,
-            showLeaveMessage: sampleSettings.showLeaveMessage
+            botName: config.irc.botName,
+            sendStickerEmoji: config.sendStickerEmoji,
+            prefix: config.prefix,
+            suffix: config.suffix,
+            showJoinMessage: config.showJoinMessage,
+            showLeaveMessage: config.showLeaveMessage
         },
-        ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg,
-        imgur: sampleSettings.imgur
+        ircBlacklist: config.ircBlacklist,
+        tg: config.tg,
+        imgur: config.imgur
     }
 
     // Missing channel should result in exception.
@@ -182,20 +155,20 @@ exports.ircConfigValidation_missingChannelConfig = function(assert) {
 exports.ircConfigValidation_missingBotNameConfig = function(assert) {
     // Copy our default settings, but ignore the server.
     let testSettings = {
-        token: sampleSettings.token,
+        token: config.token,
         irc: {
-            server : sampleSettings.irc.server,
-            channel: sampleSettings.irc.channel,
+            server : config.irc.server,
+            channel: config.irc.channel,
             // No bot name.
-            sendStickerEmoji: sampleSettings.sendStickerEmoji,
-            prefix: sampleSettings.prefix,
-            suffix: sampleSettings.suffix,
-            showJoinMessage: sampleSettings.showJoinMessage,
-            showLeaveMessage: sampleSettings.showLeaveMessage
+            sendStickerEmoji: config.sendStickerEmoji,
+            prefix: config.prefix,
+            suffix: config.suffix,
+            showJoinMessage: config.showJoinMessage,
+            showLeaveMessage: config.showLeaveMessage
         },
-        ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg,
-        imgur: sampleSettings.imgur
+        ircBlacklist: config.ircBlacklist,
+        tg: config.tg,
+        imgur: config.imgur
     }
 
     // Missing Bot Name should result in exception.
@@ -246,22 +219,22 @@ function doDefaultSettingsTest(assert, testSettings) {
 exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
     // Copy our default settings, but ignore the IRC showEmoji.
     let testSettings = {
-        token: sampleSettings.token,
+        token: config.token,
         irc: {
             // These three options are required, everything else is optional.
             // If missing, we should use a default setting.
-            server: sampleSettings.irc.server,
-            channel: sampleSettings.irc.channel,
-            botName: sampleSettings.irc.botName,
+            server: config.irc.server,
+            channel: config.irc.channel,
+            botName: config.irc.botName,
             sendStickerEmoji: undefined,
             prefix: undefined,
             suffix: undefined,
             showJoinMessage: undefined,
             showLeaveMessage: undefined
         },
-        ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg,
-        imgur: sampleSettings.imgur
+        ircBlacklist: config.ircBlacklist,
+        tg: config.tg,
+        imgur: config.imgur
     }
 
     doDefaultSettingsTest(assert, testSettings);
@@ -276,22 +249,22 @@ exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
 exports.ircConfigValidation_defaultSettingsTest_setToNull = function(assert) {
     // Copy our default settings, but ignore the IRC showEmoji.
     let testSettings = {
-        token: sampleSettings.token,
+        token: config.token,
         irc: {
             // These three options are required, everything else is optional.
             // If missing, we should use a default setting.
-            server: sampleSettings.irc.server,
-            channel: sampleSettings.irc.channel,
-            botName: sampleSettings.irc.botName,
+            server: config.irc.server,
+            channel: config.irc.channel,
+            botName: config.irc.botName,
             sendStickerEmoji: null,
             prefix: null,
             suffix: null,
             showJoinMessage: null,
             showLeaveMessage: null
         },
-        ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg,
-        imgur: sampleSettings.imgur
+        ircBlacklist: config.ircBlacklist,
+        tg: config.tg,
+        imgur: config.imgur
     }
 
     doDefaultSettingsTest(assert, testSettings);
@@ -306,17 +279,17 @@ exports.ircConfigValidation_defaultSettingsTest_setToNull = function(assert) {
 exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(assert) {
     // Copy our default settings, but ignore the IRC showEmoji.
     let testSettings = {
-        token: sampleSettings.token,
+        token: config.token,
         irc: {
             // These three options are required, everything else is optional.
             // If missing, we should use a default setting.
-            server: sampleSettings.irc.server,
-            channel: sampleSettings.irc.channel,
-            botName: sampleSettings.irc.botName
+            server: config.irc.server,
+            channel: config.irc.channel,
+            botName: config.irc.botName
         },
-        ircBlacklist: sampleSettings.ircBlacklist,
-        tg: sampleSettings.tg,
-        imgur: sampleSettings.imgur
+        ircBlacklist: config.ircBlacklist,
+        tg: config.tg,
+        imgur: config.imgur
     }
 
     doDefaultSettingsTest(assert, testSettings);
