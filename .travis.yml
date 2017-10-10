@@ -5,10 +5,13 @@ cache: yarn
 
 node_js:
   - 6
-
-
+  - 7
+  - 8
+before_install:
+  - cp .env.example .env
+  - cp config.js.example config.js
 install:
-  - npm install
-  - npm install -g nodeunit
+  - yarn
+  - yarn global add nodeunit
 
-script: npm test
+script: yarn test
