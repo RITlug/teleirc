@@ -1,8 +1,8 @@
 FROM node:6-alpine
 
 RUN apk add --no-cache --update bash \
-&& addgroup -g 99999 teleirc
-&& adduser -s /bin/bash -h /opt/teleirc -D -H teleirc -u 99999 -G teleirc
+&& addgroup -g 65533 teleirc
+&& adduser -s /bin/bash -h /opt/teleirc -D -H teleirc -u 65533 -G teleirc
 
 WORKDIR /opt/teleirc
 CMD ["node", "teleirc.js"]

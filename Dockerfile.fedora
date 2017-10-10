@@ -1,7 +1,7 @@
 FROM fedora
 # Cache layers which will not change
-RUN groupadd teleirc -g 99999 \
-&& useradd -u 99999 -g teleirc -s /bin/bash -M -d /opt/teleirc teleirc
+RUN groupadd teleirc -g 65533 \
+&& useradd -u 65533 -g teleirc -s /bin/bash -M -d /opt/teleirc teleirc
 
 WORKDIR /opt/teleirc
 CMD ["node", "teleirc.js"]
