@@ -1,6 +1,6 @@
 {
   "name": "teleirc-bot",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "description": "A simple Telegram <=> IRC bot",
   "main": "teleirc.js",
   "scripts": {
@@ -13,14 +13,15 @@
   "keywords": [
     "telegram",
     "irc",
-    "RITLug"
+    "RITlug"
   ],
-  "author": "Mark Repka",
+  "author": "Mark Repka, Seth Hendrick, Nate Levesque, Robby O'Connor, Justin W. Flory, RITlug, and Teleirc community",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^2.0.0",
     "iconv": "^2.2.1",
     "irc": "~0.5.0",
+    "node": "~8",
     "node-telegram-bot-api": "^0.24.0",
     "imgur": "0.2.1"
   }
