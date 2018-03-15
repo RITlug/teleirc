@@ -3,6 +3,7 @@ Teleirc
 
 [![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=devel)](https://travis-ci.org/RITlug/teleirc)
 [![Documentation Status](https://readthedocs.org/projects/teleirc/badge/?version=latest)](http://teleirc.readthedocs.io/en/latest/?badge=latest)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/maintainability)](https://codeclimate.com/github/RITlug/teleirc/maintainability)
 
 NodeJS implementation of a [Telegram](https://telegram.org/) <=>
 [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge for use with any

@@ -1,0 +1,10 @@
+plugins:
+  eslint:
+    enabled: true
+    channel: "eslint-4"
+    config:
+      extensions:
+      - .js
+      - .jsx
+  nodesecurity:
+    enabled: true
