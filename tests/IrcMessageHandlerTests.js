@@ -6,92 +6,94 @@ const IrcMessageHandler = require("../lib/IrcHandlers/IrcMessageHandler");
  * Ensures that if the handler is disabled,
  * nothing happens.
  */
-exports.IrcMessageHandler_DisabledTest = function(assert) {
-    var message = undefined;
+exports.IrcMessageHandler = {
+    DisabledTest: function(assert) {
+        var message = undefined;
 
-    let uut = new IrcMessageHandler(
-        undefined,
-        GetMockIrcConfig(),
-        false,
-        (msg) => {message = msg;}
-    );
+        let uut = new IrcMessageHandler(
+            undefined,
+            GetMockIrcConfig(),
+            false,
+            (msg) => {message = msg;}
+        );
 
-    uut.RelayMessage("User", "#channel", "Hello, World!");
+        uut.RelayMessage("User", "#channel", "Hello, World!");
 
-    // Disabled, message should remain undefined.
-    assert.strictEqual(message, undefined);
+        // Disabled, message should remain undefined.
+        assert.strictEqual(message, undefined);
 
-    assert.done();
-};
+        assert.done();
+    },
 
-/**
- * Ensures that if we get a message from a channel
- * we are not in, we ignore the message.
- */
-exports.IrcMessageHandler_IgnoreChannelTest = function(assert) {
-    var message = undefined;
+    /**
+     * Ensures that if we get a message from a channel
+     * we are not in, we ignore the message.
+     */
+    IgnoreChannelTest: function(assert) {
+        var message = undefined;
 
-    let uut = new IrcMessageHandler(
-        undefined,
-        GetMockIrcConfig(),
-        true,
-        (msg) => {message = msg;}
-    );
+        let uut = new IrcMessageHandler(
+            undefined,
+            GetMockIrcConfig(),
+            true,
+            (msg) => {message = msg;}
+        );
 
-    uut.RelayMessage("User", "#badchannel", "Hello, World!");
+        uut.RelayMessage("User", "#badchannel", "Hello, World!");
 
-    // Not the channel we are in, ignore.
-    assert.strictEqual(message, undefined);
+        // Not the channel we are in, ignore.
+        assert.strictEqual(message, undefined);
 
-    assert.done();
-}
+        assert.done();
+    },
 
-/**
- * Ensures that if the handler is enabled,
- * its callback is activated, even if the black-list is undefined.
- */
-exports.IrcMessageHandler_UndefinedBlackListEnabledTest = function(assert) {
-    DoSuccessTest(assert, undefined);
+    /**
+     * Ensures that if the handler is enabled,
+     * its callback is activated, even if the black-list is undefined.
+     */
+    UndefinedBlackListEnabledTest: function(assert) {
+        DoSuccessTest(assert, undefined);
 
-    assert.done();
-};
+        assert.done();
+    },
 
-/**
- * Ensures that if the handler is enabled,
- * its callback is activated, even if the black-list is null.
- */
-exports.IrcMessageHandler_NullBlackListEnabledTest = function(assert) {
-    DoSuccessTest(assert, null);
+    /**
+     * Ensures that if the handler is enabled,
+     * its callback is activated, even if the black-list is null.
+     */
+    NullBlackListEnabledTest: function(assert) {
+        DoSuccessTest(assert, null);
 
-    assert.done();
-};
+        assert.done();
+    },
 
-/**
- * Ensures that if the handler is enabled,
- * its callback is activated, if the user is not in the black-list.
- */
-exports.IrcMessageHandler_NamesNotMatchBlackListEnabledTest = function(assert) {
-    DoSuccessTest(assert, ["Someone"]);
+    /**
+     * Ensures that if the handler is enabled,
+     * its callback is activated, if the user is not in the black-list.
+     */
+    NamesNotMatchBlackListEnabledTest: function(assert) {
+        DoSuccessTest(assert, ["Someone"]);
 
-    assert.done();
-};
+        assert.done();
+    },
 
-exports.IrcMessageHandler_BlackListNamesMatchTest = function(assert) {
-    var message = undefined;
+    BlackListNamesMatchTest: function(assert) {
+        var message = undefined;
 
-    let uut = new IrcMessageHandler(
-        ["user"],
-        GetMockIrcConfig(),
-        true,
-        (msg) => {message = msg;}
-    );
+        let uut = new IrcMessageHandler(
+            ["user"],
+            GetMockIrcConfig(),
+            true,
+            (msg) => {message = msg;}
+        );
 
-    uut.RelayMessage("User", "#channel", "Hello, World!");
+        uut.RelayMessage("User", "#channel", "Hello, World!");
 
-    // Should be disabled, as a black-list name appeared.
-    assert.strictEqual(message, undefined);
+        // Should be disabled, as a black-list name appeared.
+        assert.strictEqual(message, undefined);
 
-    assert.done();
+        assert.done();
+    }
 };
 
 function DoSuccessTest(assert, blackList) {

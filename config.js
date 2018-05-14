@@ -15,6 +15,7 @@ let settings = {
     nickservPassword: process.env.IRC_NICKSERV_PASS || "",
     nickservService: process.env.IRC_NICKSERV_SERVICE || "",
     editedPrefix: process.env.IRC_EDITED_PREFIX || "[EDIT] ",
+    maxMessageLength: Number(process.env.IRC_MAX_MESSAGE_LENGTH) || 400,
   },
   tg: {
     chatId: process.env.TELEGRAM_CHAT_ID || "-000000000",
