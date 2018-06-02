@@ -20,10 +20,11 @@ The following list of projects and communities use RITlug Teleirc.
 
 -  `MINECON Agents <https://mojang.com/2016/06/calling-all-agents-help-us-run-minecon-2016/>`_ (*Telegram invite-only* | `IRC <https://webchat.esper.net/?channels=MineconAgents>`_)
 
--  `MetaBrainz <https://metabrainz.org/projects>`__ (`Telegram <https://t.me/metabrainz>`_ | `IRC <https://webchat.freenode.net/?channels=metabrainz-telegram>`_)
-    -  `MusicBrainz <https://musicbrainz.org/doc/About>`_ (`Telegram <https://t.me/musicbrainz>`_ | `IRC <https://webchat.freenode.net/?channels=musicbrainz-telegram>`_)
+-  `MusicBrainz <https://musicbrainz.org/doc/About>`_ (`Telegram <https://t.me/musicbrainz>`_ | `IRC <https://webchat.freenode.net/?channels=musicbrainz-telegram>`_)
 
 -  `Open Labs Hackerspace <https://openlabs.cc>`_ (`Telegram <https://t.me/openlabs>`_ | `IRC <https://webchat.freenode.net/?channels=openlabs-albania>`_)
+
+-  `Pure Data <https://puredata.info/>`_ (`Telegram <https://t.me/puredata>`_ | `IRC <https://webchat.freenode.net/?channels=dataflow>`_)
 
 -  `RITlug <http://ritlug.com>`_ (*Telegram invite-only* | `IRC <https://webchat.freenode.net/?channels=ritlug>`_)
     -  `RITlug teleirc <https://github.com/RITlug/teleirc>`_ (`Telegram <https://t.me/teleirc>`_ \| `IRC <https://webchat.freenode.net/?channels=ritlug-teleirc>`_)
