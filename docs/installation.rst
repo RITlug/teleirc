@@ -199,7 +199,7 @@ systemd
 -------
 
 systemd is an option to run the bot persistently.
-A provided systemd service file is available (``teleirc.service``)
+A provided systemd service file is available (``misc/teleirc.service``)
 Move the provided file to ``/usr/lib/systemd/system/`` to activate it.
 Now, you can manage Teleirc through standard ``systemctl`` commands.
 
