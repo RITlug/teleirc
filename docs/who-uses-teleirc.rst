@@ -4,6 +4,7 @@ Who uses Teleirc?
 
 The following list of projects and communities use RITlug Teleirc.
 
+-  `CityZen app <https://cityzenapp.co>`_ (`Telegram <https://t.me/CityZenApp>`_ | `IRC <https://webchat.freenode.net/?channels=cityzen>`_)
 
 -  `Fedora Project <https://fedoraproject.org/wiki/Overview>`_ (`Telegram <https://t.me/fedora>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-telegram>`_)
     -  `Fedora Albania <https://www.facebook.com/fedorasq/>`_ (`Telegram <https://t.me/FedoraAlbania>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-sq>`_)
