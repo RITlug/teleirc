@@ -21,7 +21,7 @@ let ircbot = new irc.Client(config.irc.server, config.irc.botName, {
   channels: [config.irc.channel],
   debug: false,
   username: config.irc.botName,
-  sasl: True,
+  sasl: config.irc.sasl,
   password: config.irc.password
 });
 
