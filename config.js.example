@@ -7,6 +7,8 @@ let settings = {
     server: process.env.IRC_SERVER || "irc.freenode.net",
     channel: process.env.IRC_CHANNEL || "",
     botName: process.env.IRC_BOT_NAME || "teleirc",
+    sasl: process.env.IRC_SASL === "true" || false,
+    password: process.env.IRC_PASSWORD || "password",
     sendStickerEmoji: process.env.IRC_SEND_STICKER_EMOJI === "true" || true,
     prefix: process.env.IRC_PREFIX || "<",
     suffix: process.env.IRC_SUFFIX || ">",
