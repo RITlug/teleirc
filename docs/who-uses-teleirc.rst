@@ -13,6 +13,9 @@ The following list of projects and communities use RITlug Teleirc.
 
 -  `FOSS@MAGIC at RIT <http://foss.rit.edu>`_ (`Telegram <https://t.me/fossrit>`_  | `IRC <https://webchat.freenode.net/?channels=rit-foss>`_)
 
+- `Hamara Linux Project <https://hamaralinux.org>`_ (`Telegram
+  <https://t.me/hamaraLinux>`_ | `IRC <https://webchat.oftc.net/?channels=#hamara>`_)
+
 -  `LibreOffice Community <https://www.libreoffice.org/>`_ (`Telegram <https://t.me/libreofficecommunity>`_ | `IRC <https://webchat.freenode.net/?channels=libreoffice-telegram>`_)
     -  `LibreLadies <https://www.mail-archive.com/libreladies@documentfoundation.org/info.html>`_ (*Telegram invite-only* | `IRC <https://webchat.freenode.net/?channels=libreladies>`_)
     -  `LibreOffice AppImage <https://appimage.org/>`_ (*No Telegram @groupname* | `IRC <https://webchat.freenode.net/?channels=libreoffice-appimage>`_)
