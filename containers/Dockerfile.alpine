@@ -1,8 +1,8 @@
 FROM node:8-alpine
 
-RUN apk add --no-cache --update bash \
-        && addgroup -g 65533 teleirc \
-        && adduser -s /bin/bash -h /opt/teleirc -D -H teleirc -u 65533 -G teleirc
+RUN apk add --no-cache --update bash build-base python \
+&& addgroup -g 65532 teleirc \
+&& adduser -s /bin/bash -h /opt/teleirc -D -H teleirc -u 65532 -G teleirc
 
 WORKDIR /opt/teleirc
 CMD ["node", "teleirc.js"]
@@ -12,4 +12,4 @@ COPY config.js.example /opt/teleirc/config.js
 RUN chown -R teleirc:teleirc /opt/teleirc
 
 USER teleirc
-RUN npm install
+RUN yarn

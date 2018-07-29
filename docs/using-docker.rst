@@ -10,22 +10,20 @@ Install Docker onto the machine you plan to run Teleirc from.
 Which image do I choose?
 ************************
 
-Node Slim, Official Node Alpine Linux, and Fedora images are provided (ordered ascending by size).
+Official Node Alpine Linux, and Fedora images are provided (ordered ascending by size).
 
 +-----------------------------------------------------------------------------+-----------------------+---------+
 | Image                                                                       | File                  | Size    |
 +=============================================================================+=======================+=========+
-| `Node Alpine Linux <https://hub.docker.com/r/_/node/>`_ (``node:6-alpine``) | ``Dockerfile.alpine`` | 66.9 MB |
-+-----------------------------------------------------------------------------+-----------------------+---------+
-| `Node Slim <https://hub.docker.com/r/_/node/>`_  (``node:6-slim``)          | ``Dockerfile.slim``   | 256 MB  |
+| `Node Alpine Linux <https://hub.docker.com/r/_/node/>`_ (``node:8-alpine``) | ``Dockerfile.alpine`` | 374 MB  |
 +-----------------------------------------------------------------------------+-----------------------+---------+
 | `Fedora latest <https://hub.docker.com/r/_/fedora/>`_                       | ``Dockerfile.fedora`` | 569 MB  |
 +-----------------------------------------------------------------------------+-----------------------+---------+
 
 This guide uses ``alpine``.
-If you use another image, replace ``alpine`` with ``slim`` or ``fedora``.
+If you wish to use ``fedora``, replace ``alpine`` with ``fedora``.
 
-You will see errors during ``npm install``.
+You will see errors during ``yarn``.
 You can safely ignore them.
 They are not fatal.
 
@@ -52,7 +50,7 @@ Docker Compose
 **************
 
 Optionally, you may use `docker-compose <https://docs.docker.com/compose>`_.
-We provide an example compose file (``containers/docker-compose.yml.example``).
+We provide an example compose file (``containers/docker-compose.yml``).
 
 .. code-block:: yaml
 
@@ -61,16 +59,16 @@ We provide an example compose file (``containers/docker-compose.yml.example``).
       teleirc:
         user: teleirc
         build:
-          context: .
-          dockerfile: Dockerfile.alpine
+          context: ..
+          dockerfile: containers/Dockerfile.alpine
         env_file: .env
-
-We ignore the ``docker-compose.yml`` file in ``.gitignore``.
 
 Running with Compose
 ====================
 
 Run these commands to begin using Teleirc with Docker Compose.
 
-#. Copy ``containers/docker-compose.yml.example`` to ``docker-compose.yml``
+
+#. Copy ``docker-compose.yml.example`` to ``docker-compose.yml`` and edit if you do not wish to use the alpine image
+#. Copy ``.env.example`` to ``.env`` and edit accordingly.
 #. ``docker-compose up -d teleirc``
