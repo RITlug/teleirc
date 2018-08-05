@@ -46,7 +46,7 @@ Requirements
 ============
 
 - git
-- nodejs (8.x.x)
+- nodejs (8.x.x) -- we strongly recommend `nvm <https://github.com/creationix/nvm/blob/master/README.md>`_ as the installation method.
 
 Download
 ========
@@ -57,13 +57,33 @@ Download
 
 #. Change directories to repo
 
-#. Install dependencies with ``npm``
+#. Install `yarn <https://yarnpkg.com/en/docs/install>`_ via one of the following methods (we will only Linux, `yarn install documentation <https://yarnpkg.com/en/docs/install>`_ cover the rest)
 
-   - ``npm install``
+   - Arch Linux
 
-#. Copy the base configuration to a local configuration
+    .. code-block:: shell
 
-   - ``cp config.js.example config.js``
+        pacman -S yarn
+
+   - Debian/Ubuntu
+
+    .. code-block:: shell
+
+        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+        echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+        sudo apt-get update ; sudo apt-get install --no-install-recommends yarn
+
+   - Fedora/CentOS/RHEL:
+
+    .. code-block:: shell
+
+        curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+        yum install yarn or dnf install yarn
+
+
+#. Install dependencies using yarn
+
+   - ``yarn``
 
 Configuration
 =============
@@ -71,7 +91,7 @@ Configuration
 Teleirc uses `dotenv <https://www.npmjs.com/package/dotenv>`_ for easy management of API keys and settings.
 All your configuration changes will live in the ``.env`` file.
 You should not need to change other files.
-This makes it possible to use ``git pull`` to upgrade the bot in place.
+This makes it possible to use ``git pull`` to upgrade the bot in-place.
 
 Explaining config file
 ----------------------

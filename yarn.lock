@@ -495,6 +495,10 @@ nan@^2.3.5:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
 
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+
 node-icu-charset-detector@~0.1.2:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/node-icu-charset-detector/-/node-icu-charset-detector-0.1.4.tgz#4979c21f72cf4f79cbeec27b586d6f7138d0c9cd"
@@ -518,6 +522,12 @@ node-telegram-bot-api@^0.24.0:
 node-uuid@~1.4.7:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.7.tgz#6da5a17668c4b3dd59623bda11cf7fa4c1f60a6f"
+
+node@~8:
+  version "8.11.3"
+  resolved "https://registry.yarnpkg.com/node/-/node-8.11.3.tgz#b9efe2c3f4c8c84ee78439b119d768ad3b30eed6"
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 oauth-sign@~0.8.1, oauth-sign@~0.8.2:
   version "0.8.2"

@@ -8,7 +8,6 @@ node_js:
 
 before_install:
   - cp .env.example .env
-  - cp config.js.example config.js
 
 install:
   - yarn

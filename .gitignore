@@ -27,23 +27,25 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
-config.js
 .env
-docker-compose.yml
 
 # ---> Python (for docs)
-# Virtualenv                                                                     
-# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/                           
-.Python                                                                          
-[Bb]in                                                                           
-[Ii]nclude                                                                       
-[Ll]ib                                                                           
-[Ll]ib64                                                                         
-[Ll]ocal                                                                         
-[Ss]cripts                                                                       
-pyvenv.cfg                                                                       
-.venv                                                                            
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
 pip-selfcheck.json
 
 # Sphinx docs output
 docs/_build
+
+# Docker Compose file
+# Remove when image is pushed to Docker Hub or similar
+docker-compose.yml

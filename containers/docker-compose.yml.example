@@ -5,7 +5,7 @@ version: '2'
 services:
   teleirc:
     build:
-      context: .
-      dockerfile: Dockerfile.alpine
-    env_file: .env
+      context: ..
+      dockerfile: containers/Dockerfile.alpine
+    env_file: ../.env
     user: teleirc
