@@ -12,6 +12,8 @@ let settings = {
     suffix: process.env.IRC_SUFFIX || ">",
     showJoinMessage: process.env.IRC_SHOW_JOIN_MESSAGE === "true" || true,
     showLeaveMessage: process.env.IRC_SHOW_LEAVE_MESSAGE === "true" || true,
+    nickservPassword: process.env.IRC_NICKSERV_PASS || "",
+    nickservService: process.env.IRC_NICKSERV_SERVICE || "",
   },
   tg: {
     chatId: process.env.TELEGRAM_CHAT_ID || "-000000000",
