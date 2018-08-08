@@ -7,12 +7,13 @@ const TEST_NICKSERV_PASSWORD = "ThisIsATestPassword";
 const TEST_NICKSERV_SERVICE = "TestNickServServiceNick";
 const TEST_MESSAGE = "Test message body";
 const BLACKLISTED_NICK = "Nasty one!";
+const TEST_IRC_CHANNEL = "#EXAMPLE_IRC_CHANNEL";
 const TEST_SETTINGS = {
   token: "EXAMPLE_TOKEN",
   ircBlacklist: [BLACKLISTED_NICK, "some other blacklisted nick"],
   irc: {
     server: "EXAMPLE_IRC_SERVER",
-    channel: "#EXAMPLE_IRC_CHANNEL",
+    channel: TEST_IRC_CHANNEL,
     botName: "",
     sendStickerEmoji: "",
     prefix: "<_",
@@ -110,7 +111,20 @@ exports.IrcConnectionTests = {
     this.tgBotMock = createTgBotMock(assert);
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     uut.initStage4_addIrcListeners();
-    this.ircBotMock.listeners.message(BLACKLISTED_NICK, null, "test message");
+    this.ircBotMock.listeners.message(BLACKLISTED_NICK, TEST_IRC_CHANNEL, "test message");
+    assert.done();
+  },
+  "Messages sent to channel other than the configured one will not be forwarded to Telegram": function(assert) {
+    const EXPECTED_NICK = "some other nick";
+    const EXPECTED_MESSAGE = [];
+    TEST_SETTINGS.irc.nickservService = TEST_NICKSERV_SERVICE;
+    TEST_SETTINGS.irc.nickservPassword = "";
+    let uut = new TeleIrc(TEST_SETTINGS);
+    this.ircBotMock = createIrcBotMock(assert, EXPECTED_MESSAGE);
+    this.tgBotMock = createTgBotMock(assert);
+    uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
+    uut.initStage4_addIrcListeners();
+    this.ircBotMock.listeners.message(EXPECTED_NICK, "some other channel", TEST_MESSAGE);
     assert.done();
   },
   "Messages not from NickServ and not on blacklist will be forwarded to Telegram": function(assert) {
@@ -129,6 +143,6 @@ exports.IrcConnectionTests = {
     this.tgBotMock = createTgBotMock(assert);
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     uut.initStage4_addIrcListeners();
-    this.ircBotMock.listeners.message(EXPECTED_NICK, null, TEST_MESSAGE);
+    this.ircBotMock.listeners.message(EXPECTED_NICK, TEST_IRC_CHANNEL, TEST_MESSAGE);
   },
 };
