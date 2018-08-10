@@ -90,6 +90,16 @@ exports.IrcConnectionTests = {
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     assert.done();
   },
+  "Connecting and not identifying to NickServ as no service name is provided": function(assert) {
+    const EXPECTED_MESSAGE = [];
+    TEST_SETTINGS.irc.nickservService = "";
+    TEST_SETTINGS.irc.nickservPassword = TEST_NICKSERV_PASSWORD;
+    let uut = new TeleIrc(TEST_SETTINGS);
+    this.ircBotMock = createIrcBotMock(assert, EXPECTED_MESSAGE);
+    this.tgBotMock = createTgBotMock(assert);
+    uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
+    assert.done();
+  },
   "Messages from NickServ will not be forwarded to Telegram": function(assert) {
     const EXPECTED_MESSAGE = [];
     TEST_SETTINGS.irc.nickservService = TEST_NICKSERV_SERVICE;
