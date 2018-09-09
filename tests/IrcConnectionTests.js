@@ -3,6 +3,7 @@
 const nodeAssert = require('assert');
 const TeleIrc = require("../lib/TeleIrc");
 
+const TEST_NICKSERV_REGISTERED_NICK = "NickservNick"
 const TEST_NICKSERV_PASSWORD = "ThisIsATestPassword";
 const TEST_NICKSERV_SERVICE = "TestNickServServiceNick";
 const TEST_MESSAGE = "Test message body";
@@ -14,7 +15,7 @@ const TEST_SETTINGS = {
   irc: {
     server: "EXAMPLE_IRC_SERVER",
     channel: TEST_IRC_CHANNEL,
-    botName: "",
+    botName: "exampleBotName",
     sendStickerEmoji: "",
     prefix: "<_",
     suffix: ">_",
@@ -71,8 +72,21 @@ exports.IrcConnectionTests = {
   },
   "Connecting and identifying to NickServ as configured": function(assert) {
     const EXPECTED_MESSAGE = [
-      {channel: TEST_NICKSERV_SERVICE, message: `IDENTIFY ${TEST_NICKSERV_PASSWORD}`}
+      {channel: TEST_NICKSERV_SERVICE, message: `IDENTIFY ${TEST_NICKSERV_REGISTERED_NICK} ${TEST_NICKSERV_PASSWORD}`}
     ];
+    TEST_SETTINGS.irc.nickservRegisteredNick = TEST_NICKSERV_REGISTERED_NICK;
+    TEST_SETTINGS.irc.nickservService = TEST_NICKSERV_SERVICE;
+    TEST_SETTINGS.irc.nickservPassword = TEST_NICKSERV_PASSWORD;
+    let uut = new TeleIrc(TEST_SETTINGS);
+    this.ircBotMock = createIrcBotMock(assert, EXPECTED_MESSAGE);
+    this.tgBotMock = createTgBotMock(assert);
+    uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
+  },
+  "Connecting and identifying to NickServ as configured, using regular nick when NickServ's registered nick is missing": function(assert) {
+    const EXPECTED_MESSAGE = [
+      {channel: TEST_NICKSERV_SERVICE, message: `IDENTIFY ${TEST_SETTINGS.irc.botName} ${TEST_NICKSERV_PASSWORD}`}
+    ];
+    TEST_SETTINGS.irc.nickservRegisteredNick = "";
     TEST_SETTINGS.irc.nickservService = TEST_NICKSERV_SERVICE;
     TEST_SETTINGS.irc.nickservPassword = TEST_NICKSERV_PASSWORD;
     let uut = new TeleIrc(TEST_SETTINGS);
