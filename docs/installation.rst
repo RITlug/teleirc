@@ -25,7 +25,7 @@ Create bot with API
 
 #. Send ``/start`` in a message to @BotFather [#]_ user on Telegram
 #. Follow instructions from @BotFather to create new bot (e.g. name, username, description, etc.)
-#. Receive **token key** for new bot (used to access Telegram API)
+#. Receive **token key** for new bot (used to access Telegram API). You will need to add this to your .env config later on.
 #. (*Optional*) Set description or profile picture for your bot with @BotFather
 #. (**Required**) Set ``/setprivacy`` to **DISABLED** (so bot can see messages) [#]_
 #. Add bot to Telegram group you plan to bridge
@@ -57,7 +57,9 @@ Download
 
 #. Change directories to repo
 
-#. Install `yarn <https://yarnpkg.com/en/docs/install>`_ via one of the following methods (we will only Linux, `yarn install documentation <https://yarnpkg.com/en/docs/install>`_ cover the rest)
+   - ``cd teleirc``
+
+#. Install `yarn <https://yarnpkg.com/en/docs/install>`_ via one of the following methods (for any other systems, follow the directions on `yarn install documentation <https://yarnpkg.com/en/docs/install>`_ page)
 
    - Arch Linux
 
@@ -79,11 +81,16 @@ Download
 
         curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
         yum install yarn or dnf install yarn
+        
+   - Windows:
 
+      For the most up to date directions, follow the instructions on the `yarn website <https://yarnpkg.com/en/docs/install#windows-stable>`_ to download the latest installer
 
 #. Install dependencies using yarn
 
-   - ``yarn``
+   - Open a terminal or command prompt to the location where you cloned the teleirc repository
+
+   - run the command ``yarn`` to install dependencies
 
 Configuration
 =============
@@ -98,6 +105,7 @@ Explaining config file
 
 The config file you use is a ``.env`` file.
 All configuration values for Teleirc are stored here.
+
 Copy the example file to a productive file to get started (``cp .env.example .env``)
 Edit the ``.env`` file and configure it your preference.
 
@@ -207,6 +215,8 @@ pm2
 `pm2 <http://pm2.keymetrics.io/>`_ is a NPM package that keeps NodeJS running in the background.
 If you run an application and it crashes, pm2 restarts the process.
 pm2 also restarts processes if the server reboots.
+pm2 is compatible with Linux, MacOS and Windows.
+
 
 Read the `pm2 documentation <http://pm2.keymetrics.io/docs/usage/quick-start/>`_ for more information.
 

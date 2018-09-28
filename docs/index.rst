@@ -17,6 +17,7 @@ Today, it is used by various communities other than just RITlug.
    :maxdepth: 2
    :caption: Contents
 
+   quick-start
    installation
    using-docker
    who-uses-teleirc
