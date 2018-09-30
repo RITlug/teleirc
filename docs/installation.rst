@@ -137,6 +137,9 @@ IRC
 Telegram
 ^^^^^^^^
 
+.. note:: teleirc **DOES NOT** support channels, only groups. Read more about channels vs groups `here <https://telegram.org/faq#q-what-39s-the-difference-between-groups-supergroups-and-channel>`_.
+
+
 - **TELEIRC_TOKEN**:
 
     - Private API token for Telegram bot
