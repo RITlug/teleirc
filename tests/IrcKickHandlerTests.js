@@ -1,6 +1,6 @@
 'use strict';
 
-const IrcKickHandler = require("../lib/IrcHandlers/KickHandler");
+const IrcKickHandler = require("../lib/IrcHandlers/IrcKickHandler");
 
 /**
  * Ensures that if the handler is disabled,
