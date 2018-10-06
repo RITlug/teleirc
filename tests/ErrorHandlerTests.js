@@ -1,15 +1,15 @@
 'use strict';
 
-const ErrorHandler = require("../lib/IrcHandlers/ErrorHandler");
+const IrcErrorHandler = require("../lib/IrcHandlers/ErrorHandler");
 
 /**
  * Ensures that if the handler is disabled,
  * nothing happens.
  */
-exports.ErrorHandler_DisabledTest = function(assert) {
+exports.IrcErrorHandler_DisabledTest = function(assert) {
     var message = undefined;
 
-    let uut = new ErrorHandler(false, (msg) => {message = msg;});
+    let uut = new IrcErrorHandler(false, (msg) => {message = msg;});
 
     uut.ReportError("My Message");
 
@@ -23,10 +23,10 @@ exports.ErrorHandler_DisabledTest = function(assert) {
  * Ensures that if the handler is enabled,
  * its callback is activated.
  */
-exports.ErrorHandler_EnabledTest = function(assert) {
+exports.IrcErrorHandler_EnabledTest = function(assert) {
     var message = undefined;
 
-    let uut = new ErrorHandler(true, (msg) => {message = msg;});
+    let uut = new IrcErrorHandler(true, (msg) => {message = msg;});
 
     uut.ReportError("My Message");
 

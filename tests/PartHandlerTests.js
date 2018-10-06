@@ -1,15 +1,15 @@
 'use strict';
 
-const PartHandler = require("../lib/IrcHandlers/PartHandler");
+const IrcPartHandler = require("../lib/IrcHandlers/PartHandler");
 
 /**
  * Ensures that if the handler is disabled,
  * nothing happens.
  */
-exports.PartHandler_DisabledTest = function(assert) {
+exports.IrcPartHandler_DisabledTest = function(assert) {
     var message = undefined;
 
-    let uut = new PartHandler(false, (msg) => {message = msg;});
+    let uut = new IrcPartHandler(false, (msg) => {message = msg;});
 
     uut.ReportPart("#channel", "user", "reason");
 
@@ -24,10 +24,10 @@ exports.PartHandler_DisabledTest = function(assert) {
  * its callback is activated.
  * This test has a reason defined.
  */
-exports.PartHandler_EnabledWithReasonTest = function(assert) {
+exports.IrcPartHandler_EnabledWithReasonTest = function(assert) {
     var message = undefined;
 
-    let uut = new PartHandler(true, (msg) => {message = msg;});
+    let uut = new IrcPartHandler(true, (msg) => {message = msg;});
 
     uut.ReportPart("#channel", "user", "reason");
 
@@ -42,10 +42,10 @@ exports.PartHandler_EnabledWithReasonTest = function(assert) {
  * its callback is activated.
  * This test does not have a reason defined, so it should default.
  */
-exports.PartHandler_EnabledWithOutReasonTest = function(assert) {
+exports.IrcPartHandler_EnabledWithOutReasonTest = function(assert) {
     var message = undefined;
 
-    let uut = new PartHandler(true, (msg) => {message = msg;});
+    let uut = new IrcPartHandler(true, (msg) => {message = msg;});
 
     uut.ReportPart("#channel", "user", undefined);
 

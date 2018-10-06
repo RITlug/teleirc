@@ -1,6 +1,6 @@
 'use strict';
 
-const JoinHandler = require("../lib/IrcHandlers/JoinHandler");
+const IrcJoinHandler = require("../lib/IrcHandlers/JoinHandler");
 
 class ActionClass {
     constructor(action) {
@@ -15,11 +15,11 @@ class ActionClass {
 /**
  * Ensures that we can pass in a function pointer to the class just fine.
  */
-exports.JoinHandler_FunctionPointerClass = function(assert) {
+exports.IrcJoinHandler_FunctionPointerClass = function(assert) {
     var message = undefined;
 
     let actionClass = new ActionClass( (msg) => {message=msg;});
-    let uut = new JoinHandler(true, actionClass.DoAction.bind(actionClass));
+    let uut = new IrcJoinHandler(true, actionClass.DoAction.bind(actionClass));
 
     uut.ReportJoin("#channel", "user");
 
@@ -33,10 +33,10 @@ exports.JoinHandler_FunctionPointerClass = function(assert) {
  * Ensures that if the handler is disabled,
  * nothing happens.
  */
-exports.JoinHandler_DisabledTest = function(assert) {
+exports.IrcJoinHandler_DisabledTest = function(assert) {
     var message = undefined;
 
-    let uut = new JoinHandler(false, (msg) => {message = msg;});
+    let uut = new IrcJoinHandler(false, (msg) => {message = msg;});
 
     uut.ReportJoin("#channel", "user");
 
@@ -50,10 +50,10 @@ exports.JoinHandler_DisabledTest = function(assert) {
  * Ensures that if the handler is enabled,
  * its callback is activated.
  */
-exports.JoinHandler_EnabledTest = function(assert) {
+exports.IrcJoinHandler_EnabledTest = function(assert) {
     var message = undefined;
 
-    let uut = new JoinHandler(true, (msg) => {message = msg;});
+    let uut = new IrcJoinHandler(true, (msg) => {message = msg;});
 
     uut.ReportJoin("#channel", "user");
 

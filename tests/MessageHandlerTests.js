@@ -1,15 +1,15 @@
 'use strict';
 
-const MessageHandler = require("../lib/IrcHandlers/MessageHandler");
+const IrcMessageHandler = require("../lib/IrcHandlers/MessageHandler");
 
 /**
  * Ensures that if the handler is disabled,
  * nothing happens.
  */
-exports.MessageHandler_DisabledTest = function(assert) {
+exports.IrcMessageHandler_DisabledTest = function(assert) {
     var message = undefined;
 
-    let uut = new MessageHandler(undefined, false, (msg) => {message = msg;});
+    let uut = new IrcMessageHandler(undefined, false, (msg) => {message = msg;});
 
     uut.ReportMessage("User", "#channel", "Hello, World!");
 
@@ -23,7 +23,7 @@ exports.MessageHandler_DisabledTest = function(assert) {
  * Ensures that if the handler is enabled,
  * its callback is activated, even if the black-list is undefined.
  */
-exports.MessageHandler_UndefinedBlackListEnabledTest = function(assert) {
+exports.IrcMessageHandler_UndefinedBlackListEnabledTest = function(assert) {
     DoSuccessTest(assert, undefined);
 
     assert.done();
@@ -33,7 +33,7 @@ exports.MessageHandler_UndefinedBlackListEnabledTest = function(assert) {
  * Ensures that if the handler is enabled,
  * its callback is activated, even if the black-list is null.
  */
-exports.MessageHandler_NullBlackListEnabledTest = function(assert) {
+exports.IrcMessageHandler_NullBlackListEnabledTest = function(assert) {
     DoSuccessTest(assert, null);
 
     assert.done();
@@ -43,16 +43,16 @@ exports.MessageHandler_NullBlackListEnabledTest = function(assert) {
  * Ensures that if the handler is enabled,
  * its callback is activated, if the user is not in the black-list.
  */
-exports.MessageHandler_NamesNotMatchBlackListEnabledTest = function(assert) {
+exports.IrcMessageHandler_NamesNotMatchBlackListEnabledTest = function(assert) {
     DoSuccessTest(assert, ["Someone"]);
 
     assert.done();
 };
 
-exports.MessageHandler_BlackListNamesMatchTest = function(assert) {
+exports.IrcMessageHandler_BlackListNamesMatchTest = function(assert) {
     var message = undefined;
 
-    let uut = new MessageHandler(["user"], true, (msg) => {message = msg;});
+    let uut = new IrcMessageHandler(["user"], true, (msg) => {message = msg;});
 
     uut.ReportMessage("User", "#channel", "Hello, World!");
 
@@ -65,7 +65,7 @@ exports.MessageHandler_BlackListNamesMatchTest = function(assert) {
 function DoSuccessTest(assert, blackList) {
     var message = undefined;
 
-    let uut = new MessageHandler(blackList, true, (msg) => {message = msg;});
+    let uut = new IrcMessageHandler(blackList, true, (msg) => {message = msg;});
 
     uut.ReportMessage("User", "#channel", "Hello, World!");
 
