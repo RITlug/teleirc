@@ -31,7 +31,7 @@ to test. Our (small) development community is also found in these channels too.
 
 See what projects and communities use Teleirc.
 
-[Who uses Teleirc?](https://teleirc.readthedocs.io/en/latest/who-uses-teleirc.html "Who uses Teleirc?")
+[Who uses Teleirc?](https://teleirc.readthedocs.io/en/latest/who-uses-teleirc/ "Who uses Teleirc?")
 
 
 ## Documentation
