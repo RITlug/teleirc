@@ -1,6 +1,6 @@
 'use strict';
 
-const IrcPartHandler = require("../lib/IrcHandlers/PartHandler");
+const IrcPartHandler = require("../lib/IrcHandlers/IrcPartHandler");
 
 /**
  * Ensures that if the handler is disabled,

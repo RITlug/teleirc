@@ -1,6 +1,6 @@
 'use strict';
 
-const IrcJoinHandler = require("../lib/IrcHandlers/JoinHandler");
+const IrcJoinHandler = require("../lib/IrcHandlers/IrcJoinHandler");
 
 class ActionClass {
     constructor(action) {

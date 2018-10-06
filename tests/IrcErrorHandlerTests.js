@@ -1,6 +1,6 @@
 'use strict';
 
-const IrcErrorHandler = require("../lib/IrcHandlers/ErrorHandler");
+const IrcErrorHandler = require("../lib/IrcHandlers/IrcErrorHandler");
 
 /**
  * Ensures that if the handler is disabled,
