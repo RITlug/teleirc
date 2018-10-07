@@ -22,7 +22,7 @@
     "iconv": "^2.2.1",
     "irc": "~0.5.0",
     "node": "~8",
-    "node-telegram-bot-api": "^0.24.0",
+    "node-telegram-bot-api": "^0.30.0",
     "imgur": "0.2.1"
   }
 }
