@@ -24,7 +24,7 @@ exports.IrcJoinHandler_FunctionPointerClass = function(assert) {
     uut.ReportJoin("#channel", "user");
 
     // Disabled, message should remain undefined.
-    assert.strictEqual(message, "user has joined #channel channel.");
+    assert.strictEqual(message, "user has joined #channel.");
 
     assert.done();
 }
@@ -57,7 +57,7 @@ exports.IrcJoinHandler_EnabledTest = function(assert) {
 
     uut.ReportJoin("#channel", "user");
 
-    let expectedMessage = "user has joined #channel channel.";
+    let expectedMessage = "user has joined #channel.";
     assert.strictEqual(message, expectedMessage);
 
     assert.done();
