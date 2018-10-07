@@ -11,7 +11,7 @@ exports.IrcMessageHandler_DisabledTest = function(assert) {
 
     let uut = new IrcMessageHandler(undefined, false, (msg) => {message = msg;});
 
-    uut.ReportMessage("User", "#channel", "Hello, World!");
+    uut.RelayMessage("User", "#channel", "Hello, World!");
 
     // Disabled, message should remain undefined.
     assert.strictEqual(message, undefined);
@@ -54,7 +54,7 @@ exports.IrcMessageHandler_BlackListNamesMatchTest = function(assert) {
 
     let uut = new IrcMessageHandler(["user"], true, (msg) => {message = msg;});
 
-    uut.ReportMessage("User", "#channel", "Hello, World!");
+    uut.RelayMessage("User", "#channel", "Hello, World!");
 
     // Should be disabled, as a black-list name appeared.
     assert.strictEqual(message, undefined);
@@ -67,7 +67,7 @@ function DoSuccessTest(assert, blackList) {
 
     let uut = new IrcMessageHandler(blackList, true, (msg) => {message = msg;});
 
-    uut.ReportMessage("User", "#channel", "Hello, World!");
+    uut.RelayMessage("User", "#channel", "Hello, World!");
 
     let expectedMessage = "<User> Hello, World!";
     assert.strictEqual(message, expectedMessage);
