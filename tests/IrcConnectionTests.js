@@ -55,7 +55,18 @@ function createIrcBotMock(assert, expectedMessages, whatSplitShouldReturn) {
       this.messageNo += 1;
       if (this.messageNo === this.expectedMessages.length) assert.done();
     },
-    addListener: function(name, callback) {this.listeners[name] = callback;},
+    addListener: function(name, callback) {
+      if (this.listeners[name] === undefined ) {
+        this.listeners[name] = callback;
+      }
+      else {
+        let firstCallback = this.listeners[name];
+        this.listeners[name] = function() {
+          firstCallback();
+          callback();
+        }.bind(this);
+      }
+    },
     messageNo: 0,
     expectedMessages: expectedMessages,
     listeners: {}
