@@ -55,10 +55,25 @@ function createIrcBotMock(assert, expectedMessages, whatSplitShouldReturn) {
       this.messageNo += 1;
       if (this.messageNo === this.expectedMessages.length) assert.done();
     },
-    addListener: function(name, callback) {this.listeners[name] = callback;},
+    addListener: function(name, callback) {
+      if (this.listeners[name] === undefined) {
+        this.listeners[name] = [];
+      }
+
+      this.listeners[name].push(callback);
+    },
     messageNo: 0,
     expectedMessages: expectedMessages,
-    listeners: {}
+    listeners: {},
+    fireMessageEvent: function(from, channel, message) {
+      if (this.listeners['message'] === undefined) {
+        throw "Message event never added.";
+      }
+
+      for(var i = 0; i < this.listeners['message'].length; ++i) {
+        this.listeners['message'][i](from, channel, message);
+      }
+    }
   };
 }
 
@@ -123,7 +138,7 @@ exports.IrcConnectionTests = {
     this.tgBotMock = createTgBotMock(assert);
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     uut.initStage4_addIrcListeners();
-    this.ircBotMock.listeners.message(TEST_NICKSERV_SERVICE, null, "test message");
+    this.ircBotMock.fireMessageEvent(TEST_NICKSERV_SERVICE, null, "test message");
     assert.done();
   },
   "Messages from blacklisted nicks will not be forwarded to Telegram": function(assert) {
@@ -135,7 +150,7 @@ exports.IrcConnectionTests = {
     this.tgBotMock = createTgBotMock(assert);
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     uut.initStage4_addIrcListeners();
-    this.ircBotMock.listeners.message(BLACKLISTED_NICK, TEST_IRC_CHANNEL, "test message");
+    this.ircBotMock.fireMessageEvent(BLACKLISTED_NICK, TEST_IRC_CHANNEL, "test message");
     assert.done();
   },
   "Messages sent to channel other than the configured one will not be forwarded to Telegram": function(assert) {
@@ -148,7 +163,7 @@ exports.IrcConnectionTests = {
     this.tgBotMock = createTgBotMock(assert);
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     uut.initStage4_addIrcListeners();
-    this.ircBotMock.listeners.message(EXPECTED_NICK, "some other channel", TEST_MESSAGE);
+    this.ircBotMock.fireMessageEvent(EXPECTED_NICK, "some other channel", TEST_MESSAGE);
     assert.done();
   },
   "Messages not from NickServ and not on blacklist will be forwarded to Telegram": function(assert) {
@@ -157,16 +172,18 @@ exports.IrcConnectionTests = {
     TEST_SETTINGS.irc.nickservService = TEST_NICKSERV_SERVICE;
     TEST_SETTINGS.irc.nickservPassword = "";
     let uut = new TeleIrc(TEST_SETTINGS);
-    this.ircBotMock = createIrcBotMock(assert, EXPECTED_MESSAGE);
     uut.tgRateLimiter = {
       queueMessage: function(text) {
         assert.equal(text, `<${EXPECTED_NICK}> ${TEST_MESSAGE}`)
         assert.done();
       }
     };
+
+    this.ircBotMock = createIrcBotMock(assert, EXPECTED_MESSAGE);
     this.tgBotMock = createTgBotMock(assert);
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     uut.initStage4_addIrcListeners();
-    this.ircBotMock.listeners.message(EXPECTED_NICK, TEST_IRC_CHANNEL, TEST_MESSAGE);
+
+    this.ircBotMock.fireMessageEvent(EXPECTED_NICK, TEST_IRC_CHANNEL, TEST_MESSAGE);
   },
 };
