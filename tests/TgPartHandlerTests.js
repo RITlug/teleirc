@@ -12,7 +12,7 @@ let fromWithUserName = {
     username : "username"
 };
 
-exports.TgPartHandler_DisabledTets = function(assert) {
+exports.TgPartHandler_DisabledTest = function(assert) {
     var message = undefined;
 
     let uut = new TgPartHandler(
