@@ -10,7 +10,7 @@ let from = {
 let document = {
     file_name : "filename.txt",
     mime_type : "text",
-    file_size_size : 256,
+    file_size : 256,
     file_id : 13
 };
 
@@ -65,7 +65,7 @@ exports.TgDocumentHandler_EnabledTest = async function(assert) {
         " (" +
         document.mime_type +
         ", " +
-        document.file_size_size +
+        document.file_size +
         " bytes): " +
         expectedUrl;
 
