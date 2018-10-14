@@ -35,8 +35,7 @@ exports.TgDocumentHandler_DisabledTest = function(assert) {
 
     uut.ReportDocument(from, document);
 
-    assert.strictEqual(message, undefined);
-
+    assert.strictEqual(undefined, message);
     assert.done();
 }
 
@@ -71,6 +70,5 @@ exports.TgDocumentHandler_EnabledTest = async function(assert) {
         expectedUrl;
 
     assert.strictEqual(expectedMessage, message);
-
     assert.done();
 };
