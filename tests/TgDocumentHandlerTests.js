@@ -24,7 +24,7 @@ let mockTgBot = {
 /**
  * Ensures nothing happens it the handler is disabled.
  */
-exports.TgDocumentHandler_DisabledTest = function(assert) {
+exports.TgDocumentHandler_DisabledTest = async function(assert) {
     var message = undefined;
 
     let uut = new TgDocumentHandler(
@@ -33,7 +33,7 @@ exports.TgDocumentHandler_DisabledTest = function(assert) {
         (msg) => {message = msg;}
     );
 
-    uut.ReportDocument(from, document);
+    await uut.ReportDocument(from, document);
 
     assert.strictEqual(undefined, message);
     assert.done();
