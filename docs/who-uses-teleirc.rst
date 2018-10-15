@@ -6,9 +6,12 @@ The following list of projects and communities use RITlug Teleirc.
 
 -  `CityZen app <https://cityzenapp.co>`_ (`Telegram <https://t.me/CityZenApp>`_ | `IRC <https://webchat.freenode.net/?channels=cityzen>`_)
 
--  `Fedora Project <https://fedoraproject.org/wiki/Overview>`_ (`Telegram <https://t.me/fedora>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-telegram>`_)
+-  `Fedora Project <https://docs.fedoraproject.org/en-US/project/`_ (`Telegram <https://t.me/fedora>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-telegram>`_)
     -  `Fedora Albania <https://www.facebook.com/fedorasq/>`_ (`Telegram <https://t.me/FedoraAlbania>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-sq>`_)
+    -  `Fedora CommOps <https://docs.fedoraproject.org/en-US/commops/>`_ (`Telegram <https://t.me/fedoracommops>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-commops>`_ )
+    -  `Fedora Diversity and Inclusion Team <https://docs.fedoraproject.org/en-US/diversity-inclusion/team/>`_ (`Telegram <https://t.me/fedoradiversity>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-diversity>`_ )
     -  `Fedora LATAM <http://fedoracommunity.org/latam>`__ (`Telegram <https://t.me/fedoralatam>`__ | `IRC <https://webchat.freenode.net/?channels=fedora-latam>`__)
+    -  `Fedora Marketing Team <https://fedoraproject.org/wiki/Marketing>`_ (`Telegram <https://t.me/fedoramktg>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-mktg>`_ )
     -  `Flock to Fedora <https://flocktofedora.org>`_ (`Telegram <https://t.me/flocktofedora>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-flock>`_)
 
 -  `FOSS@MAGIC at RIT <http://foss.rit.edu>`_ (`Telegram <https://t.me/fossrit>`_  | `IRC <https://webchat.freenode.net/?channels=rit-foss>`_)
