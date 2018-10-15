@@ -6,7 +6,7 @@ The following list of projects and communities use RITlug Teleirc.
 
 -  `CityZen app <https://cityzenapp.co>`_ (`Telegram <https://t.me/CityZenApp>`_ | `IRC <https://webchat.freenode.net/?channels=cityzen>`_)
 
--  `Fedora Project <https://docs.fedoraproject.org/en-US/project/`_ (`Telegram <https://t.me/fedora>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-telegram>`_)
+-  `Fedora Project <https://docs.fedoraproject.org/en-US/project/>`_ (`Telegram <https://t.me/fedora>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-telegram>`_)
     -  `Fedora Albania <https://www.facebook.com/fedorasq/>`_ (`Telegram <https://t.me/FedoraAlbania>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-sq>`_)
     -  `Fedora CommOps <https://docs.fedoraproject.org/en-US/commops/>`_ (`Telegram <https://t.me/fedoracommops>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-commops>`_ )
     -  `Fedora Diversity and Inclusion Team <https://docs.fedoraproject.org/en-US/diversity-inclusion/team/>`_ (`Telegram <https://t.me/fedoradiversity>`_ | `IRC <https://webchat.freenode.net/?channels=fedora-diversity>`_ )
