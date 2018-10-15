@@ -16,7 +16,7 @@ let settings = {
     nickservService: process.env.IRC_NICKSERV_SERVICE || "",
   },
   tg: {
-    chatId: parseInt(process.env.TELEGRAM_CHAT_ID) || -000000000,
+    chatId: process.env.TELEGRAM_CHAT_ID || "-000000000",
     showJoinMessage: process.env.SHOW_JOIN_MESSAGE === "true" || false,
     showActionMessage: process.env.SHOW_ACTION_MESSAGE === "true" || true,
     showLeaveMessage: process.env.SHOW_LEAVE_MESSAGE === "true" || false,
