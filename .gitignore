@@ -49,3 +49,6 @@ docs/_build
 # Docker Compose file
 # Remove when image is pushed to Docker Hub or similar
 docker-compose.yml
+
+# Allow teleirc's lib, which is ignored from the python Virtualenv above
+!lib/
