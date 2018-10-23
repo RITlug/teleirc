@@ -51,4 +51,4 @@ docs/_build
 docker-compose.yml
 
 # Allow teleirc's lib, which is ignored from the python Virtualenv above
-!lib/
+!/lib/
