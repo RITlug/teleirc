@@ -86,7 +86,7 @@ exports.TgPhotoHandler_DisabledTest = async function(assert) {
         (msg) => {message = msg;}
     );
 
-    await uut.ReportPhoto(fromNoUsername, photos, "My Caption");
+    await uut.RelayPhotoMessage(fromNoUsername, photos, "My Caption");
 
     assert.strictEqual(undefined, message);
     assert.done();
@@ -111,7 +111,7 @@ exports.TgPhotoHandler_EnabledNoCaptionTest = async function(assert) {
         ": " +
         photoLarge.url; // Should always pick large photo's URL.
         
-    await uut.ReportPhoto(fromNoUsername, photos, null);
+    await uut.RelayPhotoMessage(fromNoUsername, photos, null);
 
     assert.strictEqual(expectedMessage, message);
     assert.done();
@@ -140,7 +140,7 @@ exports.TgPhotoHandler_EnabledCaptionTest = async function(assert) {
         ": " +
         photoLarge.url; // Should always pick large photo's URL.
         
-    await uut.ReportPhoto(fromWithUserName, photos, caption);
+    await uut.RelayPhotoMessage(fromWithUserName, photos, caption);
 
     assert.strictEqual(expectedMessage, message);
     assert.done();
@@ -169,7 +169,7 @@ exports.ImgurPhotoHandler_SuccessTest = async function(assert) {
         ": " +
         photoLarge.imgurUrl; // Should always pick large photo's URL.
 
-    await uut.ReportPhoto(fromWithUserName, photos, caption);
+    await uut.RelayPhotoMessage(fromWithUserName, photos, caption);
 
     assert.strictEqual(expectedMessage, message);
     assert.done();
@@ -192,7 +192,7 @@ exports.ImgurPhotoHandler_SuccessTest = async function(assert) {
     let caption = "My Caption";
 
     // Pass in an empty photo array,
-    await uut.ReportPhoto(fromWithUserName, [photoNotInImgur], caption);
+    await uut.RelayPhotoMessage(fromWithUserName, [photoNotInImgur], caption);
 
     assert.strictEqual(undefined, message);
     assert.done();

@@ -23,7 +23,7 @@ exports.TgJoinHandler_DisabledTest = function(assert) {
         (msg) => {message = msg;}
     );
 
-    uut.ReportJoin(fromWithUserName);
+    uut.RelayJoinMessage(fromWithUserName);
 
     assert.strictEqual(undefined, message);
     assert.done();
@@ -43,7 +43,7 @@ exports.TgJoinHandler_EnabledNoUsername = function(assert) {
         (msg) => {message = msg;}
     );
 
-    uut.ReportJoin(fromNoUsername);
+    uut.RelayJoinMessage(fromNoUsername);
 
     assert.strictEqual(expectedMessage, message);
     assert.done();
@@ -63,7 +63,7 @@ exports.TgJoinHandler_EnabledWithUsername = function(assert) {
         (msg) => {message = msg;}
     );
 
-    uut.ReportJoin(fromWithUserName);
+    uut.RelayJoinMessage(fromWithUserName);
 
     assert.strictEqual(expectedMessage, message);
     assert.done();

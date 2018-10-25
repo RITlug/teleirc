@@ -20,7 +20,7 @@ exports.TgPartHandler_DisabledTest = function(assert) {
         (msg) => {message = msg;}
     );
 
-    uut.ReportPart(fromWithUserName);
+    uut.RelayPartMessage(fromWithUserName);
 
     assert.strictEqual(undefined, message);
     assert.done();
@@ -40,7 +40,7 @@ exports.TgPartHandler_EnabledNoUsername = function(assert) {
         (msg) => {message = msg;}
     );
 
-    uut.ReportPart(fromNoUsername);
+    uut.RelayPartMessage(fromNoUsername);
 
     assert.strictEqual(expectedMessage, message);
     assert.done();
@@ -60,7 +60,7 @@ exports.TgPartHandler_EnabledWithUsername = function(assert) {
         (msg) => {message = msg;}
     );
 
-    uut.ReportPart(fromWithUserName);
+    uut.RelayPartMessage(fromWithUserName);
 
     assert.strictEqual(expectedMessage, message);
     assert.done();

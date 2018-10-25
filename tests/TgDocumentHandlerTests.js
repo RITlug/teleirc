@@ -33,7 +33,7 @@ exports.TgDocumentHandler_DisabledTest = async function(assert) {
         (msg) => {message = msg;}
     );
 
-    await uut.ReportDocument(from, document);
+    await uut.RelayDocumentMessage(from, document);
 
     assert.strictEqual(undefined, message);
     assert.done();
@@ -56,7 +56,7 @@ exports.TgDocumentHandler_EnabledTest = async function(assert) {
         (msg) => {message = msg;}
     );
 
-    await uut.ReportDocument(from, document);
+    await uut.RelayDocumentMessage(from, document);
 
     let expectedMessage = 
         from.username + 
