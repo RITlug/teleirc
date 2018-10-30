@@ -40,7 +40,12 @@ const TEST_SETTINGS = {
 };
 
 function createTgBotMock(assert) {
-  return {};
+  return {
+      on: function(foo, bar) {},
+      getMe: function() {
+          return new Promise(function(){}, function(){});
+      }
+  };
 }
 
 function createIrcBotMock(assert, expectedMessages, whatSplitShouldReturn) {
