@@ -8,3 +8,10 @@ plugins:
       - .jsx
   nodesecurity:
     enabled: true
+checks:
+    similar-code:
+        enabled: true
+        config:
+            languages:
+               javascript:
+                   threshold: 50
