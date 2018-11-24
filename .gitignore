@@ -1,4 +1,21 @@
-# ---> Node
+# ---------------------------------- Docker ------------------------------------
+
+# Example Dockerfiles exist in `containers/`. Copy the base image of your choice
+# to the project root directory as `Dockerfile`. Choose which image suits your
+# needs or preferences.
+Dockerfile
+
+# Docker Compose file
+# Remove when image is pushed to Docker Hub or similar
+docker-compose.yml
+
+# Allow teleirc's lib, which would otherwise be ignored from the python Virtualenv
+# ignores above
+!/lib/
+
+
+# ----------------------------------- Node -------------------------------------
+
 # Logs
 logs
 *.log
@@ -27,9 +44,13 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
+
+# Running config file! Don't commit this unless you know what you're doing.
 .env
 
-# ---> Python (for docs)
+
+# ----------------------------- Python (for docs) ------------------------------
+
 # Virtualenv
 # http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
 .Python
@@ -46,10 +67,3 @@ pip-selfcheck.json
 # Sphinx docs output
 docs/_build
 
-# Docker Compose file
-# Remove when image is pushed to Docker Hub or similar
-docker-compose.yml
-
-# Allow teleirc's lib, which would otherwise be ignored from the python Virtualenv
-# ignores above
-!/lib/
