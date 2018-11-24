@@ -1,19 +1,21 @@
-FROM fedora
+FROM fedora:29
+
 # Cache layers which will not change
 RUN groupadd teleirc -g 65532 \
-&& useradd -u 65532 -g teleirc -s /bin/bash -M -d /opt/teleirc teleirc
+    && useradd -u 65532 -g teleirc -s /bin/bash -M -d /opt/teleirc teleirc
 
 WORKDIR /opt/teleirc
-CMD ["node", "teleirc.js"]
 
 COPY . /opt/teleirc/
-COPY config.js.example /opt/teleirc/config.js
+COPY config.js /opt/teleirc/config.js
 
 RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo \
-&& dnf -y update --setopt=deltarpm=false \
-&& dnf clean all \
-&& dnf -y install nodejs libicu-devel python gcc-c++ make yarn --setopt=deltarpm=false \
-&& yarn \
-&& dnf -y remove libicu-devel gcc-c++ make \
-&& dnf clean all \
-&& chown -R teleirc:teleirc /opt/teleirc
+    && dnf -y upgrade --setopt=deltarpm=false \
+    && dnf -y install nodejs libicu-devel python gcc-c++ make yarn --setopt=deltarpm=false \
+    && yarn \
+    ; dnf -y remove libicu-devel gcc-c++ \
+    && dnf clean all \
+    && chown -R teleirc:teleirc /opt/teleirc
+
+CMD ["node", "teleirc.js"]
+
