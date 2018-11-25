@@ -7,7 +7,7 @@ node_js:
   - 8
 
 before_install:
-  - cp .env.example .env
+  - cp env.example .env
 
 install:
   - yarn
