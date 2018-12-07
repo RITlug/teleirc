@@ -48,9 +48,9 @@ exports.TgMessageHandler = {
         let uut = new TgMessageHandler(
             prefixSuffixConfig,
             true,
-            (actualUsername, actualMessage) => {
-                assert.strictEqual(expectedMessage, actualMessage);
-                assert.strictEqual(expectedUsername, actualUsername);
+            (input) => {
+                assert.strictEqual(expectedMessage, input.message);
+                assert.strictEqual(expectedUsername, input.from);
                 assert.done();
             }
         );
@@ -67,9 +67,9 @@ exports.TgMessageHandler = {
         let uut = new TgMessageHandler(
             prefixSuffixConfig,
             true,
-            (actualUsername, actualMessage) => {
-                assert.strictEqual(expectedMessage, actualMessage);
-                assert.strictEqual(expectedUsername, actualUsername);
+            (input) => {
+                assert.strictEqual(expectedMessage, input.message);
+                assert.strictEqual(expectedUsername, input.from);
                 assert.done();
             }
         );
