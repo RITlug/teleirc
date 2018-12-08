@@ -134,6 +134,12 @@ IRC
 
     - IRC server you wish to connect to (default: ``chat.freenode.net``)
 
+- **IRC_NICKSERV_SERVICE**:
+    - IRC service you would like to use to authenticate with IRC (default: ``NickServ``)
+
+- **IRC_NICKSERV_PASS**:
+    - IRC password for your bot to use in order to complete IRC authentication (default: ``""``)
+
 Telegram
 ^^^^^^^^
 
