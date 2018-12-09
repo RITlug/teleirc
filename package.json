@@ -19,10 +19,10 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^2.0.0",
-    "iconv": "^2.2.1",
+    "iconv": "^2.3.1",
     "imgur": "^0.3.1",
     "irc": "~0.5.0",
-    "node": "~8",
+    "node": "^10",
     "node-telegram-bot-api": "^0.30.0"
   }
 }
