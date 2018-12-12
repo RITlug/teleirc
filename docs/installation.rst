@@ -46,14 +46,16 @@ Requirements
 ============
 
 - git
-- nodejs (8.x.x) -- we strongly recommend `nvm <https://github.com/creationix/nvm/blob/master/README.md>`_ as the installation method.
+- nodejs
+
+  - Node 8 and Node 10 are officially supported
 
 Download
 ========
 
 #. Clone the repository to the server
 
-   - ``git clone https://github.com/RITlug/teleirc.git``
+  - ``git clone https://github.com/RITlug/teleirc.git``
 
 #. Change directories to repo
 
