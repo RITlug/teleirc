@@ -43,13 +43,31 @@ let photoNotInImgur = {
     url : "https://ritlug.com/test/4.png"
 }
 
+// This photo has an undefined Telegram image,
+// and so mock imgur object should throw exception
+let photoNotInTelegram = {
+    file_id : 5,
+    file_size : 5,
+    imgurUrl : "https://imgur.com/test.png"
+}
+
+// This photo has both imgur and Telegram photos
+// undefined. Exception should be thrown.
+let photosNotFound = {
+    file_id : 6,
+    file_size : 6
+}
+
 let photos = [photoSmall, photoMed, photoLarge];
 
 let mockTgBot = {
     files : {
         1 : photoSmall.url,
         2 : photoMed.url,
-        3 : photoLarge.url
+        3 : photoLarge.url,
+        4 : photoNotInImgur.url,
+        5 : photoNotInTelegram.url,
+        6 : photosNotFound.url
     },
     async getFileLink(id) {
         return Promise.resolve(this.files[id]);
@@ -179,7 +197,7 @@ exports.ImgurPhotoHandler_SuccessTest = async function(assert) {
  * Tests the failure path to ensure we don't crash if we can't
  * upload to imgur.
  */
-exports.ImgurPhotoHandler_SuccessTest = async function(assert) {
+exports.ImgurPhotoHandler_NoImgurUrlTest = async function(assert) {
     var message = undefined;
 
     let uut = new TgImgurPhotoHandler(
@@ -194,6 +212,46 @@ exports.ImgurPhotoHandler_SuccessTest = async function(assert) {
     // Pass in an empty photo array,
     await uut.RelayPhotoMessage(fromWithUserName, [photoNotInImgur], caption);
 
+    assert.strictEqual(undefined, message);
+    assert.done();
+}
+
+/**
+ * Tests the failure path to ensure we don't crash if the Telegram
+ * url is not found.
+ */
+exports.ImgurPhotoHandler_NoTelegramUrlTest = async function(assert) {
+    var message = undefined;
+
+    let uut = new TgImgurPhotoHandler(
+        mockImgur,
+        true,
+        mockTgBot,
+        (msg) => {message = msg}
+    );
+
+    let caption = "My Caption";
+    await uut.RelayPhotoMessage(fromWithUserName, [photoNotInTelegram], caption);
+    assert.strictEqual(undefined, message);
+    assert.done();
+}
+
+/**
+ * Tests the failure path to ensure we don't crash if no urls
+ * can be found.
+ */
+exports.ImgurPhotoHandler_NoUrlsTest = async function(assert) {
+    var message = undefined;
+
+    let uut = new TgImgurPhotoHandler(
+        mockImgur,
+        true,
+        mockTgBot,
+        (msg) => {message = msg}
+    );
+
+    let caption = "My Caption";
+    await uut.RelayPhotoMessage(fromWithUserName, [photosNotFound], caption);
     assert.strictEqual(undefined, message);
     assert.done();
 }
