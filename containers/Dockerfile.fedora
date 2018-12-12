@@ -6,11 +6,10 @@ RUN groupadd teleirc -g 65532 \
 
 COPY . /opt/teleirc/
 
-RUN curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo \
-    && dnf -y upgrade --setopt=deltarpm=false \
-    && dnf -y install nodejs libicu-devel python gcc-c++ make yarn --setopt=deltarpm=false \
-    && yarn \
-    ; dnf -y remove libicu-devel gcc-c++ \
+RUN dnf -y upgrade --setopt=deltarpm=false \
+    && dnf -y install nodejs nodejs-yarn libicu-devel python gcc-c++ make --setopt=deltarpm=false \
+    && nodejs-yarn \
+    && dnf -y remove libicu-devel gcc-c++ \
     && dnf clean all \
     && chown -R teleirc:teleirc /opt/teleirc
 
