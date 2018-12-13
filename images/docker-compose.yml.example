@@ -6,6 +6,6 @@ services:
   teleirc:
     build:
       context: ..
-      dockerfile: containers/Dockerfile.alpine
+      dockerfile: images/Dockerfile.alpine
     env_file: ../.env
     user: teleirc
