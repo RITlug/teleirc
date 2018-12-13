@@ -2,7 +2,7 @@
 Using Docker
 ############
 
-Dockerfiles and images are available in ``containers/`` for configuring and running Teleirc.
+Dockerfiles and images are available in ``images/`` for configuring and running Teleirc.
 Install Docker onto the machine you plan to run Teleirc from.
 
 
@@ -34,7 +34,7 @@ Building Docker image
 
 .. code-block:: bash
 
-    cd containers/
+    cd images/
     docker build . -f Dockerfile.alpine -t teleirc
     docker run -d -u teleirc --name teleirc --restart always \
         -e TELEIRC_TOKEN="000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA" \
@@ -50,7 +50,7 @@ Docker Compose
 **************
 
 Optionally, you may use `docker-compose <https://docs.docker.com/compose>`_.
-We provide an example compose file (``containers/docker-compose.yml``).
+We provide an example compose file (``images/docker-compose.yml``).
 
 .. code-block:: yaml
 
@@ -60,7 +60,7 @@ We provide an example compose file (``containers/docker-compose.yml``).
         user: teleirc
         build:
           context: ..
-          dockerfile: containers/Dockerfile.alpine
+          dockerfile: images/Dockerfile.alpine
         env_file: .env
 
 Running with Compose
