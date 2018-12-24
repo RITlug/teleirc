@@ -34,8 +34,7 @@ Building Docker image
 
 .. code-block:: bash
 
-    cd images/
-    docker build . -f Dockerfile.alpine -t teleirc
+    docker build . -f images/Dockerfile.alpine -t teleirc
     docker run -d -u teleirc --name teleirc --restart always \
         -e TELEIRC_TOKEN="000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA" \
         -e IRC_CHANNEL="#channel" \
