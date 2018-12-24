@@ -1,5 +1,6 @@
 FROM node:10-alpine
 
+COPY . /opt/teleirc
 WORKDIR /opt/teleirc
 
 RUN apk add --no-cache --update bash build-base python \
@@ -8,7 +9,6 @@ RUN apk add --no-cache --update bash build-base python \
     && yarn \
     && chown -R teleirc:teleirc /opt/teleirc
 
-COPY . /opt/teleirc
 
 USER teleirc
 CMD ["node", "teleirc.js"]
