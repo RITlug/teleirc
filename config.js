@@ -15,6 +15,7 @@ let settings = {
     nickservPassword: process.env.IRC_NICKSERV_PASS || "",
     nickservService: process.env.IRC_NICKSERV_SERVICE || "",
     editedPrefix: process.env.IRC_EDITED_PREFIX || "[EDIT] ",
+    replyToPrefix: process.env.IRC_REPLY_TO_PREFIX || "[REPLY TO THIS BELOW]",
   },
   tg: {
     chatId: process.env.TELEGRAM_CHAT_ID || "-000000000",
