@@ -14,6 +14,7 @@ let settings = {
     showLeaveMessage: process.env.IRC_SHOW_LEAVE_MESSAGE === "true" || true,
     nickservPassword: process.env.IRC_NICKSERV_PASS || "",
     nickservService: process.env.IRC_NICKSERV_SERVICE || "",
+    editedPrefix: process.env.IRC_EDITED_PREFIX || "[EDIT] ",
   },
   tg: {
     chatId: process.env.TELEGRAM_CHAT_ID || "-000000000",
