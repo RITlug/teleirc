@@ -42,11 +42,8 @@ function createTgBotMock() {
   };
 }
 
-function createIrcBotMock(assert, expectedMessages, whatSplitShouldReturn) {
+function createIrcBotMock(assert, expectedMessages) {
   return {
-    _splitLongLines: function(line, maxLen, out) {
-      return whatSplitShouldReturn || [line];
-    },
     say: function(channel, msg) {
       assert.equal(TEST_SETTINGS.irc.channel, channel);
       assert.equal(this.expectedMessages[this.messageNo], msg);
@@ -108,13 +105,24 @@ exports.TelegramToIrcTests = {
   "Forwarding a long message": function(assert) {
     const USERNAME = "TEST_USERNAME";
     const EXPECTED_MESSAGES = [
-      "<_TEST_USERNAME>_ line 1",
-      "<_TEST_USERNAME>_ line 2"
+      "<_TEST_USERNAME>_ Lorem ipsum dolor sit amet, consectetur \
+adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore \
+magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \
+ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute \
+irure dolor in reprehenderit in voluptate velit esse cillum dolore \
+eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, \
+sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum \
+dolor   HERE IT SPLITS>|",
+      "<_TEST_USERNAME>_ |<THIS WAS SPLITTED sed do eiusmod tempor \
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, \
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo \
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse \
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat \
+non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
     ];
-    const SPLITTED_MESSAGE = ["line 1", "line 2"];
 
     let uut = new TeleIrc(TEST_SETTINGS);
-    let ircBotMock = createIrcBotMock(assert, EXPECTED_MESSAGES, SPLITTED_MESSAGE);
+    let ircBotMock = createIrcBotMock(assert, EXPECTED_MESSAGES);
     let tgBotMock = createTgBotMock();
     uut.initStage3_initBots(ircBotMock, tgBotMock);
     uut.initStage5_initTelegramMessageSending();
@@ -126,7 +134,20 @@ exports.TelegramToIrcTests = {
       from: {
         username: USERNAME
       },
-      text: "EXAMPLE"
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\
+ sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\
+ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\
+ nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in\
+ reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla\
+ pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa\
+ qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor\
+   HERE IT SPLITS>||<THIS WAS SPLITTED\
+ sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\
+ Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\
+ nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in\
+ reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla\
+ pariatur. Excepteur sint occaecat cupidatat non proident, sunt in\
+ culpa qui officia deserunt mollit anim id est laborum."
     });
   },
 };

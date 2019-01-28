@@ -143,9 +143,8 @@ IRC
     - IRC password for your bot to use in order to complete IRC authentication (default: ``""``)
 
 - **IRC_MAX_MESSAGE_LENGTH**:
-  
     - Maximum length of the message that can be sent to IRC. Longer messages
-      will be splitted into multiple messages. (default: ``400``)
+      will be split into multiple messages. (default: ``400``)
 
 Telegram
 ^^^^^^^^

@@ -16,6 +16,7 @@ let fromWithUserName = {
 let prefixSuffixConfig = {
     prefix : "<",
     suffix : ">",
+    maxMessageLength: 400,
 };
 
 /**
@@ -42,38 +43,38 @@ exports.TgMessageHandler = {
         var actualMessage = undefined;
         var actualUsername = undefined;
 
-        let expectedMessage = "My Message";
+        let sentMessage = "My Message";
         let expectedUsername = fromWithUserName.first_name;
+        let expectedMessage = `<${expectedUsername}> My Message`;
 
         let uut = new TgMessageHandler(
             prefixSuffixConfig,
             true,
             (input) => {
-                assert.strictEqual(expectedMessage, input.message);
-                assert.strictEqual(expectedUsername, input.from);
+                assert.strictEqual(expectedMessage, input);
                 assert.done();
             }
         );
 
-        uut.RelayMessage(fromNoUsername, expectedMessage);
+        uut.RelayMessage(fromNoUsername, sentMessage);
     },
     "Username is reported if it is available": function(assert) {
         var actualMessage = undefined;
         var actualUsername = undefined;
 
-        let expectedMessage = "My Message";
+        let sentMessage = "My Message";
         let expectedUsername = fromWithUserName.username;
+        let expectedMessage = `<${expectedUsername}> My Message`;
 
         let uut = new TgMessageHandler(
             prefixSuffixConfig,
             true,
             (input) => {
-                assert.strictEqual(expectedMessage, input.message);
-                assert.strictEqual(expectedUsername, input.from);
+                assert.strictEqual(expectedMessage, input);
                 assert.done();
             }
         );
 
-        uut.RelayMessage(fromWithUserName, expectedMessage);
+        uut.RelayMessage(fromWithUserName, sentMessage);
     },
 };
