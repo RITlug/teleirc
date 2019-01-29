@@ -25,6 +25,8 @@ The following list of projects and communities use RITlug Teleirc.
     -  `LibreOffice Design Team <https://wiki.documentfoundation.org/Design>`_ (*No Telegram @groupname* | `IRC <https://webchat.freenode.net/?channels=libreoffice-design>`_)
     -  `LibreOffice QA Team <https://www.libreoffice.org/community/qa/>`_ (*No Telegram @groupname* | `IRC <https://webchat.freenode.net/?channels=libreoffice-qa>`_)
 
+- `Linux Users Massa Carrara <https://www.lumacaonline.org/>`_ (`Telegram <https://t.me/joinchat/Afu_TAczLfB4dQRKeYQCqg>`_ | `IRC <https://www.lumacaonline.org/webchat.php>`_)
+
 -  `MINECON Agents <https://mojang.com/2016/06/calling-all-agents-help-us-run-minecon-2016/>`_ (*Telegram invite-only* | `IRC <https://webchat.esper.net/?channels=MineconAgents>`_)
 
 -  `MusicBrainz <https://musicbrainz.org/doc/About>`_ (`Telegram <https://t.me/musicbrainz>`_ | `IRC <https://webchat.freenode.net/?channels=musicbrainz-telegram>`_)
