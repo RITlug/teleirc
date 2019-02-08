@@ -16,78 +16,65 @@ let fromWithUserName = {
 let prefixSuffixConfig = {
     prefix : "<",
     suffix : ">",
+    maxMessageLength: 400,
 };
 
 /**
  * Ensures nothing happens it the handler is disabled.
  */
-exports.TgMessageHandler_DisabledTest = function(assert) {
-    var message = undefined;
+exports.TgMessageHandler = {
+    "Nothing happens when disabled": function(assert) {
+        var message = undefined;
 
-    let uut = new TgMessageHandler(
-        prefixSuffixConfig,
-        false,
-        (msg) => {message = msg;}
-    );
+        let uut = new TgMessageHandler(
+            prefixSuffixConfig,
+            false,
+            (uname, msg) => {
+                assert.fail("Messages should not be forwarded when disabled!");
+            }
+        );
 
-    uut.RelayMessage(fromNoUsername, "My Message");
+        uut.RelayMessage(fromNoUsername, "My Message");
 
-    assert.strictEqual(undefined, message);
-    assert.done();
-};
+        assert.strictEqual(undefined, message);
+        assert.done();
+    },
+    "If user has no username, first name is reported": function(assert) {
+        var actualMessage = undefined;
+        var actualUsername = undefined;
 
-/**
- * Ensures that if the handler is enabled, but the user
- * has no username, we report the user's first name.
- */
-exports.TgMessageHandler_EnabledNoUserName = function(assert) {
-    var message = undefined;
+        let sentMessage = "My Message";
+        let expectedUsername = fromWithUserName.first_name;
+        let expectedMessage = `<${expectedUsername}> My Message`;
 
-    let userMessage = "My Message";
+        let uut = new TgMessageHandler(
+            prefixSuffixConfig,
+            true,
+            (input) => {
+                assert.strictEqual(expectedMessage, input);
+                assert.done();
+            }
+        );
 
-    let expectedMessage =
-        prefixSuffixConfig.prefix +
-        fromNoUsername.first_name +
-        prefixSuffixConfig.suffix +
-        " " +
-        userMessage;
+        uut.RelayMessage(fromNoUsername, sentMessage);
+    },
+    "Username is reported if it is available": function(assert) {
+        var actualMessage = undefined;
+        var actualUsername = undefined;
 
-    let uut = new TgMessageHandler(
-        prefixSuffixConfig,
-        true,
-        (msg) => {message = msg;}
-    );
+        let sentMessage = "My Message";
+        let expectedUsername = fromWithUserName.username;
+        let expectedMessage = `<${expectedUsername}> My Message`;
 
-    uut.RelayMessage(fromNoUsername, userMessage);
+        let uut = new TgMessageHandler(
+            prefixSuffixConfig,
+            true,
+            (input) => {
+                assert.strictEqual(expectedMessage, input);
+                assert.done();
+            }
+        );
 
-    assert.strictEqual(expectedMessage, message);
-    assert.done();
-};
-
-/**
- * Ensures that if the handler is enabled, but the user
- * has username, we report just the user's username.
- */
-exports.TgMessageHandler_EnabledWithUserName = function(assert) {
-    var message = undefined;
-
-    let userMessage = "My Message";
-
-    let expectedMessage =
-        prefixSuffixConfig.prefix +
-        fromWithUserName.username +
-        prefixSuffixConfig.suffix +
-        " " +
-        userMessage;
-
-    let uut = new TgMessageHandler(
-        prefixSuffixConfig,
-        true,
-        (msg) => {message = msg;}
-    );
-
-    uut.RelayMessage(fromWithUserName, userMessage);
-
-    assert.strictEqual(expectedMessage, message);
-    assert.done();
+        uut.RelayMessage(fromWithUserName, sentMessage);
+    },
 };

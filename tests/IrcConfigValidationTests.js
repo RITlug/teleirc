@@ -9,17 +9,24 @@ function shouldThrow(assert, block, errorCode) {
   assert.throws(
     block,
     function(exception) {
-      return exception.errorCode === errorCode
+      let retval = (exception.errorCode === errorCode);
+      if (!retval) {
+        console.log(JSON.stringify(exception));
+        console.trace();
+      }
+      return retval;
     }
   );
 }
 
 // -------- Missing IRC Config Tests --------
 
+exports.ircConfigValidation = {};
+
 /**
  * Ensures if the IRC config is missing completely from our settings, an exception gets thrown.
  */
-exports.ircConfigValidation_MissingIrcConfig = function(assert) {
+exports.ircConfigValidation.MissingIrcConfig = function(assert) {
   // Copy our default settings, but ignore the IRC portion.
   let testSettings = {
     token: config.token,
@@ -72,14 +79,14 @@ function doRequiredSettingsTest(assert, uut, expectedErrorCode) {
  * Ensures if the IRC config is missing its server config, an
  * exception gets thrown.
  */
-exports.ircConfigValidation_missingServerConfig = function(assert) {
+exports.ircConfigValidation["Missing IRC server config causes an exception"] = function(assert) {
   // Copy our default settings, but ignore the server.
   let testSettings = {
     token: config.token,
     irc: {
       // No Server.
-      channel: config.irc.channel,
-      botName: config.irc.botName,
+      channel: "test channel",
+      botName: "test bot name",
       sendStickerEmoji: config.sendStickerEmoji,
       prefix: config.prefix,
       suffix: config.suffix,
@@ -108,18 +115,14 @@ exports.ircConfigValidation_missingServerConfig = function(assert) {
   assert.done();
 }
 
-/**
- * Ensures if the IRC config is missing its channel config, an
- * exception gets thrown.
- */
-exports.ircConfigValidation_missingChannelConfig = function(assert) {
+exports.ircConfigValidation["Missing IRC channel config causes an exception"] = function(assert) {
   // Copy our default settings, but ignore the server.
   let testSettings = {
     token: config.token,
     irc: {
-      server: config.irc.server,
+      server: "test irc server",
       // No channel
-      botName: config.irc.botName,
+      botName: "test bot name",
       sendStickerEmoji: config.sendStickerEmoji,
       prefix: config.prefix,
       suffix: config.suffix,
@@ -148,23 +151,19 @@ exports.ircConfigValidation_missingChannelConfig = function(assert) {
   assert.done();
 }
 
-/**
- * Ensures if the IRC config is missing its channel config, an
- * exception gets thrown.
- */
-exports.ircConfigValidation_missingBotNameConfig = function(assert) {
+exports.ircConfigValidation["Missing IRC bot name causes an exception"] = function(assert) {
   // Copy our default settings, but ignore the server.
   let testSettings = {
     token: config.token,
     irc: {
-      server: config.irc.server,
-      channel: config.irc.channel,
+      server: "test irc server",
+      channel: "test channel",
       // No bot name.
       sendStickerEmoji: config.sendStickerEmoji,
       prefix: config.prefix,
       suffix: config.suffix,
       showJoinMessage: config.showJoinMessage,
-      showLeaveMessage: config.showLeaveMessage
+      showLeaveMessage: config.showLeaveMessage,
     },
     ircBlacklist: config.ircBlacklist,
     tg: config.tg,
@@ -216,16 +215,16 @@ function doDefaultSettingsTest(assert, testSettings) {
  * Ensures if the IRC config is missing optional values, it gets
  * added in as a default.
  */
-exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
+exports.ircConfigValidation.defaultSettingsTest_notDefined = function(assert) {
   // Copy our default settings, but ignore the IRC showEmoji.
   let testSettings = {
     token: config.token,
     irc: {
       // These three options are required, everything else is optional.
       // If missing, we should use a default setting.
-      server: config.irc.server,
-      channel: config.irc.channel,
-      botName: config.irc.botName,
+      server: "test irc server",
+      channel: "test channel",
+      botName: "test bot name",
       sendStickerEmoji: undefined,
       prefix: undefined,
       suffix: undefined,
@@ -246,16 +245,16 @@ exports.ircConfigValidation_defaultSettingsTest_notDefined = function(assert) {
  * Ensures if the IRC config is missing optional values, it gets
  * added in as a default.
  */
-exports.ircConfigValidation_defaultSettingsTest_setToNull = function(assert) {
+exports.ircConfigValidation.defaultSettingsTest_setToNull = function(assert) {
   // Copy our default settings, but ignore the IRC showEmoji.
   let testSettings = {
     token: config.token,
     irc: {
       // These three options are required, everything else is optional.
       // If missing, we should use a default setting.
-      server: config.irc.server,
-      channel: config.irc.channel,
-      botName: config.irc.botName,
+      server: "test irc server",
+      channel: "test channel",
+      botName: "test bot name",
       sendStickerEmoji: null,
       prefix: null,
       suffix: null,
@@ -276,7 +275,7 @@ exports.ircConfigValidation_defaultSettingsTest_setToNull = function(assert) {
  * Ensures if the IRC config's optional values are set to undefined, it gets
  * set to its default.
  */
-exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(
+exports.ircConfigValidation.defaultSettingsTest_missingSettings = function(
   assert) {
   // Copy our default settings, but ignore the IRC showEmoji.
   let testSettings = {
@@ -284,9 +283,9 @@ exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(
     irc: {
       // These three options are required, everything else is optional.
       // If missing, we should use a default setting.
-      server: config.irc.server,
-      channel: config.irc.channel,
-      botName: config.irc.botName
+      server: "test irc server",
+      channel: "test channel",
+      botName: "test bot name"
     },
     ircBlacklist: config.ircBlacklist,
     tg: config.tg,
@@ -298,7 +297,7 @@ exports.ircConfigValidation_defaultSettingsTest_missingSettings = function(
   assert.done();
 };
 
-exports.ircConfigValidation_checkTypes = (assert) => {
+exports.ircConfigValidation.checkTypes = (assert) => {
   assert.strictEqual(typeof config.irc.sendStickerEmoji, 'boolean');
   assert.strictEqual(typeof config.irc.showJoinMessage, 'boolean');
   assert.strictEqual(typeof config.irc.showLeaveMessage, 'boolean');
