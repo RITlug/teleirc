@@ -15,6 +15,7 @@ Today, it is used by various communities.
 
    installation
    using-docker
+   config-file-glossary
    who-uses-teleirc
 
 
