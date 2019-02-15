@@ -14,7 +14,7 @@ Today, it is used by various communities.
    :caption: Contents
 
    installation
-   using-docker
+   deploy-teleirc
    config-file-glossary
    who-uses-teleirc
 
