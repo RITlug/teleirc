@@ -84,17 +84,18 @@ Relay Telegram picture messages via Imgur
 -----------------------------------------
 
 Teleirc retrieves picture messages via the Telegram API.
-By default, picture messages from Telegram are viewable from the given Telegram API URL.
-However, API links expire and eventually break.
-Optionally, Teleirc uploads an image to Imgur and replaces the Telegram API URL with a link to Imgur instead.
-This makes picture messages more durable for logs or for someone joining the conversation later.
+By default, picture messages from Telegram are sent to IRC through Imgur.
+`See context <https://github.com/RITlug/teleirc/issues/115>`_ for why Imgur is enabled by default.
+
+.. note:: By default, Teleirc uses the generic Imgur API key.
+          Imgur highly recommends registering each Teleirc bot.
 
 To add Imgur support, follow these steps:
 
 #. Create an Imgur account
 #. `Register your bot <https://api.imgur.com/oauth2/addclient>`_ with the Imgur API
     - Select *OAuth2 without callback* option
-#. Put client ID into ``.env`` file and enable using Imgur
+#. Put client ID into ``.env`` file
 
 
 .. [#] @BotFather is the `Telegram bot <https://core.telegram.org/bots>`_ for `creating Telegram bots <https://core.telegram.org/bots#6-botfather>`_
