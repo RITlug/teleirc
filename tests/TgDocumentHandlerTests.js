@@ -2,7 +2,7 @@
 
 const TgDocumentHandler = require("../lib/TelegramHandlers/TgDocumentHandler");
 
-let from = {
+let fromWithUsername = {
     first_name : "FirstName",
     username: "username"
 };
@@ -21,10 +21,11 @@ let mockTgBot = {
     }
 };
 
-/**
- * Ensures nothing happens it the handler is disabled.
- */
-exports.TgDocumentHandler_DisabledTest = async function(assert) {
+ /**
+  * Ensures that if disabled, and no caption exists, we use the
+  * default caption.
+  */
+exports.TgDocumentHandler_DisabledNoCaptionTest = async function(assert) {
     var message = undefined;
 
     let uut = new TgDocumentHandler(
@@ -33,17 +34,45 @@ exports.TgDocumentHandler_DisabledTest = async function(assert) {
         (msg) => {message = msg;}
     );
 
-    await uut.RelayDocumentMessage(from, document);
+    await uut.RelayDocumentMessage(fromWithUsername, document, null);
 
-    assert.strictEqual(undefined, message);
+    var expectedMessage = fromWithUsername.username + 
+                " shared a file on Telegram with caption: 'Untitled Document'";
+
+    assert.strictEqual(expectedMessage, message);
+    assert.done();
+}
+
+ /**
+  * Ensures that if disabled, and a caption exist, we grab the 
+  * correct caption.
+  */
+exports.TgDocumentHandler_DisabledCaptionTest = async function(assert) {
+    var message = undefined;
+
+    let uut = new TgDocumentHandler(
+        false,
+        mockTgBot,
+        (msg) => {message = msg;}
+    );
+
+    let caption = "My caption";
+
+    let expectedMessage = fromWithUsername.username + 
+                " shared a file on Telegram with caption: " + 
+                "'" + caption + "'";
+
+    await uut.RelayDocumentMessage(fromWithUsername, document, caption);
+
+    assert.strictEqual(expectedMessage, message);
     assert.done();
 }
 
 /**
- * Ensures the correct message gets generated if the handler is
- * enabled.
+ * Ensures that if we are enabled, but a caption does not exist, we
+ * use the default caption.
  */
-exports.TgDocumentHandler_EnabledTest = async function(assert) {
+exports.TgDocumentHandler_EnabledNoCaptionTest = async function(assert) {
     var message = undefined;
 
     let expectedUrl = "https://ritlug.com/test.txt";
@@ -56,19 +85,47 @@ exports.TgDocumentHandler_EnabledTest = async function(assert) {
         (msg) => {message = msg;}
     );
 
-    await uut.RelayDocumentMessage(from, document);
+    await uut.RelayDocumentMessage(fromWithUsername, document, null);
 
     let expectedMessage = 
-        from.username + 
-        " Posted File: " +
-        document.file_name +
-        " (" +
-        document.mime_type +
-        ", " +
-        document.file_size +
-        " bytes): " +
+        "'Untitled Document' uploaded by " + 
+        fromWithUsername.username + 
+        ": " + 
         expectedUrl;
+    
+    assert.strictEqual(expectedMessage, message);
+    assert.done();
+};
 
+/**
+ * Ensures that if we are enabled, and a caption exists, we caption
+ * the image correctly.
+ */
+exports.TgDocumentHandler_EnabledCaptionTest = async function(assert) {
+    var message = undefined;
+
+    let expectedUrl = "https://ritlug.com/test.txt";
+
+    mockTgBot.files[document.file_id] = expectedUrl;
+
+    let uut = new TgDocumentHandler(
+        true,
+        mockTgBot,
+        (msg) => {message = msg;}
+    );
+
+    let caption = "My Caption";
+
+    await uut.RelayDocumentMessage(fromWithUsername, document, caption);
+
+    let expectedMessage = 
+        "'" + 
+        caption + 
+        "' uploaded by " +
+        fromWithUsername.username +
+        ": " +
+        expectedUrl;
+    
     assert.strictEqual(expectedMessage, message);
     assert.done();
 };

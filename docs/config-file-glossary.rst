@@ -23,6 +23,9 @@ IRC settings
 ``IRC_SEND_STICKER_EMOJI=true``
     Send emojis associated with a sticker to IRC (when a Telegram user sends a sticker)
 
+``IRC_SEND_DOCUMENT=false``
+    Send documents and files from Telegram to IRC (`why is this false by default? <https://github.com/RITlug/teleirc/issues/115>`_)
+
 ``IRC_PREFIX="<"``
     Text displayed before Telegram name in IRC
 
@@ -76,7 +79,7 @@ Telegram settings
 Imgur settings
 **************
 
-``USE_IMGUR_FOR_IMAGES=false``
+``USE_IMGUR_FOR_IMAGES=true``
     Upload picture messages from Telegram to Imgur, send Imgur link to IRC
 
 ``IMGUR_CLIENT_ID=0000000000``
