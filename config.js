@@ -8,6 +8,7 @@ let settings = {
     channel: process.env.IRC_CHANNEL || "",
     botName: process.env.IRC_BOT_NAME || "teleirc",
     sendStickerEmoji: process.env.IRC_SEND_STICKER_EMOJI === "true" || true,
+    sendDocument: process.env.IRC_SEND_DOCUMENT === "true" || false,
     prefix: process.env.IRC_PREFIX || "<",
     suffix: process.env.IRC_SUFFIX || ">",
     showJoinMessage: process.env.IRC_SHOW_JOIN_MESSAGE === "true" || true,
