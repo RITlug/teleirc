@@ -13,7 +13,7 @@ Today, it is used by various communities.
    :maxdepth: 2
    :caption: Contents
 
-   installation
+   quick-install
    deploy-teleirc
    config-file-glossary
    who-uses-teleirc
