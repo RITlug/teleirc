@@ -39,6 +39,15 @@ After pm2 is installed, run these commands to start Teleirc::
     pm2 start -n my-teleirc-bot teleirc.js
 
 
+**************
+Arch Linux AUR
+**************
+
+On ArchLinux, see `teleirc-git <https://aur.archlinux.org/packages/teleirc-git/>`_ in the AUR.
+The AUR package uses the systemd method to deploy Teleirc.
+Place Teleirc configuration files in the ``/usr/lib/teleirc/`` directory.
+
+
 ******
 Docker
 ******
