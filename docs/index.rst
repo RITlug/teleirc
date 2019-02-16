@@ -16,6 +16,7 @@ Today, it is used by various communities.
    quick-install
    deploy-teleirc
    config-file-glossary
+   faq
    who-uses-teleirc
 
 
@@ -34,6 +35,7 @@ Our developer community is found in these channels.
 Indices and tables
 ******************
 
+* `github.com/RITlug/teleirc <https://github.com/RITlug/teleirc>`_
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
