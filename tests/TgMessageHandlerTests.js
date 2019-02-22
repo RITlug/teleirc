@@ -12,6 +12,11 @@ let fromWithUserName = {
     username : "username"
 };
 
+let fromWithZWP = {
+    first_name : "First Name",
+    username : "u" + "\u200B" + "sername"
+}
+
 // Subset of the IRC config.
 let prefixSuffixConfig = {
     prefix : "<",
@@ -40,8 +45,6 @@ exports.TgMessageHandler = {
         assert.done();
     },
     "If user has no username, first name is reported": function(assert) {
-        var actualMessage = undefined;
-        var actualUsername = undefined;
 
         let sentMessage = "My Message";
         let expectedUsername = fromWithUserName.first_name;
@@ -59,8 +62,6 @@ exports.TgMessageHandler = {
         uut.RelayMessage(fromNoUsername, sentMessage);
     },
     "Username is reported if it is available": function(assert) {
-        var actualMessage = undefined;
-        var actualUsername = undefined;
 
         let sentMessage = "My Message";
         let expectedUsername = fromWithUserName.username;
@@ -77,4 +78,21 @@ exports.TgMessageHandler = {
 
         uut.RelayMessage(fromWithUserName, sentMessage);
     },
+    "Zero-width space is inserted into username": function(assert) {
+        
+        let sentMessage = "My Message";
+        let expectedUsername = fromWithZWP.username;
+        let expectedMessage = `<${expectedUsername}> My Message`;
+
+        let uut = new TgMessageHandler (
+            prefixSuffixConfig,
+            true,
+            (input) => {
+                assert.strictEqual(expectedMessage, input);
+                assert.done();
+            }
+        );
+
+        uut.RelayMessage(fromWithZWP, sentMessage);
+    }
 };

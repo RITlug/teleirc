@@ -1,6 +1,7 @@
 'use strict';
 
 const TeleIrc = require("../lib/TeleIrc");
+const TgHelper = require("../lib/TelegramHandlers/TgHelpers.js");
 
 const TEST_SETTINGS = {
   token: "EXAMPLE_TOKEN",
@@ -54,6 +55,15 @@ function createIrcBotMock(assert, expectedMessages) {
     expectedMessages: expectedMessages,
     connect: function() {}
   };
+}
+
+// Override default method to not use zero width spaces
+TgHelper.ResolveUserName = function(from) {
+  if (from.username === undefined) {
+    return from.first_name;
+  }
+
+  return from.username;
 }
 
 exports.TelegramToIrcTests = {
