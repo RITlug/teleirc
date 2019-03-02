@@ -24,7 +24,8 @@ Use the bot to discover the unique chat ID of your Telegram group.
 Create bot with BotFather
 =========================
 
-#. Send ``/start`` to @BotFather [#]_ user on Telegram
+#. Start new message to `@BotFather <https://t.me/botfather>`_ user on Telegram
+#. Send ``/start`` to @BotFather [#]_
 #. Follow instructions to create new bot (e.g. name, username, description, etc.)
 #. Receive **token key** for new bot (used to access Telegram API)
 #. (**REQUIRED**) Set ``/setprivacy`` to **DISABLED** (so bot can see messages) [#]_
