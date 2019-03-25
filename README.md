@@ -26,6 +26,11 @@ Our developer community is found in these channels.
 * **[IRC](https://webchat.freenode.net/?channels=ritlug-teleirc)** (#ritlug-teleirc @ irc.freenode.net)
 
 
+## Contribute to Teleirc
+
+See our [contributing guidelines](https://github.com/RITlug/teleirc/master/.github/CONTRIBUTING.md).
+
+
 ## Who uses Teleirc?
 
 See what projects and communities use Teleirc.
