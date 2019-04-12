@@ -1,6 +1,8 @@
 Teleirc
 =======
 
+<a href="https://github.com/RITlug/teleirc"><img src="/brand/svg/horizontal_color.svg" alt="Teleirc logo by Ura Design" width="60%" height="auto"></a>
+
 [![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=devel)](https://travis-ci.org/RITlug/teleirc)
 [![Documentation Status](https://readthedocs.org/projects/teleirc/badge/?version=latest)](http://teleirc.readthedocs.io/en/latest/?badge=latest)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/maintainability)](https://codeclimate.com/github/RITlug/teleirc/maintainability)
