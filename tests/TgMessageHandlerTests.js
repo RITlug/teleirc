@@ -48,7 +48,7 @@ exports.TgMessageHandler = {
 
         let sentMessage = "My Message";
         let expectedUsername = fromWithUserName.first_name;
-        let expectedMessage = `<${expectedUsername}> My Message`;
+        let expectedMessage = `<\x02${expectedUsername}\x02> My Message`;
 
         let uut = new TgMessageHandler(
             prefixSuffixConfig,
@@ -65,7 +65,7 @@ exports.TgMessageHandler = {
 
         let sentMessage = "My Message";
         let expectedUsername = fromWithUserName.username;
-        let expectedMessage = `<${expectedUsername}> My Message`;
+        let expectedMessage = `<\x02${expectedUsername}\x02> My Message`;
 
         let uut = new TgMessageHandler(
             prefixSuffixConfig,
@@ -79,10 +79,9 @@ exports.TgMessageHandler = {
         uut.RelayMessage(fromWithUserName, sentMessage);
     },
     "Zero-width space is inserted into username": function(assert) {
-        
         let sentMessage = "My Message";
         let expectedUsername = fromWithZWP.username;
-        let expectedMessage = `<${expectedUsername}> My Message`;
+        let expectedMessage = `<\x02${expectedUsername}\x02> My Message`;
 
         let uut = new TgMessageHandler (
             prefixSuffixConfig,
