@@ -179,7 +179,7 @@ exports.IrcConnectionTests = {
     let uut = new TeleIrc(TEST_SETTINGS);
     uut.tgRateLimiter = {
       queueMessage: function(text) {
-        assert.equal(text, `<${EXPECTED_NICK}> ${TEST_MESSAGE}`)
+        assert.equal(text, `<*${EXPECTED_NICK}*> ${TEST_MESSAGE}`)
         assert.done();
       }
     };
