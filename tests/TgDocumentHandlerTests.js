@@ -36,7 +36,7 @@ exports.TgDocumentHandler_DisabledNoCaptionTest = async function(assert) {
 
     await uut.RelayDocumentMessage(fromWithUsername, document, null);
 
-    var expectedMessage = fromWithUsername.username + 
+    var expectedMessage = '\x02' + fromWithUsername.username + '\x02' +
                 " shared a file on Telegram with caption: 'Untitled Document'";
 
     assert.strictEqual(expectedMessage, message);
@@ -58,7 +58,7 @@ exports.TgDocumentHandler_DisabledCaptionTest = async function(assert) {
 
     let caption = "My caption";
 
-    let expectedMessage = fromWithUsername.username + 
+    let expectedMessage = '\x02' + fromWithUsername.username + '\x02' + 
                 " shared a file on Telegram with caption: " + 
                 "'" + caption + "'";
 
@@ -89,7 +89,7 @@ exports.TgDocumentHandler_EnabledNoCaptionTest = async function(assert) {
 
     let expectedMessage = 
         "'Untitled Document' uploaded by " + 
-        fromWithUsername.username + 
+        '\x02' + fromWithUsername.username + '\x02' + 
         ": " + 
         expectedUrl;
     
@@ -122,7 +122,7 @@ exports.TgDocumentHandler_EnabledCaptionTest = async function(assert) {
         "'" + 
         caption + 
         "' uploaded by " +
-        fromWithUsername.username +
+        '\x02' + fromWithUsername.username + '\x02' +
         ": " +
         expectedUrl;
     

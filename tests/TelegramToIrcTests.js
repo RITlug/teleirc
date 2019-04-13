@@ -69,7 +69,7 @@ TgHelper.ResolveUserName = function(from) {
 exports.TelegramToIrcTests = {
   "Forwarding a simple message": function(assert) {
     const USERNAME = "TEST_USERNAME";
-    const EXPECTED_MESSAGE = ["<_TEST_USERNAME>_ TEST_MESSAGE_BODY"];
+    const EXPECTED_MESSAGE = ["<_\x02TEST_USERNAME\x02>_ TEST_MESSAGE_BODY"];
     const MESSAGE_FROM_TELEGRAM = "TEST_MESSAGE_BODY";
 
     let uut = new TeleIrc(TEST_SETTINGS);
@@ -91,8 +91,8 @@ exports.TelegramToIrcTests = {
   "Forwarding a multiline message": function(assert) {
     const USERNAME = "TEST_USERNAME";
     const EXPECTED_MESSAGES = [
-      "<_TEST_USERNAME>_ line 1",
-      "<_TEST_USERNAME>_ line 2"
+      "<_\x02TEST_USERNAME\x02>_ line 1",
+      "<_\x02TEST_USERNAME\x02>_ line 2"
     ];
     const MESSAGE_FROM_TELEGRAM = "line 1\n\nline 2";
 
@@ -115,15 +115,15 @@ exports.TelegramToIrcTests = {
   "Forwarding a long message": function(assert) {
     const USERNAME = "TEST_USERNAME";
     const EXPECTED_MESSAGES = [
-      "<_TEST_USERNAME>_ Lorem ipsum dolor sit amet, consectetur \
+      "<_\x02TEST_USERNAME\x02>_ Lorem ipsum dolor sit amet, consectetur \
 adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore \
 magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \
 ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute \
 irure dolor in reprehenderit in voluptate velit esse cillum dolore \
 eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, \
 sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum \
-dolor   HERE IT SPLITS>|",
-      "<_TEST_USERNAME>_ |<THIS WAS SPLITTED sed do eiusmod tempor \
+dolor HERE IT SPLITS>|",
+      "<_\x02TEST_USERNAME\x02>_ |<THIS WAS SPLITTED sed do eiusmod tempor \
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, \
 quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo \
 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse \
@@ -151,7 +151,7 @@ non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla\
  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa\
  qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor\
-   HERE IT SPLITS>||<THIS WAS SPLITTED\
+ HERE IT SPLITS>||<THIS WAS SPLITTED\
  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\
  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\
  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in\

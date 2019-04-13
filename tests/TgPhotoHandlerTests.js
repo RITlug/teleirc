@@ -125,7 +125,7 @@ exports.TgPhotoHandler_EnabledNoCaptionTest = async function(assert) {
 
     let expectedMessage =
         "'Untitled Image' uploaded by " + 
-        fromNoUsername.first_name +
+        '\x02' + fromNoUsername.first_name + '\x02' +
         ": " +
         photoLarge.url; // Should always pick large photo's URL.
         
@@ -154,7 +154,7 @@ exports.TgPhotoHandler_EnabledCaptionTest = async function(assert) {
         "'" +
         caption +
         "' uploaded by " + 
-        fromWithUserName.username +
+        '\x02' + fromWithUserName.username + '\x02' +
         ": " +
         photoLarge.url; // Should always pick large photo's URL.
         
@@ -183,7 +183,7 @@ exports.ImgurPhotoHandler_SuccessTest = async function(assert) {
         "'" +
         caption +
         "' uploaded by " + 
-        fromWithUserName.username +
+        '\x02' + fromWithUserName.username + '\x02' +
         ": " +
         photoLarge.imgurUrl; // Should always pick large photo's URL.
 

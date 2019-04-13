@@ -66,9 +66,9 @@ exports.TgStickerHandler_EnabledNoUserName = function(assert) {
     var message = undefined;
 
     let expectedMessage =
-        prefixSuffixConfig.prefix +
+        prefixSuffixConfig.prefix + '\x02' +
         fromNoUsername.first_name +
-        prefixSuffixConfig.suffix +
+        '\x02' + prefixSuffixConfig.suffix +
         " " +
         stickerWithEmoji.emoji;
 
@@ -88,9 +88,9 @@ exports.TgStickerHandler_EnabledWithUserName = function(assert) {
     var message = undefined;
 
     let expectedMessage =
-        prefixSuffixConfig.prefix +
+        prefixSuffixConfig.prefix + '\x02' +
         fromWithUserName.username +
-        prefixSuffixConfig.suffix +
+        '\x02' + prefixSuffixConfig.suffix +
         " " +
         stickerWithEmoji.emoji;
 
