@@ -55,8 +55,9 @@ exports.TgJoinHandler_EnabledNoUsername = function(assert) {
  */
 exports.TgJoinHandler_EnabledWithUsername = function(assert) {
     var message = undefined;
+    var username = "u" + "\u200B" + "sername";
 
-    let expectedMessage = fromWithUserName.first_name + " (@" + fromWithUserName.username + ") has joined the Telegram Group!";
+    let expectedMessage = fromWithUserName.first_name + " (@" + username + ") has joined the Telegram Group!";
 
     let uut = new TgJoinHandler(
         true,
