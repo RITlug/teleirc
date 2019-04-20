@@ -4,6 +4,7 @@
   "description": "A simple Telegram <=> IRC bot",
   "main": "teleirc.js",
   "scripts": {
+    "start": "node teleirc.js",
     "test": "nodeunit ./tests"
   },
   "repository": {

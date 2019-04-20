@@ -52,8 +52,9 @@ exports.TgPartHandler_EnabledNoUsername = function(assert) {
  */
 exports.TgPartHandler_EnabledWithUsername = function(assert) {
     var message = undefined;
+    var username = "u" + "\u200B" + "sername";
 
-    let expectedMessage = fromWithUserName.first_name + " (@" + fromWithUserName.username + ") has left the Telegram Group.";
+    let expectedMessage = fromWithUserName.first_name + " (@" + username + ") has left the Telegram Group.";
 
     let uut = new TgPartHandler(
         true,
