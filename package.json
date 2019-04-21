@@ -16,7 +16,7 @@
     "irc",
     "RITlug"
   ],
-  "author": "Mark Repka, Seth Hendrick, Nate Levesque, Robby O'Connor, Justin W. Flory, RITlug, and Teleirc community",
+  "author": "Mark Repka, Seth Hendrick, Nate Levesque, Robby O'Connor, Justin W. Flory, RITlug, and TeleIRC community",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^2.0.0",

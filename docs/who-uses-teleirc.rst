@@ -1,8 +1,8 @@
 #################
-Who uses Teleirc?
+Who uses TeleIRC?
 #################
 
-The following list of projects and communities use RITlug Teleirc:
+The following list of projects and communities use RITlug TeleIRC:
 
 -  `CityZen app <https://cityzenapp.co>`_ (`@CityZenApp <https://t.me/CityZenApp>`_ | `#cityzen <https://webchat.freenode.net/?channels=cityzen>`_)
 
@@ -42,7 +42,7 @@ How to get on this list
 ***********************
 
 Want to have your community added to this page?
-Let us know you're using Teleirc too!
+Let us know you're using TeleIRC too!
 `Submit an issue <https://github.com/RITlug/teleirc/issues/new>`_ against this repo with the following info:
 
 -  Organization / group name and website

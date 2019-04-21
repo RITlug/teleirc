@@ -1,5 +1,5 @@
 [Unit]
-Description=Teleirc: Telegram + IRC bridge bot
+Description=TeleIRC: Telegram + IRC bridge bot
 Requires=network.target
 After=network.target
 
