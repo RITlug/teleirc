@@ -1,7 +1,7 @@
-Teleirc
+TeleIRC
 =======
 
-<a href="https://github.com/RITlug/teleirc"><img src="/brand/svg/horizontal_color.svg" alt="Teleirc logo by Ura Design" width="60%" height="auto"></a>
+<a href="https://github.com/RITlug/teleirc"><img src="/brand/svg/horizontal_color.svg" alt="TeleIRC logo by Ura Design" width="60%" height="auto"></a>
 
 [![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=devel)](https://travis-ci.org/RITlug/teleirc)
 [![Documentation Status](https://readthedocs.org/projects/teleirc/badge/?version=latest)](http://teleirc.readthedocs.io/en/latest/?badge=latest)
@@ -12,8 +12,8 @@ NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://e
 
 ## About
 
-**RITlug Teleirc** is a NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge.
-Teleirc works with any IRC channel and Telegram group.
+**RITlug TeleIRC** is a NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge.
+TeleIRC works with any IRC channel and Telegram group.
 It bridges messages between a Telegram group and an IRC channel.
 
 This bot was originally written for [RITlug](https://ritlug.com).
@@ -28,24 +28,24 @@ Our developer community is found in these channels.
 * **[IRC](https://webchat.freenode.net/?channels=ritlug-teleirc)** (#ritlug-teleirc @ irc.freenode.net)
 
 
-## Contribute to Teleirc
+## Contribute to TeleIRC
 
 See our [contributing guidelines](https://github.com/RITlug/teleirc/master/.github/CONTRIBUTING.md).
 
 
-## Who uses Teleirc?
+## Who uses TeleIRC?
 
-See what projects and communities use Teleirc.
+See what projects and communities use TeleIRC.
 
-[Who uses Teleirc?](https://teleirc.readthedocs.io/en/latest/who-uses-teleirc/ "Who uses Teleirc?")
+[Who uses TeleIRC?](https://teleirc.readthedocs.io/en/latest/who-uses-teleirc/ "Who uses TeleIRC?")
 
 
 ## Documentation
 
-See the [project documentation](https://teleirc.readthedocs.io/) to install and use Teleirc.
+See the [project documentation](https://teleirc.readthedocs.io/) to install and use TeleIRC.
 
 
 ## License
 
-Teleirc is provided under the [MIT License](https://github.com/RITlug/teleirc/blob/master/LICENSE).
-If you're working on Teleirc, please share improvements back upstream!
+TeleIRC is provided under the [MIT License](https://github.com/RITlug/teleirc/blob/master/LICENSE).
+If you're working on TeleIRC, please share improvements back upstream!

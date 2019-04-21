@@ -1,4 +1,4 @@
-Contributing to Teleirc
+Contributing to TeleIRC
 =======================
 
 <!--
@@ -6,7 +6,7 @@ Contributing to Teleirc
     This makes git diffs easier to read.
 -->
 
-This document is a guide on how to contribute to the Teleirc project.
+This is a guide on how to contribute to the TeleIRC project.
 It explicitly defines working practices of the development team.
 The goal of this document is to help new contributors get up to speed with working on the project.
 It is a living document and may change.
@@ -27,11 +27,11 @@ If you think something could be better, please [open an issue](https://github.co
 1. [Requirements](#requirements)
 2. [Create Telegram bot](#create-telegram-bot)
 3. [Create Telegram group](#create-telegram-group)
-4. [Configure and run Teleirc](#configure-and-run-teleirc)
+4. [Configure and run TeleIRC](#configure-and-run-teleirc)
 
 ### Requirements
 
-To set up a Teleirc development environment, you need the following:
+To set up a TeleIRC development environment, you need the following:
 
 * [Nodejs](https://nodejs.org/en/) (v10+ preferred)
 * Telegram account
@@ -41,13 +41,13 @@ To set up a Teleirc development environment, you need the following:
 ### Create Telegram bot
 
 Create a Telegram bot using the Telegram [BotFather](https://t.me/botfather).
-See [Teleirc documentation](https://teleirc.readthedocs.io/en/latest/quick-install/#create-a-telegram-bot) for more instructions on how to do this.
+See [TeleIRC documentation](https://teleirc.readthedocs.io/en/latest/quick-install/#create-a-telegram-bot) for more instructions on how to do this.
 
 ### Create Telegram group
 
 Create a new Telegram group for testing.
 Invite the bot user as another member to the group.
-Configure the Telegram bot to Teleirc specifications before adding it to the group.
+Configure the Telegram bot to TeleIRC specifications before adding it to the group.
 
 ### Register IRC channel
 
@@ -56,11 +56,11 @@ At the least, you need an unused IRC channel to use for testing.
 Registering the channel gives you additional privileges as a channel operator (e.g. testing NickServ authentication to join private IRC channels).
 See your IRC network's documentation on registering a channel.
 
-### Configure and run Teleirc
+### Configure and run TeleIRC
 
 Change the `env.example` file to `.env`.
 Change the configuration values to the Telegram bot's tokens.
-For more help with configuration, see the [Teleirc documentation](https://teleirc.readthedocs.io/en/latest/quick-install/#configure-and-run-teleirc).
+For more help with configuration, see the [TeleIRC documentation](https://teleirc.readthedocs.io/en/latest/quick-install/#configure-and-run-teleirc).
 
 
 ## Open a new pull request

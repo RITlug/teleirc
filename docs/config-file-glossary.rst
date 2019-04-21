@@ -63,7 +63,7 @@ Telegram settings
     Maximum number of messages sent to Telegram from IRC per minute
 
 ``SHOW_ACTION_MESSAGE=true``
-    Relay action messages (e.g. ``/me thinks Teleirc is cool!``)
+    Relay action messages (e.g. ``/me thinks TeleIRC is cool!``)
 
 ``SHOW_JOIN_MESSAGE=false``
     Send Telegram message when someone joins IRC channel
@@ -91,5 +91,5 @@ Miscellaneous settings
 **********************
 
 ``NTBA_FIX_319=1``
-    Required to fix a bug in a library used by Teleirc.
+    Required to fix a bug in a library used by TeleIRC.
     For context, see `yagop/node-telegram-bot-api#319 <https://github.com/yagop/node-telegram-bot-api/issues/319#issuecomment-324963294>`_.

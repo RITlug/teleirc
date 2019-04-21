@@ -36,4 +36,4 @@ teleIrc.initStage4_addIrcListeners();
 console.log("Enabling Telegram message sending...");
 teleIrc.initStage5_initTelegramMessageSending();
 
-console.log("Setup complete! Teleirc now running.");
+console.log("Setup complete! TeleIRC now running.");

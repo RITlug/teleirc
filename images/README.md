@@ -1,4 +1,4 @@
-Using Teleirc with Docker
+Using TeleIRC with Docker
 =========================
 
 The files included here are examples for you to use.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# RITlug Teleirc documentation build configuration file, created by
+# RITlug TeleIRC documentation build configuration file, created by
 # sphinx-quickstart on Wed Mar 14 12:56:56 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'RITlug Teleirc'
+project = 'RITlug TeleIRC'
 copyright = '2018-2019 CC-BY SA 4.0'
 author = \
     'Mark Repka, ' \
@@ -57,7 +57,7 @@ author = \
     'Robby O\'Connor, ' \
     'Justin W. Flory, ' \
     'RITlug, ' \
-    'and Teleirc community'
+    'and TeleIRC community'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -125,7 +125,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'RITlugTeleircdoc'
+htmlhelp_basename = 'RITlugTeleIRCdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -152,9 +152,9 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'RITlugTeleirc.tex', 'RITlug Teleirc Documentation',
+    (master_doc, 'RITlugTeleIRC.tex', 'RITlug TeleIRC Documentation',
      'Mark Repka, Seth Hendrick, Nate Levesque, Robby O\'Connor, '
-     'Justin W. Flory, RITlug, and Teleirc community', 'manual'),
+     'Justin W. Flory, RITlug, and TeleIRC community', 'manual'),
 ]
 
 
@@ -163,7 +163,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'ritlugteleirc', 'RITlug Teleirc Documentation',
+    (master_doc, 'ritlugteleirc', 'RITlug TeleIRC Documentation',
      [author], 1)
 ]
 
@@ -174,8 +174,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'RITlugTeleirc', 'RITlug Teleirc Documentation',
-     author, 'RITlugTeleirc', 'One line description of project.',
+    (master_doc, 'RITlugTeleIRC', 'RITlug TeleIRC Documentation',
+     author, 'RITlugTeleIRC', 'One line description of project.',
      'Miscellaneous'),
 ]
 

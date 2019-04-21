@@ -1,8 +1,8 @@
 #####################
-How to deploy Teleirc
+How to deploy TeleIRC
 #####################
 
-There are several ways to deploy Teleirc persistently.
+There are several ways to deploy TeleIRC persistently.
 This page offers suggestions on possible deployment options.
 
 
@@ -12,16 +12,16 @@ systemd
 
 The **recommended deployment method** is with `systemd <https://en.wikipedia.org/wiki/Systemd>`_.
 This method requires a basic understanding of systemd unit files.
-Create a unique systemd service for each Teleirc instance.
+Create a unique systemd service for each TeleIRC instance.
 
 A `provided systemd service <https://github.com/RITlug/teleirc/blob/master/misc/teleirc.service>`_ file is available.
 Add the systemd unit file to ``/usr/lib/systemd/system/`` to activate it.
-Now, ``systemctl`` can be used to control your Teleirc instance.
+Now, ``systemctl`` can be used to control your TeleIRC instance.
 
 Note the provided file makes two assumptions:
 
 - Using a dedicated system user (e.g. ``teleirc``)
-- Teleirc config files located at ``/usr/lib64/teleirc/`` (i.e. files inside Teleirc repository)
+- TeleIRC config files located at ``/usr/lib64/teleirc/`` (i.e. files inside TeleIRC repository)
 
 
 ***
@@ -33,7 +33,7 @@ If you run an application and it crashes, pm2 restarts the process.
 pm2 also restarts processes if the server reboots.
 Read the `pm2 documentation <http://pm2.keymetrics.io/docs/usage/quick-start/>`_ for more information.
 
-After pm2 is installed, run these commands to start Teleirc::
+After pm2 is installed, run these commands to start TeleIRC::
 
     cd teleirc/
     pm2 start -n my-teleirc-bot teleirc.js
@@ -44,15 +44,15 @@ Arch Linux AUR
 **************
 
 On ArchLinux, see `teleirc-git <https://aur.archlinux.org/packages/teleirc-git/>`_ in the AUR.
-The AUR package uses the systemd method to deploy Teleirc.
-Place Teleirc configuration files in the ``/usr/lib/teleirc/`` directory.
+The AUR package uses the systemd method to deploy TeleIRC.
+Place TeleIRC configuration files in the ``/usr/lib/teleirc/`` directory.
 
 
 ******
 Docker
 ******
 
-Docker is another way to deploy Teleirc.
+Docker is another way to deploy TeleIRC.
 Dockerfiles and images are available in ``images/``.
 
 Which image do I choose?

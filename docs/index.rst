@@ -1,12 +1,12 @@
 ############################
-RITlug Teleirc documentation
+RITlug TeleIRC documentation
 ############################
 
-RITlug Teleirc is a NodeJS implementation of a `Telegram <https://telegram.org/>`_ <=> `IRC <https://en.wikipedia.org/wiki/Internet_Relay_Chat>`_ bridge.
-Teleirc works with any IRC channel and Telegram group.
+RITlug TeleIRC is a NodeJS implementation of a `Telegram <https://telegram.org/>`_ <=> `IRC <https://en.wikipedia.org/wiki/Internet_Relay_Chat>`_ bridge.
+TeleIRC works with any IRC channel and Telegram group.
 It bridges messages between a Telegram group and an IRC channel.
 
-This bot was originally written for `RITlug <http://ritlug.com>`_.
+This bot was originally written for `RITlug <https://ritlug.com>`_.
 Today, it is used by various communities.
 
 .. toctree::
