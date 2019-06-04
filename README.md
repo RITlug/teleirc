@@ -30,7 +30,7 @@ Our developer community is found in these channels.
 
 ## Contribute to TeleIRC
 
-See our [contributing guidelines](https://github.com/RITlug/teleirc/master/.github/CONTRIBUTING.md).
+See our [contributing guidelines](https://github.com/RITlug/teleirc/blob/master/.github/CONTRIBUTING.md).
 
 
 ## Who uses TeleIRC?
