@@ -18,6 +18,9 @@ teleIrc.initStage2_telegramConfigValidation();
 // Create the IRC bot side with the settings specified in config object above
 console.log("Starting up bot on IRC...");
 let ircbot = new irc.Client(config.irc.server, config.irc.botName, {
+  port: config.irc.port,
+  selfSigned: config.irc.tlsAllowSelfSigned,
+  certExpired: config.irc.tlsAllowCertExpired,
   channels: [config.irc.channel],
   debug: false,
   username: config.irc.botName,
