@@ -1,4 +1,4 @@
-FROM fedora:29
+FROM registry.fedoraproject.org/fedora:30
 
 # Cache layers which will not change
 RUN groupadd teleirc -g 65532 \
@@ -7,8 +7,14 @@ RUN groupadd teleirc -g 65532 \
 COPY . /opt/teleirc/
 WORKDIR /opt/teleirc
 
-RUN dnf -y upgrade --setopt=deltarpm=false \
-    && dnf -y install nodejs nodejs-yarn libicu-devel python gcc-c++ make --setopt=deltarpm=false \
+RUN dnf -y upgrade \
+    && dnf -y install \
+        nodejs \
+        nodejs-yarn \
+        libicu-devel \
+        python \
+        gcc-c++ \
+        make \
     && nodejs-yarn \
     && dnf -y remove libicu-devel gcc-c++ \
     && dnf clean all \
