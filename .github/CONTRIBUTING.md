@@ -61,6 +61,7 @@ See your IRC network's documentation on registering a channel.
 Change the `env.example` file to `.env`.
 Change the configuration values to the Telegram bot's tokens.
 For more help with configuration, see the [TeleIRC documentation](https://docs.teleirc.com/en/latest/quick-install/#configure-and-run-teleirc).
+Run TeleIRC with `npm start`, or optionally with [nodemon](https://nodemon.io/) to automatically restart TeleIRC when you make changes.
 
 
 ## Open a new pull request
