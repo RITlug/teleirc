@@ -18,7 +18,7 @@ let settings = {
     showLeaveMessage: process.env.IRC_SHOW_LEAVE_MESSAGE === "true" || true,
     nickservPassword: process.env.IRC_NICKSERV_PASS || "",
     nickservService: process.env.IRC_NICKSERV_SERVICE || "",
-    editedPrefix: process.env.IRC_EDITED_PREFIX || "[EDIT] ",
+    editedPrefix: process.env.IRC_EDITED_PREFIX || "[EDIT]",
     maxMessageLength: Number(process.env.IRC_MAX_MESSAGE_LENGTH) || 400,
   },
   tg: {
