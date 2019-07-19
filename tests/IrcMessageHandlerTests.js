@@ -108,7 +108,7 @@ function DoSuccessTest(assert, blackList) {
 
     uut.RelayMessage("User", "#channel", "Hello, World!");
 
-    let expectedMessage = "<*User*> Hello, World!";
+    let expectedMessage = "&lt;<b>User</b>&gt; Hello, World!";
     assert.strictEqual(message, expectedMessage);
 };
 
