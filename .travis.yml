@@ -1,0 +1,6 @@
+# Set a basic TravisCI file as a placeholder until
+# we start creating unit tests
+language: minimal
+
+test: |
+  echo "Hello World"
