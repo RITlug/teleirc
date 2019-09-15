@@ -1,18 +1,18 @@
 TeleIRC
 =======
 
-<a href="https://github.com/RITlug/teleirc"><img src="/assets/brand/svg/horizontal_color.svg" alt="TeleIRC logo by Ura Design" width="60%" height="auto"></a>
+<a href="https://github.com/RITlug/teleirc"><img src="/assets/svg/horizontal_color.svg" alt="TeleIRC logo by Ura Design" width="60%" height="auto"></a>
 
 [![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=devel)](https://travis-ci.org/RITlug/teleirc)
 [![Documentation Status](https://readthedocs.org/projects/teleirc/badge/?version=latest)](http://docs.teleirc.com/en/latest/?badge=latest)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/maintainability)](https://codeclimate.com/github/RITlug/teleirc/maintainability)
 
-NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge for use with any IRC channel and Telegram group
+Go implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge for use with any IRC channel and Telegram group
 
 
 ## About
 
-**RITlug TeleIRC** is a NodeJS implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge.
+**RITlug TeleIRC** is a Go implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge.
 TeleIRC works with any IRC channel and Telegram group.
 It bridges messages between a Telegram group and an IRC channel.
 
