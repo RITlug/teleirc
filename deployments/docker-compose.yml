@@ -1,0 +1,12 @@
+# -*- mode: yaml-*-
+# vim: ft=yaml
+
+version: '3'
+
+services:
+  teleirc:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile.alpine
+    env_file: ../.env
+    user: teleirc
