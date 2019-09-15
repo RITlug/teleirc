@@ -1,5 +1,6 @@
 package internal
 
+// IRCSettings includes settings related to the IRC bot/message relaying
 type IRCSettings struct {
 	Server              string
 	Port                int
@@ -19,6 +20,7 @@ type IRCSettings struct {
 	MaxMessageLength    int
 }
 
+// TelegramSettings includes settings related to the Telegram bot/message relaying
 type TelegramSettings struct {
 	ChatID              string
 	ShowJoinMessage     bool
@@ -28,11 +30,13 @@ type TelegramSettings struct {
 	MaxMessagePerMinute int
 }
 
+// ImgurSettings includes settings related to Imgur uploading for Telegram photos
 type ImgurSettings struct {
 	UseImgurForImageLinks bool
 	ImgurClientID         string
 }
 
+// Settings includes all user-configurable settings for TeleIRC
 type Settings struct {
 	Token        string
 	IRCBlacklist []string
