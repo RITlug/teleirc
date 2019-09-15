@@ -1,24 +1,10 @@
 jobs:
   include:
-    - language: node_js
-      node_js:
-        - 8
-        - 10
-      cache:
-        npm: false
-        yarn: false
-
-      addons:
-        apt:
-          update: true
-          packages:
-          - libicu-dev
-
-      before_install: cp env.example .env
-      install:
-        - yarn
-        - yarn global add nodeunit
-      script: yarn test
+    - language: minimal
+      # Set a basic TravisCI file as a placeholder until
+      # we start creating unit tests
+      test: |
+        echo "Hello World"
 
     - language: python
       python: 3.7
