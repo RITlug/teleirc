@@ -2,7 +2,6 @@
 teleirc.service
 README.md
 LICENSE
-containers/Dockerfile*
-containers/docker-compose*
-node_modules*
+build/Dockerfile*
+deployments/docker-compose.yml
 tests/*

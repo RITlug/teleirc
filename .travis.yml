@@ -1,31 +1,6 @@
-dist: xenial
-sudo: false
-language: node_js
-node_js:
-  - 8
-  - 10
+# Set a basic TravisCI file as a placeholder until
+# we start creating unit tests
+language: minimal
 
-cache:
-  npm: false
-  yarn: false
-
-addons:
-  apt:
-    update: true
-    packages:
-    - libicu-dev
-
-before_install: cp env.example .env
-install:
-  - yarn
-  - yarn global add nodeunit
-script: yarn test
-
-notifications:
-  irc:
-    channels:
-      - "ircs://chat.freenode.net:6697/#ritlug-teleirc"
-    template:
-      - "[%{repository_name}:%{branch}@%{commit} - build #%{build_number}] CI %{result}! (%{build_url})"
-    on_success: change
-    on_failure: always
+test: |
+  echo "Hello World"
