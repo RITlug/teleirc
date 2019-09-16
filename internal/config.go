@@ -52,17 +52,22 @@ type Settings struct {
 	Imgur    ImgurSettings
 }
 
-func LoadConfig(path string) error {
+/*
+LoadConfig loads in the .env file in the provided path (or ".env" by default)
+If the user-provided config is valid, return a new Settings struct that contains these settings.
+Otherwise, return the error that caused the failure.
+*/
+func LoadConfig(path string) (*Settings, error) {
 	validate = validator.New()
 	if path == "" {
 		path = ".env"
 	}
 	settings := Settings{}
 	if err := env.Parse(&settings); err != nil {
-		return err
+		return nil, err
 	}
 	if err := validate.Struct(settings); err != nil {
-		return err.(validator.ValidationErrors)
+		return nil, err.(validator.ValidationErrors)
 	}
-	return nil
+	return &settings, nil
 }
