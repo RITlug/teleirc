@@ -11,7 +11,7 @@ var validate *validator.Validate
 // IRCSettings includes settings related to the IRC bot/message relaying
 type IRCSettings struct {
 	Server              string   `env:"IRC_SERVER,required"`
-	Port                int      `env:"IRC_PORT" envDefault:"6667" validate:"min=0, max=65535"`
+	Port                int      `env:"IRC_PORT" envDefault:"6667" validate:"min=0,max=65535"`
 	TLSAllowSelfSigned  bool     `env:"IRC_CERT_ALLOW_SELFSIGNED" envDefault:"true"`
 	TLSAllowCertExpired bool     `env:"IRC_CERT_ALLOW_EXPIRED" envDefault:"true"`
 	Channel             string   `env:"IRC_CHANNEL,required"`
@@ -25,7 +25,7 @@ type IRCSettings struct {
 	NickServPassword    string   `env:"IRC_NICKSERV_PASS" envDefault:""`
 	NickServService     string   `env:"IRC_NICKSERV_SERVICE" envDefault:""`
 	EditedPrefix        string   `env:"IRC_EDITED_PREFIX" envDefault:"[EDIT]"`
-	MaxMessageLength    int      `env:"IRC_EDITED_PREFIX" envDefault:"400"`
+	MaxMessageLength    int      `env:"IRC_MAX_MESSAGE_LENGTH" envDefault:"400"`
 	IRCBlacklist        []string `env:"IRC_BLACKLIST" envDefault:"[]string{}"`
 }
 
@@ -70,7 +70,7 @@ func LoadConfig(path string) (*Settings, error) {
 	if err := env.Parse(&settings); err != nil {
 		return nil, err
 	}
-	if err := validate.Struct(settings); err != nil {
+	if err := validate.Struct(&settings); err != nil {
 		return nil, err.(validator.ValidationErrors)
 	}
 	return &settings, nil
