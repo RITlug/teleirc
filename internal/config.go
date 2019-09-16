@@ -1,5 +1,12 @@
 package internal
 
+import (
+	"github.com/caarlos0/env"
+	"github.com/go-playground/validator"
+)
+
+var validate *validator.Validate
+
 // IRCSettings includes settings related to the IRC bot/message relaying
 type IRCSettings struct {
 	Server              string   `env:"IRC_SERVER,required"`
@@ -43,4 +50,19 @@ type Settings struct {
 	IRC      IRCSettings
 	Telegram TelegramSettings
 	Imgur    ImgurSettings
+}
+
+func LoadConfig(path string) error {
+	validate = validator.New()
+	if path == "" {
+		path = ".env"
+	}
+	settings := Settings{}
+	if err := env.Parse(&settings); err != nil {
+		return err
+	}
+	if err := validate.Struct(settings); err != nil {
+		return err.(validator.ValidationErrors)
+	}
+	return nil
 }
