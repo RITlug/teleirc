@@ -3,6 +3,7 @@ package internal
 import (
 	"github.com/caarlos0/env"
 	"github.com/go-playground/validator"
+	"github.com/joho/godotenv"
 )
 
 var validate *validator.Validate
@@ -61,6 +62,9 @@ func LoadConfig(path string) (*Settings, error) {
 	validate = validator.New()
 	if path == "" {
 		path = ".env"
+	}
+	if err := godotenv.Load(path); err != nil {
+		return nil, err
 	}
 	settings := Settings{}
 	if err := env.Parse(&settings); err != nil {
