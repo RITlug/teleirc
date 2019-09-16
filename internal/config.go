@@ -60,11 +60,10 @@ Otherwise, return the error that caused the failure.
 */
 func LoadConfig(path string) (*Settings, error) {
 	validate = validator.New()
-	if path == "" {
-		path = ".env"
-	}
-	if err := godotenv.Load(path); err != nil {
-		return nil, err
+	if path != "" {
+		if err := godotenv.Load(path); err != nil {
+			return nil, err
+		}
 	}
 	settings := Settings{}
 	if err := env.Parse(&settings); err != nil {
