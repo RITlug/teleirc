@@ -23,23 +23,23 @@ type IRCSettings struct {
 
 // TelegramSettings includes settings related to the Telegram bot/message relaying
 type TelegramSettings struct {
-	ChatID              string `env:"TELEGRAM_CHAT_ID"`
-	ShowJoinMessage     bool   `env:"SHOW_JOIN_MESSAGE"`
-	ShowActionMessage   bool   `env:"SHOW_ACTION_MESSAGE"`
-	ShowLeaveMessage    bool   `env:"SHOW_LEAVE_MESSAGE"`
-	ShowKickMessage     bool   `env:"SHOW_KICK_MESSAGE"`
-	MaxMessagePerMinute int    `env:"MAX_MESSAGE_PER_MINUTE"`
+	ChatID              string `env:"TELEGRAM_CHAT_ID,required"`
+	ShowJoinMessage     bool   `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
+	ShowActionMessage   bool   `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
+	ShowLeaveMessage    bool   `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
+	ShowKickMessage     bool   `env:"SHOW_KICK_MESSAGE" envDefault:"false"`
+	MaxMessagePerMinute int    `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
 }
 
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
 type ImgurSettings struct {
-	UseImgurForImageLinks bool   `env:"USE_IMGUR_FOR_IMAGE"`
-	ImgurClientID         string `env:"IMGUR_CLIENT_ID"`
+	UseImgurForImageLinks bool   `env:"USE_IMGUR_FOR_IMAGE" envDefault:"true"`
+	ImgurClientID         string `env:"IMGUR_CLIENT_ID" envDefault:"12345"`
 }
 
 // Settings includes all user-configurable settings for TeleIRC
 type Settings struct {
-	Token    string `env:"TELEIRC_TOKEN"`
+	Token    string `env:"TELEIRC_TOKEN,required"`
 	IRC      IRCSettings
 	Telegram TelegramSettings
 	Imgur    ImgurSettings
