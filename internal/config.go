@@ -28,7 +28,7 @@ type IRCSettings struct {
 	ShowLeaveMessage    bool     `env:"IRC_SHOW_LEAVE_MESSAGE" envDefault:"true"`
 	NickServPassword    string   `env:"IRC_NICKSERV_PASS" envDefault:""`
 	NickServService     string   `env:"IRC_NICKSERV_SERVICE" envDefault:""`
-	EditedPrefix        string   `env:"IRC_EDITED_PREFIX" envDefault:"[EDIT]"`
+	EditedPrefix        string   `env:"IRC_EDITED_PREFIX" envDefault:"[EDIT] "`
 	MaxMessageLength    int      `env:"IRC_MAX_MESSAGE_LENGTH" envDefault:"400"`
 	IRCBlacklist        []string `env:"IRC_BLACKLIST" envDefault:"[]string{}"`
 }
@@ -46,7 +46,7 @@ type TelegramSettings struct {
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
 type ImgurSettings struct {
 	UseImgurForImageLinks bool   `env:"USE_IMGUR_FOR_IMAGE" envDefault:"true"`
-	ImgurClientID         string `env:"IMGUR_CLIENT_ID" envDefault:"12345"`
+	ImgurClientID         string `env:"IMGUR_CLIENT_ID" envDefault:"7d6b00b87043f58"`
 }
 
 // Settings includes all user-configurable settings for TeleIRC

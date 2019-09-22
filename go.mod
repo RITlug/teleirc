@@ -1,4 +1,4 @@
-module github.com/Zedjones/teleirc
+module github.com/ritlug/teleirc
 
 go 1.12
 
