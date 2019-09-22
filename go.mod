@@ -3,7 +3,6 @@ module github.com/ritlug/teleirc
 go 1.12
 
 require (
-	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/caarlos0/env/v6 v6.0.0
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
