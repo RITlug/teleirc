@@ -65,6 +65,7 @@ func LoadConfig(path string) (*Settings, error) {
 			return nil, err
 		}
 	}
+	// TODO: Check to see if the default path exists and try to load it if it does
 	settings := Settings{}
 	if err := env.Parse(&settings); err != nil {
 		return nil, err
