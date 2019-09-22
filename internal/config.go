@@ -3,7 +3,7 @@ package internal
 import (
 	"os"
 
-	"github.com/caarlos0/env"
+	"github.com/caarlos0/env/v6"
 	"github.com/go-playground/validator"
 	"github.com/joho/godotenv"
 )
