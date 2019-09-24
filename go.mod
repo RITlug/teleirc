@@ -9,4 +9,5 @@ require (
 	github.com/go-playground/validator v9.29.1+incompatible
 	github.com/joho/godotenv v1.3.0
 	github.com/leodido/go-urn v1.1.0 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )
