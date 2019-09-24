@@ -9,6 +9,7 @@ let settings = {
     tlsAllowSelfSigned: process.env.IRC_CERT_ALLOW_SELFSIGNED === "true" || false,
     tlsAllowCertExpired: process.env.IRC_CERT_ALLOW_EXPIRED === "true" || false,
     channel: process.env.IRC_CHANNEL || "",
+    channelKey: process.env.IRC_CHANNEL_KEY || "",
     botName: process.env.IRC_BOT_NAME || "teleirc",
     sendStickerEmoji: process.env.IRC_SEND_STICKER_EMOJI === "true" || true,
     sendDocument: process.env.IRC_SEND_DOCUMENT === "true" || false,
