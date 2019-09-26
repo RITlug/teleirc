@@ -1,3 +1,4 @@
+// Package IRC handles all IRC-side logic.
 package irc
 
 /*

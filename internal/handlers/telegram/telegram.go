@@ -1,3 +1,4 @@
+// Package Telegram handles all Telegram-side logic.
 package telegram
 
 /*

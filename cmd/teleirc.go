@@ -1,3 +1,4 @@
+// Package main contains all logic relating to running TeleIRC
 package main
 
 import (
@@ -8,11 +9,7 @@ import (
 	tg "github.com/ritlug/teleirc/internal/handlers/telegram"
 )
 
-/*
-startIrc: Start up IRC bot
-*/
 func startIrc() {
-	// start up IRC bot
 	ircbot, err := irc.StartIrcBot()
 	if err != nil {
 		fmt.Println(err)
@@ -21,11 +18,7 @@ func startIrc() {
 	fmt.Println(ircbot)
 }
 
-/*
-startTelegram: Start up Telegram bot
-*/
 func startTelegram() {
-	// start up Telegram bot
 	tgbot, err := tg.StartTelegramBot()
 	if err != nil {
 		fmt.Println(err)
