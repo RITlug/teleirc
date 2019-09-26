@@ -2,8 +2,8 @@
 package telegram
 
 /*
-StartTelegramBot: Start up Telegram bot
+StartBot instantiates the Telegram bot.
 */
-func StartTelegramBot() (string, error) {
+func StartBot() (string, error) {
 	return "Hello from Telegram!", nil
 }

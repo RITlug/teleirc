@@ -2,8 +2,8 @@
 package irc
 
 /*
-StartIrcBot instantiates an IRC bot object given its IRC Bot settings
+StartBot instantiates an IRC bot.
 */
-func StartIrcBot() (string, error) {
+func StartBot() (string, error) {
 	return "Hello from IRC!", nil
 }
