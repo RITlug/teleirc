@@ -1,13 +1,29 @@
 package internal
 
-import "github.com/lrstanley/girc"
+import (
+	"fmt"
 
-func NewClient(settings *Settings) *girc.Client {
+	"github.com/lrstanley/girc"
+)
+
+type Client struct {
+	*girc.Client
+}
+
+func NewClient(settings *Settings) Client {
 	client := girc.New(girc.Config{
 		Server: settings.IRC.Server,
 		Port:   settings.IRC.Port,
 		Nick:   settings.IRC.BotName,
 		User:   settings.IRC.BotName,
 	})
-	return client
+	return Client{client}
+}
+
+func (c Client) AddHandlers(settings *Settings) {
+	c.Handlers.Add(girc.ALL_EVENTS, GenericHandler)
+}
+
+func GenericHandler(c *girc.Client, e girc.Event) {
+	fmt.Println(e.String())
 }
