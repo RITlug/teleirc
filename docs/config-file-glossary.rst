@@ -35,6 +35,9 @@ IRC settings
 ``IRC_SERVER=chat.freenode.net``
     IRC server to connect to
 
+``IRC_SERVER_PASSWORD=""``
+    IRC server password
+
 ``IRC_NICKSERV_SERVICE=NickServ``
     IRC service used for authentication
 
