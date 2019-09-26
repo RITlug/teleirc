@@ -20,6 +20,9 @@ IRC settings
 ``IRC_CHANNEL=#channel``
     IRC channel for bot to join
 
+``IRC_CHANNEL_KEY=""``
+    IRC channel key
+
 ``IRC_SEND_STICKER_EMOJI=true``
     Send emojis associated with a sticker to IRC (when a Telegram user sends a sticker)
 
