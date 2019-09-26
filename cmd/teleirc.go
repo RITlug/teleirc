@@ -10,7 +10,7 @@ import (
 )
 
 func startIrc() {
-	ircbot, err := irc.StartIrcBot()
+	ircbot, err := irc.StartBot()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -19,7 +19,7 @@ func startIrc() {
 }
 
 func startTelegram() {
-	tgbot, err := tg.StartTelegramBot()
+	tgbot, err := tg.StartBot()
 	if err != nil {
 		fmt.Println(err)
 	}
