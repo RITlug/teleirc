@@ -28,14 +28,14 @@ func NewClient(settings *Settings) Client {
 }
 
 func (c Client) AddHandlers() {
-	c.Handlers.Add(girc.ALL_EVENTS, GenericHandler)
-	c.Handlers.Add(girc.CONNECTED, ConnectHandler)
+	c.Handlers.Add(girc.ALL_EVENTS, genericHandler)
+	c.Handlers.Add(girc.CONNECTED, connectHandler)
 }
 
-func GenericHandler(c *girc.Client, e girc.Event) {
+func genericHandler(c *girc.Client, e girc.Event) {
 	fmt.Println(e.String())
 }
 
-func ConnectHandler(c *girc.Client, e girc.Event) {
+func connectHandler(c *girc.Client, e girc.Event) {
 	c.Cmd.Join(SETTINGS.IRC.Channel)
 }
