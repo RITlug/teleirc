@@ -16,6 +16,10 @@ func NewClient(settings *Settings) Client {
 		Port:   settings.IRC.Port,
 		Nick:   settings.IRC.BotName,
 		User:   settings.IRC.BotName,
+		SASL: &girc.SASLPlain{
+			User: settings.IRC.BotName,
+			Pass: settings.IRC.NickServPassword,
+		},
 	})
 	return Client{client}
 }
