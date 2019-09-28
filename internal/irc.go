@@ -24,11 +24,13 @@ func NewClient(settings *Settings) IRCClient {
 		Port:   settings.IRC.Port,
 		Nick:   settings.IRC.BotName,
 		User:   settings.IRC.BotName,
-		SASL: &girc.SASLPlain{
+	})
+	if settings.IRC.NickServPassword != "" {
+		client.Config.SASL = &girc.SASLPlain{
 			User: settings.IRC.BotName,
 			Pass: settings.IRC.NickServPassword,
-		},
-	})
+		}
+	}
 	return IRCClient{client, settings.IRC}
 }
 
