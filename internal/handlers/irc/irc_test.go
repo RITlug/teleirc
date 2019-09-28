@@ -1,20 +1,21 @@
-package internal
+package irc
 
 import (
 	"testing"
 	"time"
 
 	"github.com/lrstanley/girc"
+	"github.com/ritlug/teleirc/internal"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewClientBasic(t *testing.T) {
-	ircSettings := IRCSettings{
+	ircSettings := internal.IRCSettings{
 		Server:  "test_server",
 		Port:    1234,
 		BotName: "test_name",
 	}
-	client := NewClient(&Settings{IRC: ircSettings})
+	client := NewClient(&internal.Settings{IRC: ircSettings})
 
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
@@ -29,13 +30,13 @@ func TestNewClientBasic(t *testing.T) {
 }
 
 func TestNewClientFull(t *testing.T) {
-	ircSettings := IRCSettings{
+	ircSettings := internal.IRCSettings{
 		Server:           "test_server",
 		Port:             1234,
 		BotName:          "test_name",
 		NickServPassword: "test_pass",
 	}
-	client := NewClient(&Settings{IRC: ircSettings})
+	client := NewClient(&internal.Settings{IRC: ircSettings})
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
 		Server:    "test_server",

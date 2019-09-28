@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ritlug/teleirc/internal"
+	"github.com/ritlug/teleirc/internal/handlers/irc"
 )
 
 func main() {
@@ -13,9 +14,8 @@ func main() {
 	} else {
 		fmt.Println(settings)
 	}
-	client := internal.NewClient(settings)
-	client.AddHandlers()
-	if err := client.Connect(); err != nil {
+	client := irc.NewClient(settings)
+	if err := client.StartBot(); err != nil {
 		fmt.Println(err)
 	}
 }

@@ -1,24 +1,25 @@
-package internal
+package irc
 
 import (
 	"fmt"
 
 	"github.com/lrstanley/girc"
+	"github.com/ritlug/teleirc/internal"
 )
 
 /*
-IRCClient contains information for our IRC bridge, including the girc Client
+Client contains information for our IRC bridge, including the girc Client
 and the IRCSettings that were passed into NewClient
 */
-type IRCClient struct {
+type Client struct {
 	*girc.Client
-	Settings IRCSettings
+	Settings internal.IRCSettings
 }
 
 /*
 NewClient returns a new IRCClient based on the provided settings
 */
-func NewClient(settings *Settings) IRCClient {
+func NewClient(settings *internal.Settings) Client {
 	client := girc.New(girc.Config{
 		Server: settings.IRC.Server,
 		Port:   settings.IRC.Port,
@@ -31,21 +32,29 @@ func NewClient(settings *Settings) IRCClient {
 			Pass: settings.IRC.NickServPassword,
 		}
 	}
-	return IRCClient{client, settings.IRC}
+	return Client{client, settings.IRC}
+}
+
+func (c Client) StartBot() error {
+	c.addHandlers()
+	if err := c.Connect(); err != nil {
+		return err
+	}
+	return nil
 }
 
 /*
 AddHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
-func (c IRCClient) AddHandlers() {
+func (c Client) addHandlers() {
 	c.Handlers.Add(girc.ALL_EVENTS, func(c *girc.Client, e girc.Event) {
 		fmt.Println(e.String())
 	})
-	c.Handlers.Add(girc.CONNECTED, connectHandlerTest(c))
+	c.Handlers.Add(girc.CONNECTED, connectHandler(c))
 }
 
-func connectHandlerTest(c IRCClient) func(*girc.Client, girc.Event) {
+func connectHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Cmd.Join(c.Settings.Channel)
 	}
