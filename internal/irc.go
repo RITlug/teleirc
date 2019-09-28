@@ -8,9 +8,8 @@ import (
 
 type Client struct {
 	*girc.Client
+	Settings IRCSettings
 }
-
-var SETTINGS *Settings
 
 func NewClient(settings *Settings) Client {
 	client := girc.New(girc.Config{
@@ -23,19 +22,18 @@ func NewClient(settings *Settings) Client {
 			Pass: settings.IRC.NickServPassword,
 		},
 	})
-	SETTINGS = settings
-	return Client{client}
+	return Client{client, settings.IRC}
 }
 
 func (c Client) AddHandlers() {
-	c.Handlers.Add(girc.ALL_EVENTS, genericHandler)
-	c.Handlers.Add(girc.CONNECTED, connectHandler)
+	c.Handlers.Add(girc.ALL_EVENTS, func(c *girc.Client, e girc.Event) {
+		fmt.Println(e.String())
+	})
+	c.Handlers.Add(girc.CONNECTED, connectHandlerTest(c))
 }
 
-func genericHandler(c *girc.Client, e girc.Event) {
-	fmt.Println(e.String())
-}
-
-func connectHandler(c *girc.Client, e girc.Event) {
-	c.Cmd.Join(SETTINGS.IRC.Channel)
+func connectHandlerTest(c Client) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.Cmd.Join(c.Settings.Channel)
+	}
 }
