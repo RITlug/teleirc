@@ -35,6 +35,15 @@ IRC settings
 ``IRC_SERVER=chat.freenode.net``
     IRC server to connect to
 
+``IRC_SERVER_PORT=6697``
+    IRC server port
+
+``IRC_CERT_ALLOW_SELFSIGNED=false``
+    Allows SSL to accept SSL certificates from non-trusted CA
+
+``IRC_CERT_ALLOW_EXPIRED=false``
+    Allow connecting to IRC server with SSL expired cert
+
 ``IRC_NICKSERV_SERVICE=NickServ``
     IRC service used for authentication
 
