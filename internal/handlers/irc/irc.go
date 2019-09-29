@@ -35,6 +35,10 @@ func NewClient(settings *internal.Settings) Client {
 	return Client{client, settings.IRC}
 }
 
+/*
+StartBot adds necessary handlers to the client and then connects,
+returns any errors that occur
+*/
 func (c Client) StartBot() error {
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
@@ -44,7 +48,7 @@ func (c Client) StartBot() error {
 }
 
 /*
-AddHandlers adds handlers for the client struct based on the settings
+addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
 func (c Client) addHandlers() {
@@ -54,6 +58,10 @@ func (c Client) addHandlers() {
 	c.Handlers.Add(girc.CONNECTED, connectHandler(c))
 }
 
+/*
+connectHandler return a function to use as the connect handler for girc,
+so that the specified channel is joined after the server connection is established
+*/
 func connectHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Cmd.Join(c.Settings.Channel)
