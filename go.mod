@@ -11,4 +11,5 @@ require (
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/lrstanley/girc v0.0.0-20190801035559-4fc93959e1a7
 	github.com/stretchr/testify v1.3.0
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )

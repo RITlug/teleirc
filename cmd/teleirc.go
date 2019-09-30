@@ -1,21 +1,39 @@
+// Package main contains all logic relating to running TeleIRC
 package main
 
 import (
+	"flag"
 	"fmt"
 
 	"github.com/ritlug/teleirc/internal"
 	"github.com/ritlug/teleirc/internal/handlers/irc"
+	tg "github.com/ritlug/teleirc/internal/handlers/telegram"
 )
 
+func startTelegram() {
+	tgbot, err := tg.StartBot()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(tgbot)
+}
+
 func main() {
-	settings, err := internal.LoadConfig("../.env")
+	// optional path flag if user does not want .env file in root dir
+	var path string
+	flag.StringVar(&path, "p", ".env", "Path to .env")
+
+	flag.Parse()
+
+	settings, err := internal.LoadConfig(path)
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println(settings)
-	}
-	client := irc.NewClient(settings)
-	if err := client.StartBot(); err != nil {
-		fmt.Println(err)
+		startTelegram()
+		client := irc.NewClient(settings)
+		if err := client.StartBot(); err != nil {
+			fmt.Println(err)
+		}
 	}
 }
