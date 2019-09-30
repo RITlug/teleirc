@@ -35,12 +35,13 @@ const TEST_NICKSERV_SERVICE = "TestNickServServiceNick";
 const TEST_MESSAGE = "Test message body";
 const BLACKLISTED_NICK = "Nasty one!";
 const TEST_IRC_CHANNEL = "#EXAMPLE_IRC_CHANNEL";
+const TEST_IRC_CHANNEL_KEY = "testkey";
 const TEST_SETTINGS = {
   token: "EXAMPLE_TOKEN",
   ircBlacklist: [BLACKLISTED_NICK, "some other blacklisted nick"],
   irc: {
     server: "EXAMPLE_IRC_SERVER",
-    channel: TEST_IRC_CHANNEL,
+    channel: `${TEST_IRC_CHANNEL} ${TEST_IRC_CHANNEL_KEY}`,
     botName: "exampleBotName",
     sendStickerEmoji: "",
     prefix: "<_",
@@ -215,6 +216,6 @@ exports.IrcConnectionTests = {
     uut.initStage3_initBots(this.ircBotMock, this.tgBotMock);
     uut.initStage4_addIrcListeners();
 
-    this.ircBotMock.fireMessageEvent(EXPECTED_NICK, TEST_IRC_CHANNEL, TEST_MESSAGE);
+    this.ircBotMock.fireMessageEvent(EXPECTED_NICK, `${TEST_IRC_CHANNEL} ${TEST_IRC_CHANNEL_KEY}`, TEST_MESSAGE);
   },
 };

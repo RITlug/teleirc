@@ -22,7 +22,7 @@ let ircbot = new irc.Client(config.irc.server, config.irc.botName, {
   password: config.irc.serverPassword,
   selfSigned: config.irc.tlsAllowSelfSigned,
   certExpired: config.irc.tlsAllowCertExpired,
-  channels: [config.irc.channel],
+  channels: [`${config.irc.channel} ${config.irc.channelKey}`],
   debug: false,
   username: config.irc.botName,
   autoConnect: false,
