@@ -5,6 +5,7 @@ let settings = {
     process.env.IRC_BLACKLIST.split(",") : [],
   irc: {
     server: process.env.IRC_SERVER || "irc.freenode.net",
+    serverPassword: process.env.IRC_SERVER_PASSWORD || "",
     port: process.env.IRC_PORT || 6667,
     tlsAllowSelfSigned: process.env.IRC_CERT_ALLOW_SELFSIGNED === "true" || false,
     tlsAllowCertExpired: process.env.IRC_CERT_ALLOW_EXPIRED === "true" || false,
