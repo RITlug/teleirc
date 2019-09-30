@@ -53,3 +53,13 @@ func TestNewClientFull(t *testing.T) {
 	assert.Equal(t, client.Config, expectedConfig, "girc config should be properly set")
 
 }
+
+func TestStartBotConnErr(t *testing.T) {
+	ircSettings := internal.IRCSettings{
+		Server:  "test_server",
+		Port:    1234,
+		BotName: "test_name",
+	}
+	client := NewClient(&internal.Settings{IRC: ircSettings})
+	client = client
+}
