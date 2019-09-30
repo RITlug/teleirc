@@ -53,12 +53,3 @@ func TestNewClientFull(t *testing.T) {
 	assert.Equal(t, client.Config, expectedConfig, "girc config should be properly set")
 
 }
-
-func TestStartBotConnErr(t *testing.T) {
-	mockClient := new(MockedClient)
-	err := mockClient.StartBot()
-
-	assert.Equal(t, "some error", err.Error(), "Error should be some error")
-	mockClient.AssertCalled(t, "addHandlers")
-	mockClient.AssertCalled(t, "Connect")
-}
