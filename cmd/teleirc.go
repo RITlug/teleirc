@@ -30,7 +30,7 @@ func startTelegram() {
 func main() {
 	// optional path flag if user does not want .env file in root dir
 	var path string
-	flag.StringVar(&path, "p", "../.env", "Path to .env")
+	flag.StringVar(&path, "p", ".env", "Path to .env")
 
 	flag.Parse()
 
