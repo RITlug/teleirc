@@ -249,6 +249,7 @@ exports.ircConfigValidation.defaultSettingsTest_notDefined = function(assert) {
       // These three options are required, everything else is optional.
       // If missing, we should use a default setting.
       server: "test irc server",
+      password: "test irc password",
       channel: "test channel",
       botName: "test bot name",
       sendStickerEmoji: undefined,
@@ -279,6 +280,7 @@ exports.ircConfigValidation.defaultSettingsTest_setToNull = function(assert) {
       // These three options are required, everything else is optional.
       // If missing, we should use a default setting.
       server: "test irc server",
+      password: "test irc password",
       channel: "test channel",
       botName: "test bot name",
       sendStickerEmoji: null,
