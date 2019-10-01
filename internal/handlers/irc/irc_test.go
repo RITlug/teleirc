@@ -15,7 +15,7 @@ func TestNewClientBasic(t *testing.T) {
 		Port:    1234,
 		BotName: "test_name",
 	}
-	client := NewClient(&internal.Settings{IRC: ircSettings})
+	client := NewClient(ircSettings)
 
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
@@ -36,7 +36,7 @@ func TestNewClientFull(t *testing.T) {
 		BotName:          "test_name",
 		NickServPassword: "test_pass",
 	}
-	client := NewClient(&internal.Settings{IRC: ircSettings})
+	client := NewClient(ircSettings)
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
 		Server:    "test_server",

@@ -19,20 +19,20 @@ type Client struct {
 /*
 NewClient returns a new IRCClient based on the provided settings
 */
-func NewClient(settings *internal.Settings) Client {
+func NewClient(settings internal.IRCSettings) Client {
 	client := girc.New(girc.Config{
-		Server: settings.IRC.Server,
-		Port:   settings.IRC.Port,
-		Nick:   settings.IRC.BotName,
-		User:   settings.IRC.BotName,
+		Server: settings.Server,
+		Port:   settings.Port,
+		Nick:   settings.BotName,
+		User:   settings.BotName,
 	})
-	if settings.IRC.NickServPassword != "" {
+	if settings.NickServPassword != "" {
 		client.Config.SASL = &girc.SASLPlain{
-			User: settings.IRC.BotName,
-			Pass: settings.IRC.NickServPassword,
+			User: settings.BotName,
+			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings.IRC}
+	return Client{client, settings}
 }
 
 /*

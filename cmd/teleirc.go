@@ -31,7 +31,7 @@ func main() {
 		fmt.Println(err)
 	} else {
 		startTelegram()
-		client := irc.NewClient(settings)
+		client := irc.NewClient(settings.IRC)
 		if err := client.StartBot(); err != nil {
 			fmt.Println(err)
 		}
