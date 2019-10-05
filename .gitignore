@@ -25,5 +25,8 @@ pids
 *.pid
 *.seed
 
+# IDE metadata
+.vscode
+
 # Running config file! Don't commit this unless you know what you're doing.
 .env
