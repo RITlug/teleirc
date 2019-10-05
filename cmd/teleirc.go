@@ -34,16 +34,18 @@ func main() {
 
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		startTelegram()
-		client := irc.NewClient(settings.IRC)
-		go client.StartBot(ircChan)
-		for {
-			select {
-			case err := <-ircChan:
-				fmt.Println(err)
-			case <-time.After(waitDur):
-			}
+		return
+	}
+
+	startTelegram()
+	client := irc.NewClient(settings.IRC)
+	go client.StartBot(ircChan)
+
+	for {
+		select {
+		case err := <-ircChan:
+			fmt.Println(err)
+		case <-time.After(waitDur):
 		}
 	}
 }
