@@ -4,19 +4,11 @@ package main
 import (
 	"flag"
 	"fmt"
+
 	"github.com/ritlug/teleirc/internal"
 	"github.com/ritlug/teleirc/internal/handlers/irc"
 	tg "github.com/ritlug/teleirc/internal/handlers/telegram"
 )
-
-func startIrc() {
-	ircbot, err := irc.StartBot()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println(ircbot)
-}
 
 func startTelegram() {
 	tgbot, err := tg.StartBot()
@@ -34,12 +26,14 @@ func main() {
 
 	flag.Parse()
 
-	// TODO: change _ to settings once used
-	_, err := internal.LoadConfig(path)
+	settings, err := internal.LoadConfig(path)
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		startIrc()
 		startTelegram()
+		client := irc.NewClient(settings.IRC)
+		if err := client.StartBot(); err != nil {
+			fmt.Println(err)
+		}
 	}
 }
