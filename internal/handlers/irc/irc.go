@@ -39,12 +39,12 @@ func NewClient(settings internal.IRCSettings) Client {
 StartBot adds necessary handlers to the client and then connects,
 returns any errors that occur
 */
-func (c Client) StartBot() error {
+func (c Client) StartBot(errChan chan<- error) {
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
-		return err
+		errChan <- err
 	}
-	return nil
+	errChan <- nil
 }
 
 /*
