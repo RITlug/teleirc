@@ -39,10 +39,8 @@ func main() {
 	ircChan := make(chan error)
 	go client.StartBot(ircChan)
 
-	for {
-		select {
-		case err := <-ircChan:
-			fmt.Println(err)
-		}
+	select {
+	case err := <-ircChan:
+		fmt.Println(err)
 	}
 }
