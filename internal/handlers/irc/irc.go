@@ -49,6 +49,14 @@ func (c Client) StartBot(errChan chan<- error) {
 }
 
 /*
+SendMessage sends a message to the IRC channel specified in the
+settings
+*/
+func (c Client) SendMessage(msg string) {
+	c.Cmd.Message(c.Settings.Channel, msg)
+}
+
+/*
 addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
@@ -67,12 +75,4 @@ func connectHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Cmd.Join(c.Settings.Channel)
 	}
-}
-
-/*
-SendMessage sends a message to the IRC channel specified in the
-settings
-*/
-func (c Client) SendMessage(msg string) {
-	c.Cmd.Message(c.Settings.Channel, msg)
 }
