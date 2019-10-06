@@ -4,7 +4,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"time"
 
 	"github.com/ritlug/teleirc/internal"
 	"github.com/ritlug/teleirc/internal/handlers/irc"
@@ -29,9 +28,6 @@ func main() {
 
 	settings, err := internal.LoadConfig(path)
 
-	ircChan := make(chan error)
-	waitDur, _ := time.ParseDuration("1s")
-
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -39,14 +35,14 @@ func main() {
 
 	startTelegram()
 	client := irc.NewClient(settings.IRC)
+
+	ircChan := make(chan error)
 	go client.StartBot(ircChan)
 
 	for {
 		select {
 		case err := <-ircChan:
 			fmt.Println(err)
-		case <-time.After(waitDur):
-			client.SendMessage("ping pong")
 		}
 	}
 }
