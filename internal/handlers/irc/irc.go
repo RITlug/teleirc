@@ -69,6 +69,10 @@ func connectHandler(c Client) func(*girc.Client, girc.Event) {
 	}
 }
 
+/*
+SendMessage sends a message to the IRC channel specified in the
+settings
+*/
 func (c Client) SendMessage(msg string) {
 	c.Cmd.Message(c.Settings.Channel, msg)
 }
