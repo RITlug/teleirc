@@ -46,6 +46,7 @@ func main() {
 		case err := <-ircChan:
 			fmt.Println(err)
 		case <-time.After(waitDur):
+			client.SendMessage("ping pong")
 		}
 	}
 }

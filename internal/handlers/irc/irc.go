@@ -67,3 +67,7 @@ func connectHandler(c Client) func(*girc.Client, girc.Event) {
 		c.Cmd.Join(c.Settings.Channel)
 	}
 }
+
+func (c Client) SendMessage(msg string) {
+	c.Cmd.Message(c.Settings.Channel, msg)
+}
