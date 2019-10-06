@@ -43,8 +43,9 @@ func (c Client) StartBot(errChan chan<- error) {
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
 		errChan <- err
+	} else {
+		errChan <- nil
 	}
-	errChan <- nil
 }
 
 /*
