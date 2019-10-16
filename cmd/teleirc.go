@@ -27,13 +27,20 @@ func main() {
 	flag.Parse()
 
 	settings, err := internal.LoadConfig(path)
+
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		startTelegram()
-		client := irc.NewClient(settings.IRC)
-		if err := client.StartBot(); err != nil {
-			fmt.Println(err)
-		}
+		return
+	}
+
+	startTelegram()
+	client := irc.NewClient(settings.IRC)
+
+	ircChan := make(chan error)
+	go client.StartBot(ircChan)
+
+	select {
+	case err := <-ircChan:
+		fmt.Println(err)
 	}
 }
