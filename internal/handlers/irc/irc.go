@@ -1,8 +1,6 @@
 package irc
 
 import (
-	"fmt"
-
 	"github.com/lrstanley/girc"
 	"github.com/ritlug/teleirc/internal"
 )
@@ -62,7 +60,7 @@ that were passed in to NewClient
 */
 func (c Client) addHandlers() {
 	c.Handlers.Add(girc.ALL_EVENTS, func(c *girc.Client, e girc.Event) {
-		fmt.Println(e.String())
+		//fmt.Println(e.String())
 	})
 	c.Handlers.Add(girc.CONNECTED, connectHandler(c))
 }
