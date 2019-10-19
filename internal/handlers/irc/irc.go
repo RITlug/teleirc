@@ -1,6 +1,8 @@
 package irc
 
 import (
+	"fmt"
+
 	"github.com/lrstanley/girc"
 	"github.com/ritlug/teleirc/internal"
 )
@@ -18,6 +20,7 @@ type Client struct {
 NewClient returns a new IRCClient based on the provided settings
 */
 func NewClient(settings internal.IRCSettings) Client {
+	fmt.Println("Creating new IRC bot client...")
 	client := girc.New(girc.Config{
 		Server: settings.Server,
 		Port:   settings.Port,
@@ -38,6 +41,7 @@ StartBot adds necessary handlers to the client and then connects,
 returns any errors that occur
 */
 func (c Client) StartBot(errChan chan<- error) {
+	fmt.Println("Startup up IRC bot...")
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
 		errChan <- err
@@ -59,6 +63,7 @@ addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
 func (c Client) addHandlers() {
+	fmt.Println("Adding IRC event handlers...")
 	c.Handlers.Add(girc.ALL_EVENTS, func(c *girc.Client, e girc.Event) {
 		//fmt.Println(e.String())
 	})

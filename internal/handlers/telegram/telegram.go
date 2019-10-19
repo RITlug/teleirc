@@ -18,9 +18,10 @@ type Client struct {
 }
 
 /*
-NewClient creates a new Telegram client
+NewClient creates a new Telegram bot client
 */
 func NewClient(settings internal.TelegramSettings) (Client, error) {
+	fmt.Println("Creating new Telegram bot client...")
 	bot, err := tgbotapi.NewBotAPI(settings.Token)
 	if err != nil {
 		fmt.Println("Error creating Telegram client")
@@ -34,6 +35,7 @@ StartBot adds necessary handlers to the client and then connects,
 returning any errors that occur
 */
 func (tg *Client) StartBot(errChan chan<- error) {
+	fmt.Println("Starting up Telegram bot...")
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
@@ -42,15 +44,14 @@ func (tg *Client) StartBot(errChan chan<- error) {
 		errChan <- err
 	}
 
-	// go tg.messageHandler(updates)
-	// return nil
-
+	// TODO: Move these lines into the updateHandler when available
 	for update := range updates {
 		if update.Message == nil {
 			continue
 		}
 		// Repeat sent message back to user
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+		fmt.Println("Sending message:", msg)
 		tg.api.Send(msg)
 	}
 	errChan <- nil

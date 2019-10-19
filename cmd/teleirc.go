@@ -26,6 +26,7 @@ func main() {
 		return
 	}
 
+	// TODO: Build out debugging capabilities for more verbose output
 	if *flagDebug {
 		fmt.Printf("Debug mode currently set to: %s\n", flagDebug)
 	}
@@ -37,10 +38,7 @@ func main() {
 		return
 	}
 
-	tgClient, err := tg.NewClient(settings.Telegram)
-	if err != nil {
-
-	}
+	tgClient, _ := tg.NewClient(settings.Telegram)
 	tgChan := make(chan error)
 	go tgClient.StartBot(tgChan)
 
