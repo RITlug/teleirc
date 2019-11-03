@@ -2,7 +2,7 @@
 name: Improvement to existing functionality
 about: Suggest an improvement to something that already exists
 title: ''
-labels: discussion, improvement
+labels: improvement, needs triage
 assignees: ''
 
 ---
