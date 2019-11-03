@@ -10,37 +10,51 @@ import (
 	tg "github.com/ritlug/teleirc/internal/handlers/telegram"
 )
 
-func startTelegram() {
-	tgbot, err := tg.StartBot()
-	if err != nil {
-		fmt.Println(err)
-	}
+var (
+	version = "v2.0"
 
-	fmt.Println(tgbot)
-}
+	flagPath    = flag.String("conf", ".env", "config file")
+	flagDebug   = flag.Bool("debug", false, "enable debugging")
+	flagVersion = flag.Bool("version", false, "displays current version of TeleIRC")
+)
 
 func main() {
-	// optional path flag if user does not want .env file in root dir
-	var path string
-	flag.StringVar(&path, "p", ".env", "Path to .env")
-
 	flag.Parse()
 
-	settings, err := internal.LoadConfig(path)
+	if *flagVersion {
+		fmt.Printf("Current TeleIRC version: %s\n", version)
+		return
+	}
+
+	// TODO: Build out debugging capabilities for more verbose output
+	if *flagDebug {
+		fmt.Printf("Debug mode currently set to: %t\n", *flagDebug)
+	}
+
+	settings, err := internal.LoadConfig(*flagPath)
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	startTelegram()
-	client := irc.NewClient(settings.IRC)
+	tgClient, err := tg.NewClient(settings.Telegram)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
+	tgChan := make(chan error)
+	go tgClient.StartBot(tgChan)
+
+	ircClient := irc.NewClient(settings.IRC)
 	ircChan := make(chan error)
-	go client.StartBot(ircChan)
+	go ircClient.StartBot(ircChan)
 
 	select {
-	case err := <-ircChan:
-		fmt.Println(err)
+	case ircErr := <-ircChan:
+		fmt.Println(ircErr)
+	case tgErr := <-tgChan:
+		fmt.Println(tgErr)
 	}
 }
