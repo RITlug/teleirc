@@ -2,7 +2,7 @@
 name: Other
 about: Something that doesn't belong elsewhere
 title: ''
-labels: discussion
+labels: needs triage
 assignees: ''
 
 ---
