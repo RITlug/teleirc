@@ -64,8 +64,10 @@ that were passed in to NewClient
 */
 func (c Client) addHandlers() {
 	fmt.Println("Adding IRC event handlers...")
-	c.Handlers.Add(girc.ALL_EVENTS, func(c *girc.Client, e girc.Event) {
-		//fmt.Println(e.String())
+	c.Handlers.Add(girc.PRIVMSG, func(gc *girc.Client, e girc.Event) {
+		if pretty, ok := e.Pretty(); ok {
+			c.SendMessage(pretty)
+		}
 	})
 	c.Handlers.Add(girc.CONNECTED, connectHandler(c))
 }
