@@ -28,7 +28,7 @@ func main() {
 
 	// TODO: Build out debugging capabilities for more verbose output
 	if *flagDebug {
-		fmt.Printf("Debug mode currently set to: %s\n", flagDebug)
+		fmt.Printf("Debug mode currently set to: %t\n", *flagDebug)
 	}
 
 	settings, err := internal.LoadConfig(*flagPath)
@@ -42,9 +42,9 @@ func main() {
 	tgChan := make(chan error)
 	go tgClient.StartBot(tgChan)
 
-	IrcClient := irc.NewClient(settings.IRC)
+	ircClient := irc.NewClient(settings.IRC)
 	ircChan := make(chan error)
-	go IrcClient.StartBot(ircChan)
+	go ircClient.StartBot(ircChan)
 
 	select {
 	case ircErr := <-ircChan:
