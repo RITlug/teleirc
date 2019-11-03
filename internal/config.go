@@ -1,16 +1,12 @@
 package internal
 
 import (
-	"os"
-
 	"github.com/caarlos0/env/v6"
 	"github.com/go-playground/validator"
 	"github.com/joho/godotenv"
 )
 
 var validate *validator.Validate
-
-const defaultPath = ".env"
 
 // IRCSettings includes settings related to the IRC bot/message relaying
 type IRCSettings struct {
@@ -64,17 +60,11 @@ Otherwise, return the error that caused the failure.
 */
 func LoadConfig(path string) (*Settings, error) {
 	validate = validator.New()
-	// Attempt to load environment variables from path if path was provided
-	if path != "" {
-		if err := godotenv.Load(path); err != nil {
-			return nil, err
-		}
-	} else if _, err := os.Stat(defaultPath); !os.IsNotExist(err) {
-		// Attempt to load from defaultPath is defaultPath exists
-		if err := godotenv.Load(defaultPath); err != nil {
-			return nil, err
-		}
+
+	if err := godotenv.Load(path); err != nil {
+		return nil, err
 	}
+
 	settings := Settings{}
 	if err := env.Parse(&settings); err != nil {
 		return nil, err
