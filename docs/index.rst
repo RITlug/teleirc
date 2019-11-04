@@ -10,14 +10,29 @@ This bot was originally written for `RITlug <https://ritlug.com>`_.
 Today, it is used by various communities.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents
+    :maxdepth: 2
+    :name: about
+    :caption: About TeleIRC:
+    :glob:
 
-   quick-install
-   deploy-teleirc
-   config-file-glossary
-   faq
-   who-uses-teleirc
+    about/*
+
+.. toctree::
+    :maxdepth: 2
+    :name: user
+    :caption: User documentation:
+
+    quick-install
+    deploy-teleirc
+    config-file-glossary
+
+.. toctree::
+    :maxdepth: 2
+    :name: development
+    :caption: Developer documentation:
+    :glob:
+
+    dev/*
 
 
 *********

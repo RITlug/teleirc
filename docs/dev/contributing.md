@@ -1,4 +1,4 @@
-Contributing to TeleIRC
+Contributing guidelines
 =======================
 
 <!--
@@ -6,11 +6,11 @@ Contributing to TeleIRC
     This makes git diffs easier to read.
 -->
 
-This is a guide on how to contribute to the TeleIRC project.
+This guide explains how to contribute to the TeleIRC project.
 It explicitly defines working practices of the development team.
-The goal of this document is to help new contributors get up to speed with working on the project.
-It is a living document and may change.
-If you think something could be better, please [open an issue](https://github.com/RITlug/teleirc/issues/new) with your feedback.
+This document helps new contributors get up to speed with working on the project.
+It is a living document and will change.
+If you think something could be better, please [open an issue](https://github.com/RITlug/teleirc/issues/new/choose) with your feedback.
 
 
 ## Table of contents
@@ -41,7 +41,7 @@ To set up a TeleIRC development environment, you need the following:
 ### Create Telegram bot
 
 Create a Telegram bot using the Telegram [BotFather](https://t.me/botfather).
-See [TeleIRC documentation](https://docs.teleirc.com/en/latest/quick-install/#create-a-telegram-bot) for more instructions on how to do this.
+See [TeleIRC documentation](/quick-install) for more instructions on how to do this.
 
 ### Create Telegram group
 
@@ -60,7 +60,7 @@ See your IRC network's documentation on registering a channel.
 
 Change the `env.example` file to `.env`.
 Change the configuration values to the Telegram bot's tokens.
-For more help with configuration, see the [TeleIRC documentation](https://docs.teleirc.com/en/latest/quick-install/#configure-and-run-teleirc).
+For more help with configuration, see the [TeleIRC documentation](/quick-install).
 
 
 ## Open a new pull request
