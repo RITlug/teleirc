@@ -38,12 +38,7 @@ func main() {
 		return
 	}
 
-	tgClient, err := tg.NewClient(settings.Telegram)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
+	tgClient := tg.NewClient(settings.Telegram)
 	tgChan := make(chan error)
 	go tgClient.StartBot(tgChan)
 
