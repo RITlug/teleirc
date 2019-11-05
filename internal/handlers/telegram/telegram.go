@@ -20,14 +20,9 @@ type Client struct {
 /*
 NewClient creates a new Telegram bot client
 */
-func NewClient(settings internal.TelegramSettings) (Client, error) {
+func NewClient(settings internal.TelegramSettings) *Client {
 	fmt.Println("Creating new Telegram bot client...")
-	bot, err := tgbotapi.NewBotAPI(settings.Token)
-	if err != nil {
-		fmt.Println("Error creating Telegram client")
-		return Client{}, err
-	}
-	return Client{bot, settings}, nil
+	return &Client{Settings: settings}
 }
 
 /*
@@ -36,6 +31,12 @@ returning any errors that occur
 */
 func (tg *Client) StartBot(errChan chan<- error) {
 	fmt.Println("Starting up Telegram bot...")
+	var err error
+	tg.api, err = tgbotapi.NewBotAPI(tg.Settings.Token)
+	if err != nil {
+		fmt.Println("Failed to connect to Telegram")
+		errChan <- err
+	}
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
