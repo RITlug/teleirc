@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
 	"github.com/ritlug/teleirc/internal/handlers/irc"
 	tg "github.com/ritlug/teleirc/internal/handlers/telegram"
@@ -32,13 +33,13 @@ func main() {
 	}
 
 	settings, err := internal.LoadConfig(*flagPath)
-
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	tgClient := tg.NewClient(settings.Telegram)
+	var tgapi *tgbotapi.BotAPI
+	tgClient := tg.NewClient(settings.Telegram, tgapi)
 	tgChan := make(chan error)
 	go tgClient.StartBot(tgChan)
 
