@@ -13,6 +13,19 @@ func TestNewClientBasic(t *testing.T) {
 		ChatID: "-0000000000000",
 	}
 	client := NewClient(tgSettings)
+	assert.Equal(t, client.Settings, tgSettings, "Basic client settings should be properly set")
+}
 
-	assert.Equal(t, client.Settings, tgSettings, "Client settings should be properly set")
+func TestNewClientFull(t *testing.T) {
+	tgSettings := internal.TelegramSettings{
+		Token:               "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
+		ChatID:              "-0000000000000",
+		ShowJoinMessage:     true,
+		ShowActionMessage:   true,
+		ShowLeaveMessage:    true,
+		ShowKickMessage:     true,
+		MaxMessagePerMinute: 10,
+	}
+	client := NewClient(tgSettings)
+	assert.Equal(t, client.Settings, tgSettings, "All client settings should be properly set")
 }
