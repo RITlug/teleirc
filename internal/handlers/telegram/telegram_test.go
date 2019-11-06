@@ -3,6 +3,7 @@ package telegram
 import (
 	"testing"
 
+	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
 	"github.com/stretchr/testify/assert"
 )
@@ -12,7 +13,8 @@ func TestNewClientBasic(t *testing.T) {
 		Token:  "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
 		ChatID: "-0000000000000",
 	}
-	client := NewClient(tgSettings)
+	var tgapi *tgbotapi.BotAPI
+	client := NewClient(tgSettings, tgapi)
 	assert.Equal(t, client.Settings, tgSettings, "Basic client settings should be properly set")
 }
 
@@ -26,6 +28,7 @@ func TestNewClientFull(t *testing.T) {
 		ShowKickMessage:     true,
 		MaxMessagePerMinute: 10,
 	}
-	client := NewClient(tgSettings)
+	var tgapi *tgbotapi.BotAPI
+	client := NewClient(tgSettings, tgapi)
 	assert.Equal(t, client.Settings, tgSettings, "All client settings should be properly set")
 }
