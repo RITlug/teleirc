@@ -20,9 +20,9 @@ type Client struct {
 /*
 NewClient creates a new Telegram bot client
 */
-func NewClient(settings internal.TelegramSettings) *Client {
+func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI) *Client {
 	fmt.Println("Creating new Telegram bot client...")
-	return &Client{Settings: settings}
+	return &Client{api: tgapi, Settings: settings}
 }
 
 /*
