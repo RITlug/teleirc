@@ -37,7 +37,7 @@ See our [contributing guidelines](https://docs.teleirc.com/en/latest/dev/contrib
 
 See what projects and communities use TeleIRC.
 
-[Who uses TeleIRC?](https://docs.teleirc.com/en/latest/who-uses-teleirc/ "Who uses TeleIRC?")
+[Who uses TeleIRC?](https://docs.teleirc.com/en/latest/about/who-uses-teleirc/ "Who uses TeleIRC?")
 
 
 ## Documentation
