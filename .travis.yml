@@ -29,7 +29,7 @@ jobs:
 notifications:
   irc:
     channels:
-      - "ircs://chat.freenode.net:6697/#ritlug-teleirc"
+      - "ircs://chat.freenode.net:6697/#rit-lug-teleirc"
     template:
       - "[%{repository_name}:%{branch}@%{commit} - build #%{build_number}] CI %{result}! (%{build_url})"
     on_success: change

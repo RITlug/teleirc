@@ -81,7 +81,7 @@ Stick to the guidelines for quicker and easier pull request reviews.
 
 Project maintainers are committed to **no more than 10 days for a reply** to a new ticket.
 Current maintainers are volunteers working on the project, so we try to keep up with the project as best we can.
-If more than 10 days passed and you have not received a reply, follow up in [Telegram](https://t.me/teleirc) or [IRC](https://webchat.freenode.net/?channels=ritlug-teleirc) (`#ritlug-teleirc` on irc.freenode.net).
+If more than 10 days passed and you have not received a reply, follow up in [Telegram](https://t.me/teleirc) or [IRC](https://webchat.freenode.net/?channels=rit-lug-teleirc) (`#rit-lug-teleirc` on irc.freenode.net).
 Someone may have missed your comment – we are not intentionally ignoring anyone.
 
 _Remember_, using issue templates and answering the above questions in new pull requests likely reduces response time from a maintainer to your ticket / PR.
