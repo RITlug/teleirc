@@ -12,9 +12,11 @@ import (
 	tg "github.com/ritlug/teleirc/internal/handlers/telegram"
 )
 
-var (
+const (
 	version = "v2.0"
+)
 
+var (
 	flagPath    = flag.String("conf", ".env", "config file")
 	flagDebug   = flag.Bool("debug", false, "enable debugging")
 	flagVersion = flag.Bool("version", false, "displays current version of TeleIRC")
