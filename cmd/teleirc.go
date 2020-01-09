@@ -4,8 +4,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
-	"github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
 	"github.com/ritlug/teleirc/internal/handlers/irc"
 	tg "github.com/ritlug/teleirc/internal/handlers/telegram"
@@ -34,8 +35,8 @@ func main() {
 
 	settings, err := internal.LoadConfig(*flagPath)
 	if err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	var tgapi *tgbotapi.BotAPI
