@@ -13,8 +13,7 @@ and the IRCSettings that were passed into NewClient
 */
 type Client struct {
 	*girc.Client
-	Settings   internal.IRCSettings
-	HandlerMap map[string]Handler
+	Settings internal.IRCSettings
 }
 
 /*
@@ -34,7 +33,7 @@ func NewClient(settings internal.IRCSettings) Client {
 			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings, GetHandlerMapping()}
+	return Client{client, settings}
 }
 
 /*
@@ -65,7 +64,7 @@ that were passed in to NewClient
 */
 func (c Client) addHandlers() {
 	fmt.Println("Adding IRC event handlers...")
-	for eventType, handler := range c.HandlerMap {
+	for eventType, handler := range GetHandlerMapping() {
 		c.Handlers.Add(eventType, handler(c))
 	}
 }
