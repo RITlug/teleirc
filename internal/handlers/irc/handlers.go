@@ -1,6 +1,8 @@
 package irc
 
 import (
+	"fmt"
+
 	"github.com/lrstanley/girc"
 )
 
@@ -23,8 +25,9 @@ func connectHandler(c Client) func(*girc.Client, girc.Event) {
 
 func privMsgHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		if pretty, ok := e.Pretty(); ok {
-			c.SendMessage(pretty)
+		formatted := fmt.Sprintf(c.MessageFormat, e.Source.Name, e.Params[1])
+		if e.IsFromChannel() {
+			c.SendMessage(formatted)
 		}
 	}
 }

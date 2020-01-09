@@ -7,13 +7,18 @@ import (
 	"github.com/ritlug/teleirc/internal"
 )
 
+const (
+	plainMessageFormat = "%s%%s%s %%s"
+)
+
 /*
 Client contains information for our IRC bridge, including the girc Client
 and the IRCSettings that were passed into NewClient
 */
 type Client struct {
 	*girc.Client
-	Settings internal.IRCSettings
+	Settings      internal.IRCSettings
+	MessageFormat string
 }
 
 /*
@@ -33,7 +38,9 @@ func NewClient(settings internal.IRCSettings) Client {
 			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings}
+	msgFmt := fmt.Sprintf(plainMessageFormat, settings.Prefix, settings.Suffix)
+	fmt.Println(msgFmt)
+	return Client{client, settings, msgFmt}
 }
 
 /*
