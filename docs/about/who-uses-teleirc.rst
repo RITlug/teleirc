@@ -35,8 +35,8 @@ The following list of projects and communities use RITlug TeleIRC:
 
 -  `Pure Data <https://puredata.info/>`_ (`@puredata <https://t.me/puredata>`_ | `#dataflow <https://webchat.freenode.net/?channels=dataflow>`_)
 
--  `RITlug <https://ritlug.com>`_ (`@ritlug <https://t.me/ritlug>`_ | `#ritlug <https://webchat.freenode.net/?channels=ritlug>`_)
-    -  `RITlug teleirc <https://github.com/RITlug/teleirc>`_ (`@teleirc <https://t.me/teleirc>`_ | `#ritlug-teleirc <https://webchat.freenode.net/?channels=ritlug-teleirc>`_)
+-  `RITlug <https://ritlug.com>`_ (`@ritlug <https://t.me/ritlug>`_ | `#rit-lug <https://webchat.freenode.net/?channels=rit-lug>`_)
+    -  `RITlug teleirc <https://github.com/RITlug/teleirc>`_ (`@teleirc <https://t.me/teleirc>`_ | `#rit-lug-teleirc <https://webchat.freenode.net/?channels=rit-lug-teleirc>`_)
 
 
 ***********************
