@@ -39,7 +39,6 @@ func NewClient(settings internal.IRCSettings) Client {
 		}
 	}
 	msgFmt := fmt.Sprintf(plainMessageFormat, settings.Prefix, settings.Suffix)
-	fmt.Println(msgFmt)
 	return Client{client, settings, msgFmt}
 }
 
