@@ -33,9 +33,9 @@ func privMsgHandler(c Client) func(*girc.Client, girc.Event) {
 }
 
 /*
-GetHandlerMapping returns a mapping of girc event types to handlers
+getHandlerMapping returns a mapping of girc event types to handlers
 */
-func GetHandlerMapping() map[string]Handler {
+func getHandlerMapping() map[string]Handler {
 	return map[string]Handler{
 		girc.CONNECTED: connectHandler,
 		girc.PRIVMSG:   privMsgHandler,

@@ -70,7 +70,7 @@ that were passed in to NewClient
 */
 func (c Client) addHandlers() {
 	fmt.Println("Adding IRC event handlers...")
-	for eventType, handler := range GetHandlerMapping() {
+	for eventType, handler := range getHandlerMapping() {
 		c.Handlers.Add(eventType, handler(c))
 	}
 }
