@@ -7,13 +7,18 @@ import (
 	"github.com/ritlug/teleirc/internal"
 )
 
+const (
+	plainMessageFormat = "%s%%s%s %%s"
+)
+
 /*
 Client contains information for our IRC bridge, including the girc Client
 and the IRCSettings that were passed into NewClient
 */
 type Client struct {
 	*girc.Client
-	Settings internal.IRCSettings
+	Settings      internal.IRCSettings
+	MessageFormat string
 }
 
 /*
@@ -33,7 +38,8 @@ func NewClient(settings internal.IRCSettings) Client {
 			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings}
+	msgFmt := fmt.Sprintf(plainMessageFormat, settings.Prefix, settings.Suffix)
+	return Client{client, settings, msgFmt}
 }
 
 /*
@@ -64,20 +70,7 @@ that were passed in to NewClient
 */
 func (c Client) addHandlers() {
 	fmt.Println("Adding IRC event handlers...")
-	c.Handlers.Add(girc.PRIVMSG, func(gc *girc.Client, e girc.Event) {
-		if pretty, ok := e.Pretty(); ok {
-			c.SendMessage(pretty)
-		}
-	})
-	c.Handlers.Add(girc.CONNECTED, connectHandler(c))
-}
-
-/*
-connectHandler return a function to use as the connect handler for girc,
-so that the specified channel is joined after the server connection is established
-*/
-func connectHandler(c Client) func(*girc.Client, girc.Event) {
-	return func(gc *girc.Client, e girc.Event) {
-		c.Cmd.Join(c.Settings.Channel)
+	for eventType, handler := range getHandlerMapping() {
+		c.Handlers.Add(eventType, handler(c))
 	}
 }
