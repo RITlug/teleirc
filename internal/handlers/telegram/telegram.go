@@ -1,10 +1,10 @@
-// Package Telegram handles all Telegram-side logic.
+// Package telegram handles all Telegram-side logic.
 package telegram
 
 import (
 	"fmt"
 
-	"github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
 )
 
