@@ -30,3 +30,7 @@ pids
 
 # Running config file! Don't commit this unless you know what you're doing.
 .env
+
+# Generated executables
+teleirc
+cmd/cmd
