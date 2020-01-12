@@ -6,6 +6,11 @@ import (
 	"github.com/lrstanley/girc"
 )
 
+const (
+	joinFmt = "<system> %s joins"
+	partFmt = "<system> %s parts"
+)
+
 /*
 Handler specifies a function that handles an IRC event
 In this case, we take an IRC client and return a function that
@@ -32,6 +37,18 @@ func privMsgHandler(c Client) func(*girc.Client, girc.Event) {
 	}
 }
 
+func joinHandler(c Client) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.SendMessage(fmt.Sprintf(joinFmt, e.Source.Name))
+	}
+}
+
+func partHandler(c Client) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.SendMessage(fmt.Sprintf(partFmt, e.Source.Name))
+	}
+}
+
 /*
 getHandlerMapping returns a mapping of girc event types to handlers
 */
@@ -39,5 +56,8 @@ func getHandlerMapping() map[string]Handler {
 	return map[string]Handler{
 		girc.CONNECTED: connectHandler,
 		girc.PRIVMSG:   privMsgHandler,
+		girc.PART:      partHandler,
+		girc.QUIT:      partHandler,
+		girc.JOIN:      joinHandler,
 	}
 }
