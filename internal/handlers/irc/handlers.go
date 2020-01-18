@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	joinFmt = "<system> %s joins"
-	partFmt = "<system> %s parts"
+	joinFmt = "* %s joins"
+	partFmt = "* %s parts"
 )
 
 /*
