@@ -44,11 +44,11 @@ func main() {
 	var tgapi *tgbotapi.BotAPI
 	tgClient := tg.NewClient(settings.Telegram, tgapi)
 	tgChan := make(chan error)
-	go tgClient.StartBot(tgChan)
 
 	ircClient := irc.NewClient(settings.IRC)
 	ircChan := make(chan error)
 	go ircClient.StartBot(ircChan)
+	go tgClient.StartBot(tgChan, ircClient.SendMessage)
 
 	select {
 	case ircErr := <-ircChan:
