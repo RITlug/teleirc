@@ -26,6 +26,16 @@ func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI) *Clie
 }
 
 /*
+SendMessage sends a message to the Telegram channel specified in the settings
+*/
+func (tg *Client) SendMessage(msg string) {
+	// TODO: Figure out how to properly format an IRC message
+	newMsg := tgbotapi.NewMessage(tg.Settings.ChatID, "")
+	newMsg.Text = msg
+	tg.api.Send(newMsg)
+}
+
+/*
 StartBot adds necessary handlers to the client and then connects,
 returning any errors that occur
 */
@@ -50,10 +60,14 @@ func (tg *Client) StartBot(errChan chan<- error) {
 		if update.Message == nil {
 			continue
 		}
-		// Repeat sent message back to user
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		fmt.Println("Sending message:", msg)
-		tg.api.Send(msg)
+		//formatted := "<" + update.Message.From + "> " + update.Message.Text
+		//fmt.Println("Sending message:", update.Message.Text)
+		//tg.SendMessage(formatted)
+
+		// TODO: this info goes into the IRC sendMessage handler
+		newMsg := tgbotapi.NewMessage(tg.Settings.ChatID, "")
+		newMsg.Text = "<" + update.Message.From.UserName + "> " + update.Message.Text
+		tg.api.Send(newMsg)
 	}
 	errChan <- nil
 }

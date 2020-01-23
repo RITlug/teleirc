@@ -11,7 +11,7 @@ import (
 func TestNewClientBasic(t *testing.T) {
 	tgSettings := internal.TelegramSettings{
 		Token:  "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
-		ChatID: "-0000000000000",
+		ChatID: -0000000000000,
 	}
 	var tgapi *tgbotapi.BotAPI
 	client := NewClient(tgSettings, tgapi)
@@ -21,7 +21,7 @@ func TestNewClientBasic(t *testing.T) {
 func TestNewClientFull(t *testing.T) {
 	tgSettings := internal.TelegramSettings{
 		Token:               "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
-		ChatID:              "-0000000000000",
+		ChatID:              -0000000000000,
 		ShowJoinMessage:     true,
 		ShowActionMessage:   true,
 		ShowLeaveMessage:    true,
