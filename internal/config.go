@@ -36,7 +36,7 @@ type IRCSettings struct {
 // TelegramSettings includes settings related to the Telegram bot/message relaying
 type TelegramSettings struct {
 	Token               string `env:"TELEIRC_TOKEN,required"`
-	ChatID              string `env:"TELEGRAM_CHAT_ID,required"`
+	ChatID              int64  `env:"TELEGRAM_CHAT_ID,required"`
 	ShowJoinMessage     bool   `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
 	ShowActionMessage   bool   `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
 	ShowLeaveMessage    bool   `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
