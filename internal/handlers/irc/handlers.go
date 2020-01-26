@@ -9,6 +9,7 @@ import (
 const (
 	joinFmt = "* %s joins"
 	partFmt = "* %s parts"
+	quitFmt = "* %s quit (%s)"
 )
 
 /*
@@ -28,9 +29,13 @@ func connectHandler(c Client) func(*girc.Client, girc.Event) {
 	}
 }
 
-func privMsgHandler(c Client) func(*girc.Client, girc.Event) {
+/*
+messageHandler handles the PRIVMSG IRC event, which entails both private
+and channel messages. However, it only cares about channel messages
+*/
+func messageHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		formatted := fmt.Sprintf(c.MessageFormat, e.Source.Name, e.Params[1])
+		formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
 		if e.IsFromChannel() {
 			c.SendMessage(formatted)
 		}
@@ -49,15 +54,21 @@ func partHandler(c Client) func(*girc.Client, girc.Event) {
 	}
 }
 
+func quitHandler(c Client) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.SendMessage(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
+	}
+}
+
 /*
 getHandlerMapping returns a mapping of girc event types to handlers
 */
 func getHandlerMapping() map[string]Handler {
 	return map[string]Handler{
 		girc.CONNECTED: connectHandler,
-		girc.PRIVMSG:   privMsgHandler,
+		girc.PRIVMSG:   messageHandler,
 		girc.PART:      partHandler,
-		girc.QUIT:      partHandler,
+		girc.QUIT:      quitHandler,
 		girc.JOIN:      joinHandler,
 	}
 }
