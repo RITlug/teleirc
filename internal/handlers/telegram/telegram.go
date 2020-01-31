@@ -62,12 +62,8 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 		if update.Message == nil {
 			continue
 		}
-		formatted := tg.Settings.Prefix +
-			update.Message.From.UserName +
-			tg.Settings.Suffix +
-			update.Message.Text
 
-		tg.sendToIrc(formatted)
+		messageHandler(tg, update)
 	}
 	errChan <- nil
 }
