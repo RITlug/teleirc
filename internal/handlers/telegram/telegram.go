@@ -13,8 +13,9 @@ Client contains information for the Telegram bridge, including
 the TelegramSettings needed to run the bot
 */
 type Client struct {
-	api      *tgbotapi.BotAPI
-	Settings internal.TelegramSettings
+	api       *tgbotapi.BotAPI
+	Settings  internal.TelegramSettings
+	sendToIrc func(string)
 }
 
 /*
@@ -29,7 +30,6 @@ func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI) *Clie
 SendMessage sends a message to the Telegram channel specified in the settings
 */
 func (tg *Client) SendMessage(msg string) {
-	// TODO: Figure out how to properly format an IRC message
 	newMsg := tgbotapi.NewMessage(tg.Settings.ChatID, "")
 	newMsg.Text = msg
 	tg.api.Send(newMsg)
@@ -39,7 +39,7 @@ func (tg *Client) SendMessage(msg string) {
 StartBot adds necessary handlers to the client and then connects,
 returning any errors that occur
 */
-func (tg *Client) StartBot(errChan chan<- error) {
+func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	fmt.Println("Starting up Telegram bot...")
 	var err error
 	tg.api, err = tgbotapi.NewBotAPI(tg.Settings.Token)
@@ -47,6 +47,8 @@ func (tg *Client) StartBot(errChan chan<- error) {
 		fmt.Println("Failed to connect to Telegram")
 		errChan <- err
 	}
+	tg.sendToIrc = sendMessage
+
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
@@ -60,14 +62,12 @@ func (tg *Client) StartBot(errChan chan<- error) {
 		if update.Message == nil {
 			continue
 		}
-		//formatted := "<" + update.Message.From + "> " + update.Message.Text
-		//fmt.Println("Sending message:", update.Message.Text)
-		//tg.SendMessage(formatted)
+		formatted := tg.Settings.Prefix +
+			update.Message.From.UserName +
+			tg.Settings.Suffix +
+			update.Message.Text
 
-		// TODO: this info goes into the IRC sendMessage handler
-		newMsg := tgbotapi.NewMessage(tg.Settings.ChatID, "")
-		newMsg.Text = "<" + update.Message.From.UserName + "> " + update.Message.Text
-		tg.api.Send(newMsg)
+		tg.sendToIrc(formatted)
 	}
 	errChan <- nil
 }
