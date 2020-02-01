@@ -37,6 +37,8 @@ type IRCSettings struct {
 type TelegramSettings struct {
 	Token               string `env:"TELEIRC_TOKEN,required"`
 	ChatID              int64  `env:"TELEGRAM_CHAT_ID,required"`
+	Prefix              string `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
+	Suffix              string `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:"> "`
 	ShowJoinMessage     bool   `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
 	ShowActionMessage   bool   `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
 	ShowLeaveMessage    bool   `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
