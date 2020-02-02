@@ -37,26 +37,26 @@ func messageHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
 		if e.IsFromChannel() {
-			c.SendMessage(formatted)
+			c.sendToTg(formatted)
 		}
 	}
 }
 
 func joinHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.SendMessage(fmt.Sprintf(joinFmt, e.Source.Name))
+		c.sendToTg(fmt.Sprintf(joinFmt, e.Source.Name))
 	}
 }
 
 func partHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.SendMessage(fmt.Sprintf(partFmt, e.Source.Name))
+		c.sendToTg(fmt.Sprintf(partFmt, e.Source.Name))
 	}
 }
 
 func quitHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.SendMessage(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
+		c.sendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
 	}
 }
 
