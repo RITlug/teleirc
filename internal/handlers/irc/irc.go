@@ -14,6 +14,7 @@ and the IRCSettings that were passed into NewClient
 type Client struct {
 	*girc.Client
 	Settings internal.IRCSettings
+	sendToTg func(string)
 }
 
 /*
@@ -33,15 +34,16 @@ func NewClient(settings internal.IRCSettings) Client {
 			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings}
+	return Client{client, settings, nil}
 }
 
 /*
 StartBot adds necessary handlers to the client and then connects,
 returns any errors that occur
 */
-func (c Client) StartBot(errChan chan<- error) {
+func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	fmt.Println("Starting up IRC bot...")
+	c.sendToTg = sendMessage
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
 		errChan <- err

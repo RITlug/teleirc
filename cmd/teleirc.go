@@ -47,7 +47,7 @@ func main() {
 
 	ircClient := irc.NewClient(settings.IRC)
 	ircChan := make(chan error)
-	go ircClient.StartBot(ircChan)
+	go ircClient.StartBot(ircChan, tgClient.SendMessage)
 	go tgClient.StartBot(tgChan, ircClient.SendMessage)
 
 	select {
