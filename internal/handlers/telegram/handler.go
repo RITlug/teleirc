@@ -10,6 +10,13 @@ const (
 )
 
 /*
+Handler specifies a function that handles a Telegram update.
+In this case, we take a Telegram client and update object,
+where the specific Handler will "handle" the given event.
+*/
+type Handler = func(tg *Client, u tgbotapi.Update)
+
+/*
 messageHandler handles the Message Telegram Object, which formats the
 Telegram update into a simple string for IRC.
 */
