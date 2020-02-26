@@ -40,7 +40,7 @@ IRC settings
 
 ``IRC_SERVER_PASSWORD=""``
     IRC server password
-    
+
 ``IRC_SERVER_PORT=6697``
     IRC server port
 
@@ -69,7 +69,7 @@ Telegram settings
 *****************
 
 ``TELEGRAM_CHAT_ID=-0000000000000``
-    Telegram chat ID of bridged group (`how do I get this? <http://stackoverflow.com/a/32572159>`_)
+    Telegram chat ID of bridged group (:ref:`how do I get this? <chat-id>`)
 
 ``TELEIRC_TOKEN=000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA``
     Private API token for Telegram bot
