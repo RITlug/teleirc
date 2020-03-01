@@ -25,9 +25,7 @@ Creating variables for logging
 var (
 	logFlags    = log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile
 	Info        = log.New(os.Stdout, "INFO: ", logFlags)
-	Warning     = log.New(os.Stdout, "WARNING: ", logFlags)
 	Error       = log.New(os.Stderr, "ERROR: ", logFlags)
-	Ignored     = log.New(ioutil.Discard, "ERROR: ", logFlags)
 )
 
 /*
@@ -67,6 +65,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	updates, err := tg.api.GetUpdatesChan(u)
 	if err != nil {
 		errChan <- err
+		Error.Println(err)
 	}
 
 	// TODO: Move these lines into the updateHandler when available
