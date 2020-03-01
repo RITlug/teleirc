@@ -24,9 +24,7 @@ Creating variables for logging
 var (
 	logFlags    = log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile
 	Info        = log.New(os.Stdout, "INFO: ", logFlags)
-	Warning     = log.New(os.Stdout, "WARNING: ", logFlags)
 	Error       = log.New(os.Stderr, "ERROR: ", logFlags)
-	Ignored     = log.New(ioutil.Discard, "ERROR: ", logFlags)
 )
 
 /*
@@ -59,6 +57,7 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
 		errChan <- err
+		Error.Println(err)
 	} else {
 		errChan <- nil
 	}
