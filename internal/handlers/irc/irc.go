@@ -1,7 +1,8 @@
 package irc
 
 import (
-	"fmt"
+	"log"
+	"io/ioutil"
 
 	"github.com/lrstanley/girc"
 	"github.com/ritlug/teleirc/internal"
@@ -18,10 +19,21 @@ type Client struct {
 }
 
 /*
+Creating variables for logging
+*/
+var (
+	logFlags    = log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile
+	Info        = log.New(os.Stdout, "INFO: ", logFlags)
+	Warning     = log.New(os.Stdout, "WARNING: ", logFlags)
+	Error       = log.New(os.Stderr, "ERROR: ", logFlags)
+	Ignored     = log.New(ioutil.Discard, "ERROR: ", logFlags)
+)
+
+/*
 NewClient returns a new IRCClient based on the provided settings
 */
 func NewClient(settings internal.IRCSettings) Client {
-	fmt.Println("Creating new IRC bot client...")
+	Info.Println("Creating new IRC bot client...")
 	client := girc.New(girc.Config{
 		Server: settings.Server,
 		Port:   settings.Port,
@@ -42,7 +54,7 @@ StartBot adds necessary handlers to the client and then connects,
 returns any errors that occur
 */
 func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
-	fmt.Println("Starting up IRC bot...")
+	Info.Println("Starting up IRC bot...")
 	c.sendToTg = sendMessage
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
@@ -65,7 +77,7 @@ addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
 func (c Client) addHandlers() {
-	fmt.Println("Adding IRC event handlers...")
+	Info.Println("Adding IRC event handlers...")
 	for eventType, handler := range getHandlerMapping() {
 		c.Handlers.Add(eventType, handler(c))
 	}

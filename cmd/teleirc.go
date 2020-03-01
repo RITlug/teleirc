@@ -3,8 +3,9 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
+	"log"
+	"io/ioutil"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
@@ -20,24 +21,30 @@ var (
 	flagPath    = flag.String("conf", ".env", "config file")
 	flagDebug   = flag.Bool("debug", false, "enable debugging")
 	flagVersion = flag.Bool("version", false, "displays current version of TeleIRC")
+
+	logFlags    = log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile
+	Info        = log.New(os.Stdout, "INFO: ", logFlags)
+	Warning     = log.New(os.Stdout, "WARNING: ", logFlags)
+	Error       = log.New(os.Stderr, "ERROR: ", logFlags)
+	Ignored     = log.New(ioutil.Discard, "ERROR: ", logFlags)
 )
 
 func main() {
 	flag.Parse()
 
 	if *flagVersion {
-		fmt.Printf("Current TeleIRC version: %s\n", version)
+		Info.Printf("Current TeleIRC version: %s\n", version)
 		return
 	}
 
 	// TODO: Build out debugging capabilities for more verbose output
 	if *flagDebug {
-		fmt.Printf("Debug mode currently set to: %t\n", *flagDebug)
+		Info.Printf("Debug mode currently set to: %t\n", *flagDebug)
 	}
 
 	settings, err := internal.LoadConfig(*flagPath)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		Error.Println(err)
 		os.Exit(1)
 	}
 
@@ -52,8 +59,8 @@ func main() {
 
 	select {
 	case ircErr := <-ircChan:
-		fmt.Println(ircErr)
+		Error.Println(ircErr)
 	case tgErr := <-tgChan:
-		fmt.Println(tgErr)
+		Error.Println(tgErr)
 	}
 }
