@@ -7,6 +7,23 @@ Did you find something confusing?
 Please let us know in our developer chat or open a new pull request with a suggestion!
 
 
+***
+IRC
+***
+
+Messages do not appear in the IRC channel. Why?
+===============================================
+
+There are a lot of things that *could* be the cause.
+However, make sure the **IRC channel is surrounded by quotes in the `.env` file**:
+
+```
+IRC_CHANNEL="#my-cool-channel"
+```
+
+If there are no quotes, the value is interpreted as a comment, or the same thing as if it were an empty string.
+
+
 ********
 Telegram
 ********
