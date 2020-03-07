@@ -25,6 +25,7 @@ Today, it is used by various communities.
     quick-install
     deploy-teleirc
     config-file-glossary
+    faq
 
 .. toctree::
     :maxdepth: 2
