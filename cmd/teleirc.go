@@ -27,7 +27,7 @@ func main() {
 	verbose := internal.Debug { *flagDebug	}
 
 	if *flagVersion {
-		verbose.LogInfo("Current TeleIRC version: " + version)
+		verbose.PrintVersion("Current TeleIRC version: " + version)
 		return
 	}
 

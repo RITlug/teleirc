@@ -36,3 +36,7 @@ func (d Debug) LogWarning(message string) {
 		warning.Println(message)
 	}
 }
+
+func (d Debug) PrintVersion(message string) {
+	info.Println(message)
+}
