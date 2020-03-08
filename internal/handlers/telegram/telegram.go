@@ -2,8 +2,6 @@
 package telegram
 
 import (
-	"log"
-	"io/ioutil"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
@@ -16,24 +14,16 @@ the TelegramSettings needed to run the bot
 type Client struct {
 	api       *tgbotapi.BotAPI
 	Settings  internal.TelegramSettings
+	verbose   internal.Debug
 	sendToIrc func(string)
 }
 
 /*
-Creating variables for logging
-*/
-var (
-	logFlags    = log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile
-	Info        = log.New(os.Stdout, "INFO: ", logFlags)
-	Error       = log.New(os.Stderr, "ERROR: ", logFlags)
-)
-
-/*
 NewClient creates a new Telegram bot client
 */
-func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI) *Client {
-	Info.Println("Creating new Telegram bot client...")
-	return &Client{api: tgapi, Settings: settings}
+func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI, debug internal.Debug) *Client {
+	debug.LogInfo("Creating new Telegram bot client...")
+	return &Client{api: tgapi, Settings: settings, verbose: debug}
 }
 
 /*
@@ -50,11 +40,12 @@ StartBot adds necessary handlers to the client and then connects,
 returning any errors that occur
 */
 func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
-	Info.Println("Starting up Telegram bot...")
+	tg.verbose.LogInfo("Starting up Telegram bot...")
 	var err error
 	tg.api, err = tgbotapi.NewBotAPI(tg.Settings.Token)
 	if err != nil {
-		Error.Println("Failed to connect to Telegram")
+		tg.verbose.LogError(err)
+		// tg.verbose.LogError("Failed to connect to Telegram")
 		errChan <- err
 	}
 	tg.sendToIrc = sendMessage
@@ -65,7 +56,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	updates, err := tg.api.GetUpdatesChan(u)
 	if err != nil {
 		errChan <- err
-		Error.Println(err)
+		tg.verbose.LogError(err)
 	}
 
 	// TODO: Move these lines into the updateHandler when available

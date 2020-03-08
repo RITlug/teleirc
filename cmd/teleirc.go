@@ -4,8 +4,6 @@ package main
 import (
 	"flag"
 	"os"
-	"log"
-	"io/ioutil"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
@@ -19,46 +17,43 @@ const (
 
 var (
 	flagPath    = flag.String("conf", ".env", "config file")
-	flagDebug   = flag.Bool("debug", false, "enable debugging")
+	flagDebug   = flag.Bool("debug", false, "disable debugging")
 	flagVersion = flag.Bool("version", false, "displays current version of TeleIRC")
-
-	logFlags    = log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile
-	Info        = log.New(os.Stdout, "INFO: ", logFlags)
-	Error       = log.New(os.Stderr, "ERROR: ", logFlags)
 )
 
 func main() {
 	flag.Parse()
 
+	verbose := internal.Debug { *flagDebug	}
+
 	if *flagVersion {
-		Info.Printf("Current TeleIRC version: %s\n", version)
+		verbose.LogInfo("Current TeleIRC version: " + version)
 		return
 	}
 
 	// TODO: Build out debugging capabilities for more verbose output
-	if *flagDebug {
-		Info.Printf("Debug mode currently set to: %t\n", *flagDebug)
-	}
+	// Notify that debug is enabled
+	verbose.LogInfo("Debug mode enabled!")
 
 	settings, err := internal.LoadConfig(*flagPath)
 	if err != nil {
-		Error.Println(err)
+		verbose.LogError(err)
 		os.Exit(1)
 	}
 
 	var tgapi *tgbotapi.BotAPI
-	tgClient := tg.NewClient(settings.Telegram, tgapi)
+	tgClient := tg.NewClient(settings.Telegram, tgapi, verbose)
 	tgChan := make(chan error)
 
-	ircClient := irc.NewClient(settings.IRC)
+	ircClient := irc.NewClient(settings.IRC, verbose)
 	ircChan := make(chan error)
 	go ircClient.StartBot(ircChan, tgClient.SendMessage)
 	go tgClient.StartBot(tgChan, ircClient.SendMessage)
 
 	select {
 	case ircErr := <-ircChan:
-		Error.Println(ircErr)
+		verbose.LogError(ircErr)
 	case tgErr := <-tgChan:
-		Error.Println(tgErr)
+		verbose.LogError(tgErr)
 	}
 }

@@ -1,8 +1,6 @@
 package irc
 
 import (
-	"log"
-	"io/ioutil"
 
 	"github.com/lrstanley/girc"
 	"github.com/ritlug/teleirc/internal"
@@ -15,23 +13,15 @@ and the IRCSettings that were passed into NewClient
 type Client struct {
 	*girc.Client
 	Settings internal.IRCSettings
+	verbose internal.Debug
 	sendToTg func(string)
 }
 
 /*
-Creating variables for logging
-*/
-var (
-	logFlags    = log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile
-	Info        = log.New(os.Stdout, "INFO: ", logFlags)
-	Error       = log.New(os.Stderr, "ERROR: ", logFlags)
-)
-
-/*
 NewClient returns a new IRCClient based on the provided settings
 */
-func NewClient(settings internal.IRCSettings) Client {
-	Info.Println("Creating new IRC bot client...")
+func NewClient(settings internal.IRCSettings, debug internal.Debug) Client {
+	debug.LogInfo("Creating new IRC bot client...")
 	client := girc.New(girc.Config{
 		Server: settings.Server,
 		Port:   settings.Port,
@@ -44,7 +34,7 @@ func NewClient(settings internal.IRCSettings) Client {
 			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings, nil}
+	return Client{client, settings, debug, nil}
 }
 
 /*
@@ -52,12 +42,12 @@ StartBot adds necessary handlers to the client and then connects,
 returns any errors that occur
 */
 func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
-	Info.Println("Starting up IRC bot...")
+	c.verbose.LogInfo("Starting up IRC bot...")
 	c.sendToTg = sendMessage
 	c.addHandlers()
 	if err := c.Connect(); err != nil {
 		errChan <- err
-		Error.Println(err)
+		c.verbose.LogError(err)
 	} else {
 		errChan <- nil
 	}
@@ -76,7 +66,7 @@ addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
 func (c Client) addHandlers() {
-	Info.Println("Adding IRC event handlers...")
+	c.verbose.LogInfo("Adding IRC event handlers...")
 	for eventType, handler := range getHandlerMapping() {
 		c.Handlers.Add(eventType, handler(c))
 	}
