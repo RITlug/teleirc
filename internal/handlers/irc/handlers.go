@@ -25,7 +25,11 @@ so that the specified channel is joined after the server connection is establish
 */
 func connectHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.Cmd.Join(c.Settings.Channel)
+		if c.Settings.ChannelKey != "" {
+			c.Cmd.JoinKey(c.Settings.Channel, c.Settings.ChannelKey)
+		} else {
+			c.Cmd.Join(c.Settings.Channel)
+		}
 	}
 }
 

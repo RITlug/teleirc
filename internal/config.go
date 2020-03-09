@@ -19,6 +19,7 @@ type IRCSettings struct {
 	TLSAllowSelfSigned  bool     `env:"IRC_CERT_ALLOW_SELFSIGNED" envDefault:"true"`
 	TLSAllowCertExpired bool     `env:"IRC_CERT_ALLOW_EXPIRED" envDefault:"true"`
 	Channel             string   `env:"IRC_CHANNEL,required"`
+	ChannelKey          string   `env:"IRC_CHANNEL_KEY" envDefault:""`
 	BotName             string   `env:"IRC_BOT_NAME" envDefault:"teleirc"`
 	SendStickerEmoji    bool     `env:"IRC_SEND_STICKER_EMOJI" envDefault:"true"`
 	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"true"`
