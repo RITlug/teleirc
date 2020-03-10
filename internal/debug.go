@@ -17,6 +17,14 @@ var (
 	warning     = log.New(os.Stderr, "WARNING: ", logFlags)
 )
 
+
+type DebugLogger interface {
+	LogInfo(string)
+	LogError(error)
+	LogWarning(string)
+	PrintVersion(string)
+}
+
 type Debug struct {
 	DebugLevel  bool
 }

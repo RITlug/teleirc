@@ -14,14 +14,14 @@ the TelegramSettings needed to run the bot
 type Client struct {
 	api       *tgbotapi.BotAPI
 	Settings  internal.TelegramSettings
-	verbose   internal.Debug
+	verbose   internal.DebugLogger
 	sendToIrc func(string)
 }
 
 /*
 NewClient creates a new Telegram bot client
 */
-func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI, debug internal.Debug) *Client {
+func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI, debug internal.DebugLogger) *Client {
 	debug.LogInfo("Creating new Telegram bot client...")
 	return &Client{api: tgapi, Settings: settings, verbose: debug}
 }

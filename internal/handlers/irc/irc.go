@@ -13,14 +13,14 @@ and the IRCSettings that were passed into NewClient
 type Client struct {
 	*girc.Client
 	Settings internal.IRCSettings
-	verbose internal.Debug
+	verbose internal.DebugLogger
 	sendToTg func(string)
 }
 
 /*
 NewClient returns a new IRCClient based on the provided settings
 */
-func NewClient(settings internal.IRCSettings, debug internal.Debug) Client {
+func NewClient(settings internal.IRCSettings, debug internal.DebugLogger) Client {
 	debug.LogInfo("Creating new IRC bot client...")
 	client := girc.New(girc.Config{
 		Server: settings.Server,
