@@ -24,7 +24,7 @@ var (
 func main() {
 	flag.Parse()
 
-	verbose := internal.Debug {DebugLevel:  *flagDebug	}
+	verbose := internal.Debug { DebugLevel:  *flagDebug }
 
 	if *flagVersion {
 		verbose.PrintVersion("Current TeleIRC version: " + version)
