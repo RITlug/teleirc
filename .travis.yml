@@ -3,11 +3,20 @@ os: linux
 dist: bionic
 jobs:
   include:
-    - language: minimal
-      # Set a basic TravisCI file as a placeholder until
-      # we start creating unit tests
-      test: |
-        echo "Hello World"
+    - language: go
+      go: 1.12.x
+      before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
+      script: "golangci-lint run"
+
+    - language: go
+      go: 1.13.x
+      before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
+      script: "golangci-lint run"
+
+    - language: go
+      go: master
+      before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
+      script: "golangci-lint run"
 
     - language: python
       python: 3.7
@@ -15,6 +24,11 @@ jobs:
       before_install: cd docs/
       install: "pip install $(pipenv lock --requirements)"
       script: sh build_docs.sh
+
+env:
+  global:
+    - GO111MODULE: "on"
+    - GOLANGCI_LINT_VERSION: "v1.23.8"
 
 notifications:
   irc:
