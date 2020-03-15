@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/caarlos0/env/v6"
@@ -18,7 +19,8 @@ type IRCSettings struct {
 	Port                int      `env:"IRC_PORT" envDefault:"6667" validate:"min=0,max=65535"`
 	TLSAllowSelfSigned  bool     `env:"IRC_CERT_ALLOW_SELFSIGNED" envDefault:"true"`
 	TLSAllowCertExpired bool     `env:"IRC_CERT_ALLOW_EXPIRED" envDefault:"true"`
-	Channel             string   `env:"IRC_CHANNEL,required"`
+	Channel             string   `env:"IRC_CHANNEL,required" validate:"notempty"`
+	ChannelKey          string   `env:"IRC_CHANNEL_KEY" envDefault:""`
 	BotName             string   `env:"IRC_BOT_NAME" envDefault:"teleirc"`
 	SendStickerEmoji    bool     `env:"IRC_SEND_STICKER_EMOJI" envDefault:"true"`
 	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"true"`
@@ -59,6 +61,34 @@ type Settings struct {
 	Imgur    ImgurSettings
 }
 
+func validateEmptyString(fl validator.FieldLevel) bool {
+	return fl.Field().String() != ""
+}
+
+// ConfigErrors lets us wrap the validator errors in a type we can return
+type ConfigErrors []validator.FieldError
+
+func (ce ConfigErrors) Error() string {
+	finalStr := ""
+	for _, err := range ce {
+		switch err.Tag() {
+		case "notempty":
+			finalStr += fmt.Sprintf("Field %s was an empty string. "+
+				"Perhaps you had a # and need to surround the value with \"\"?\n", err.Namespace())
+		case "min":
+			finalStr += fmt.Sprintf("Field %s failed to validate: %s too small.\n",
+				err.Namespace(), err.Param())
+		case "max":
+			finalStr += fmt.Sprintf("Field %s failed to validate: %s too large.\n",
+				err.Namespace(), err.Param())
+		default:
+			finalStr += fmt.Sprintf("Field %s failed to validate: %s failed %s.\n",
+				err.Namespace(), err.Param(), err.Tag())
+		}
+	}
+	return finalStr
+}
+
 /*
 LoadConfig loads in the .env file in the provided path (or ".env" by default)
 If the user-provided config is valid, return a new Settings struct that contains these settings.
@@ -66,6 +96,7 @@ Otherwise, return the error that caused the failure.
 */
 func LoadConfig(path string) (*Settings, error) {
 	validate = validator.New()
+	validate.RegisterValidation("notempty", validateEmptyString)
 	// Attempt to load environment variables from path if path was provided
 	if path != "" {
 		if err := godotenv.Load(path); err != nil {
@@ -82,7 +113,11 @@ func LoadConfig(path string) (*Settings, error) {
 		return nil, err
 	}
 	if err := validate.Struct(&settings); err != nil {
-		return nil, err.(validator.ValidationErrors)
+		fieldErrs := ConfigErrors{}
+		for _, errs := range err.(validator.ValidationErrors) {
+			fieldErrs = append(fieldErrs, errs)
+		}
+		return nil, fieldErrs
 	}
 	return &settings, nil
 }
