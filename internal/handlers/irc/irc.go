@@ -1,6 +1,8 @@
 package irc
 
 import (
+	"net"
+	"time"
 
 	"github.com/lrstanley/girc"
 	"github.com/ritlug/teleirc/internal"
@@ -13,7 +15,7 @@ and the IRCSettings that were passed into NewClient
 type Client struct {
 	*girc.Client
 	Settings internal.IRCSettings
-	verbose internal.DebugLogger
+	verbose  internal.DebugLogger
 	sendToTg func(string)
 }
 
@@ -45,7 +47,9 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	c.verbose.LogInfo("Starting up IRC bot...")
 	c.sendToTg = sendMessage
 	c.addHandlers()
-	if err := c.Connect(); err != nil {
+	// TODO: Currently just set to 5 seconds,
+	// if we want this to be configurable we can add a config option
+	if err := c.DialerConnect(&net.Dialer{Timeout: 5 * time.Second}); err != nil {
 		errChan <- err
 		c.verbose.LogError(err)
 	} else {
