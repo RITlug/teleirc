@@ -1,7 +1,3 @@
-/*
-	Debug contains information about debug levels and define
-	debug statements
-*/
 package internal
 
 import (
@@ -10,14 +6,13 @@ import (
 )
 
 var (
-	// logFlags    = log.Ldate | log.Ltime | log.Lshortfile
 	logFlags    = log.Ldate | log.Ltime
-	info = log.New(os.Stdout, "INFO: ", logFlags)
+	info        = log.New(os.Stdout, "INFO: ", logFlags)
 	errorLog    = log.New(os.Stderr, "ERROR: ", logFlags)
 	warning     = log.New(os.Stderr, "WARNING: ", logFlags)
 )
 
-
+// DebugLogger provides an interface to call the logging functions
 type DebugLogger interface {
 	LogInfo(string)
 	LogError(error)
@@ -25,6 +20,7 @@ type DebugLogger interface {
 	PrintVersion(string)
 }
 
+// Debug contains information about the debug level
 type Debug struct {
 	DebugLevel  bool
 }
