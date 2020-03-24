@@ -14,7 +14,7 @@ the TelegramSettings needed to run the bot
 type Client struct {
 	api       *tgbotapi.BotAPI
 	Settings  internal.TelegramSettings
-	verbose   internal.DebugLogger
+	logger    internal.DebugLogger
 	sendToIrc func(string)
 }
 
@@ -23,7 +23,7 @@ NewClient creates a new Telegram bot client
 */
 func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI, debug internal.DebugLogger) *Client {
 	debug.LogInfo("Creating new Telegram bot client...")
-	return &Client{api: tgapi, Settings: settings, verbose: debug}
+	return &Client{api: tgapi, Settings: settings, logger: debug}
 }
 
 /*
@@ -40,12 +40,11 @@ StartBot adds necessary handlers to the client and then connects,
 returning any errors that occur
 */
 func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
-	tg.verbose.LogInfo("Starting up Telegram bot...")
+	tg.logger.LogInfo("Starting up Telegram bot...")
 	var err error
 	tg.api, err = tgbotapi.NewBotAPI(tg.Settings.Token)
 	if err != nil {
-		tg.verbose.LogError(err)
-		// tg.verbose.LogError("Failed to connect to Telegram")
+		tg.logger.LogError(err)
 		errChan <- err
 	}
 	tg.sendToIrc = sendMessage
@@ -56,7 +55,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	updates, err := tg.api.GetUpdatesChan(u)
 	if err != nil {
 		errChan <- err
-		tg.verbose.LogError(err)
+		tg.logger.LogError(err)
 	}
 
 	// TODO: Move these lines into the updateHandler when available

@@ -24,36 +24,35 @@ var (
 func main() {
 	flag.Parse()
 
-	verbose := internal.Debug { DebugLevel:  *flagDebug }
+	debug := internal.Debug { DebugLevel:  *flagDebug }
 
 	if *flagVersion {
-		verbose.PrintVersion("Current TeleIRC version: " + version)
+		debug.PrintVersion("Current TeleIRC version: " + version)
 		return
 	}
 
-	// TODO: Build out debugging capabilities for more verbose output
 	// Notify that debug is enabled
-	verbose.LogInfo("Debug mode enabled!")
+	debug.LogInfo("Debug mode enabled!")
 
 	settings, err := internal.LoadConfig(*flagPath)
 	if err != nil {
-		verbose.LogError(err)
+		debug.LogError(err)
 		os.Exit(1)
 	}
 
 	var tgapi *tgbotapi.BotAPI
-	tgClient := tg.NewClient(settings.Telegram, tgapi, verbose)
+	tgClient := tg.NewClient(settings.Telegram, tgapi, debug)
 	tgChan := make(chan error)
 
-	ircClient := irc.NewClient(settings.IRC, verbose)
+	ircClient := irc.NewClient(settings.IRC, debug)
 	ircChan := make(chan error)
 	go ircClient.StartBot(ircChan, tgClient.SendMessage)
 	go tgClient.StartBot(tgChan, ircClient.SendMessage)
 
 	select {
 	case ircErr := <-ircChan:
-		verbose.LogError(ircErr)
+		debug.LogError(ircErr)
 	case tgErr := <-tgChan:
-		verbose.LogError(tgErr)
+		debug.LogError(tgErr)
 	}
 }
