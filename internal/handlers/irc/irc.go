@@ -15,7 +15,7 @@ and the IRCSettings that were passed into NewClient
 type Client struct {
 	*girc.Client
 	Settings internal.IRCSettings
-	verbose  internal.DebugLogger
+	logger   internal.DebugLogger
 	sendToTg func(string)
 }
 
@@ -44,14 +44,14 @@ StartBot adds necessary handlers to the client and then connects,
 returns any errors that occur
 */
 func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
-	c.verbose.LogInfo("Starting up IRC bot...")
+	c.logger.LogInfo("Starting up IRC bot...")
 	c.sendToTg = sendMessage
 	c.addHandlers()
 	// TODO: Currently just set to 5 seconds,
 	// if we want this to be configurable we can add a config option
 	if err := c.DialerConnect(&net.Dialer{Timeout: 5 * time.Second}); err != nil {
 		errChan <- err
-		c.verbose.LogError(err)
+		c.logger.LogError(err)
 	} else {
 		errChan <- nil
 	}
@@ -70,7 +70,7 @@ addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
 func (c Client) addHandlers() {
-	c.verbose.LogInfo("Adding IRC event handlers...")
+	c.logger.LogInfo("Adding IRC event handlers...")
 	for eventType, handler := range getHandlerMapping() {
 		c.Handlers.Add(eventType, handler(c))
 	}
