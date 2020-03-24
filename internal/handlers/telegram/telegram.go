@@ -64,7 +64,12 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 			continue
 		}
 
-		messageHandler(tg, update)
+		if update.Message.Document != nil {
+			documentHandler(tg, update.Message)
+		} else {
+			messageHandler(tg, update)
+		}
+
 	}
 	errChan <- nil
 }
