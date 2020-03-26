@@ -4,11 +4,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-const (
-	joinFmt = "%s (@%s) has joined the Telegram Group!"
-	partFmt = "%s (@%s) has left the Telegram Group."
-)
-
 /*
 Handler specifies a function that handles a Telegram update.
 In this case, we take a Telegram client and update object,

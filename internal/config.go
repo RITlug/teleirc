@@ -96,14 +96,14 @@ Otherwise, return the error that caused the failure.
 */
 func LoadConfig(path string) (*Settings, error) {
 	validate = validator.New()
-	validate.RegisterValidation("notempty", validateEmptyString)
+	validationError := validate.RegisterValidation("notempty", validateEmptyString)
 	// Attempt to load environment variables from path if path was provided
 	if path != "" {
 		if err := godotenv.Load(path); err != nil {
 			return nil, err
 		}
 	} else if _, err := os.Stat(defaultPath); !os.IsNotExist(err) {
-		// Attempt to load from defaultPath is defaultPath exists
+		// Attempt to load from defaultPath if defaultPath exists
 		if err := godotenv.Load(defaultPath); err != nil {
 			return nil, err
 		}
