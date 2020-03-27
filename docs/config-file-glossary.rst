@@ -3,7 +3,7 @@ Config file glossary
 ####################
 
 This page is a glossary of different settings in the ``env.example`` configuration file.
-The values shown for the settings are their defaults.
+All values shown are the default settings.
 This glossary is intended for advanced users.
 
 
@@ -17,11 +17,11 @@ IRC settings
 ``IRC_BOT_NAME=teleirc``
     IRC nickname for bot
 
-``IRC_CHANNEL=#channel``
+``IRC_CHANNEL="#channel"``
     IRC channel for bot to join
 
 ``IRC_CHANNEL_KEY=""``
-    IRC channel key
+    IRC channel key, for password-protected channels
 
 ``IRC_SEND_STICKER_EMOJI=true``
     Send emojis associated with a sticker to IRC (when a Telegram user sends a sticker)
@@ -45,10 +45,10 @@ IRC settings
     IRC server port
 
 ``IRC_CERT_ALLOW_SELFSIGNED=false``
-    Allows SSL to accept SSL certificates from non-trusted CA
+    Allows TeleIRC to accept TLS/SSL certificates from non-trusted/unknown Certificate Authorities (CA)
 
 ``IRC_CERT_ALLOW_EXPIRED=false``
-    Allow connecting to IRC server with SSL expired cert
+    Allow connecting to IRC server with an expired TLS/SSL certificate
 
 ``IRC_NICKSERV_SERVICE=NickServ``
     IRC service used for authentication
@@ -57,11 +57,11 @@ IRC settings
     IRC account password to complete IRC authentication
 
 ``IRC_EDITED_PREFIX="[EDIT] "``
-    Prefix to include when a user edits a Telegram message and it is resent to IRC
+    Prefix to prepend to messages when a user edits a Telegram message and it is resent to IRC
 
 ``IRC_MAX_MESSAGE_LENGTH=400``
     Maximum length of the message that can be sent to IRC.
-    Longer messages will be split into multiple messages.
+    Longer messages are split into multiple messages.
 
 
 *****************
@@ -97,14 +97,7 @@ Imgur settings
 ``USE_IMGUR_FOR_IMAGES=true``
     Upload picture messages from Telegram to Imgur, send Imgur link to IRC
 
-``IMGUR_CLIENT_ID=0000000000``
-    Imgur API client ID value to access Imgur API
-
-
-**********************
-Miscellaneous settings
-**********************
-
-``NTBA_FIX_319=1``
-    Required to fix a bug in a library used by TeleIRC.
-    For context, see `yagop/node-telegram-bot-api#319 <https://github.com/yagop/node-telegram-bot-api/issues/319#issuecomment-324963294>`_.
+``IMGUR_CLIENT_ID=7d6b00b87043f58``
+    Imgur API client ID value to access Imgur API.
+    Uses a default API key.
+    If you are bridging to a very active Telegram group, *please register your own API key*.

@@ -47,56 +47,31 @@ However, there are recommendations for best practices:
 
 #. `Register your channel <https://docs.pagure.org/infra-docs/sysadmin-guide/sops/freenode-irc-channel.html#adding-new-channel>`_
 #. Give permanent voice to your bridge bot via **ChanServ** (most networks use the ``+V`` flag)
-    - *Example*: On freenode, ``/query ChanServ ACCESS #channel ADD my-teleirc-bot +V``
+
+  - *Example*: On freenode, ``/query ChanServ ACCESS #channel ADD my-teleirc-bot +V``
 
 
-*************************
-Configure and run TeleIRC
-*************************
+****************************
+Configure and deploy TeleIRC
+****************************
 
-This section explains how to configure and install TeleIRC itself.
-
-Requirements
-============
-
-- git
-- nodejs (v8 and v10 supported)
-- `yarn <https://yarnpkg.com/en/docs/install>`_
-
-Install dependencies
-====================
-
-#. Clone the repository (``git clone https://github.com/RITlug/teleirc.git``)
-#. Install dependencies (``yarn``)
-
-Configuration
-=============
-
-TeleIRC uses `dotenv <https://www.npmjs.com/package/dotenv>`_ to manage API keys and settings.
-The config file you use is a ``.env`` file.
-Copy the example file to a production file to get started (``cp env.example .env``).
-Edit the ``.env`` file with your API keys and settings.
-
-.. seealso::
-
-   See :doc:`config-file-glossary` for detailed information.
+.. seealso:: See :doc:`deploy-teleirc` for detailed documentation on the two supported installation methods.
 
 Relay Telegram picture messages via Imgur
------------------------------------------
+=========================================
 
 TeleIRC retrieves picture messages via the Telegram API.
 By default, picture messages from Telegram are sent to IRC through Imgur.
 `See context <https://github.com/RITlug/teleirc/issues/115>`_ for why Imgur is enabled by default.
 
 .. note:: By default, TeleIRC uses the generic Imgur API key.
-          Imgur highly recommends registering each TeleIRC bot.
+          Imgur highly recommends registering each bot.
 
-To add Imgur support, follow these steps:
+To register your own Imgur API key, follow these steps:
 
 #. Create an Imgur account
-#. `Register your bot <https://api.imgur.com/oauth2/addclient>`_ with the Imgur API
-    - Select *OAuth2 without callback* option
-#. Put client ID into ``.env`` file
+#. `Register your bot <https://api.imgur.com/oauth2/addclient>`_ with the Imgur API (select *OAuth2 without callback* option)
+#. Add client ID to ``.env`` file
 
 
 .. [#] @BotFather is the `Telegram bot <https://core.telegram.org/bots>`_ for `creating Telegram bots <https://core.telegram.org/bots#6-botfather>`_
