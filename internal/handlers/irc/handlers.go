@@ -39,9 +39,19 @@ and channel messages. However, it only cares about channel messages
 */
 func messageHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
-		if e.IsFromChannel() {
-			c.sendToTg(formatted)
+		// Check if user is in blacklist
+		isBlacklisted := false
+		for _, name := range c.Settings.IRCBlacklist {
+			if name == e.Source.Name {
+				isBlacklisted = true
+			}
+		}
+		// Only send if they are not
+		if !isBlacklisted {
+			formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
+			if e.IsFromChannel() {
+				c.sendToTg(formatted)
+			}
 		}
 	}
 }
