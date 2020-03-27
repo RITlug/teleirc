@@ -1,6 +1,8 @@
 package irc
 
 import (
+	"net"
+	"time"
 
 	"github.com/lrstanley/girc"
 	"github.com/ritlug/teleirc/internal"
@@ -45,7 +47,8 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	c.logger.LogInfo("Starting up IRC bot...")
 	c.sendToTg = sendMessage
 	c.addHandlers()
-	if err := c.Connect(); err != nil {
+	// 10 second timeout for connection
+	if err := c.DialerConnect(&net.Dialer{Timeout: 10 * time.Second}); err != nil {
 		errChan <- err
 		c.logger.LogError(err)
 	} else {
