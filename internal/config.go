@@ -96,7 +96,9 @@ Otherwise, return the error that caused the failure.
 */
 func LoadConfig(path string) (*Settings, error) {
 	validate = validator.New()
-	validationError := validate.RegisterValidation("notempty", validateEmptyString)
+	if err := validate.RegisterValidation("notempty", validateEmptyString); err != nil {
+		return nil, err
+	}
 	// Attempt to load environment variables from path if path was provided
 	if path != "" {
 		if err := godotenv.Load(path); err != nil {
