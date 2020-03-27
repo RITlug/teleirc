@@ -105,7 +105,7 @@ func LoadConfig(path string) (*Settings, error) {
 			return nil, err
 		}
 	} else if _, err := os.Stat(defaultPath); !os.IsNotExist(err) {
-		// Attempt to load from defaultPath is defaultPath exists
+		// Attempt to load from defaultPath if defaultPath exists
 		if err := godotenv.Load(defaultPath); err != nil {
 			return nil, err
 		}
