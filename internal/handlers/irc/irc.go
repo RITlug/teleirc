@@ -47,9 +47,8 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	c.logger.LogInfo("Starting up IRC bot...")
 	c.sendToTg = sendMessage
 	c.addHandlers()
-	// TODO: Currently just set to 5 seconds,
-	// if we want this to be configurable we can add a config option
-	if err := c.DialerConnect(&net.Dialer{Timeout: 5 * time.Second}); err != nil {
+	// 10 second timeout for connection
+	if err := c.DialerConnect(&net.Dialer{Timeout: 10 * time.Second}); err != nil {
 		errChan <- err
 		c.logger.LogError(err)
 	} else {
