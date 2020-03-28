@@ -24,9 +24,9 @@ type Handler = func(c Client) func(*girc.Client, girc.Event)
 checkBlacklist checks the IRC blacklist for a name, and returns whether
 or not the name is in the blacklist
 */
-func checkBlacklist(c Client, name string) bool {
+func checkBlacklist(c Client, toCheck string) bool {
 	for _, name := range c.Settings.IRCBlacklist {
-		if strings.ToLower(name) == strings.ToLower(name) {
+		if strings.EqualFold(toCheck, name) {
 			return true
 		}
 	}
