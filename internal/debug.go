@@ -6,15 +6,18 @@ import (
 )
 
 var (
-	logFlags    = log.Ldate | log.Ltime
-	info        = log.New(os.Stdout, "INFO: ", logFlags)
-	errorLog    = log.New(os.Stderr, "ERROR: ", logFlags)
-	warning     = log.New(os.Stderr, "WARNING: ", logFlags)
+	logFlags = log.Ldate | log.Ltime
+	info     = log.New(os.Stdout, "INFO: ", logFlags)
+	debug    = log.New(os.Stdout, "DEBUG: ", logFlags)
+	errorLog = log.New(os.Stderr, "ERROR: ", logFlags)
+	warning  = log.New(os.Stderr, "WARNING: ", logFlags)
+	plain    = log.New(os.Stdout, "", 0)
 )
 
 // DebugLogger provides an interface to call the logging functions
 type DebugLogger interface {
 	LogInfo(v ...interface{})
+	LogDebug(v ...interface{})
 	LogError(v ...interface{})
 	LogWarning(v ...interface{})
 	PrintVersion(v ...interface{})
@@ -22,12 +25,16 @@ type DebugLogger interface {
 
 // Debug contains information about the debug level
 type Debug struct {
-	DebugLevel  bool
+	DebugLevel bool
 }
 
 func (d Debug) LogInfo(v ...interface{}) {
+	info.Println(v...)
+}
+
+func (d Debug) LogDebug(v ...interface{}) {
 	if d.DebugLevel {
-		info.Println(v...)
+		debug.Println(v...)
 	}
 }
 
@@ -42,5 +49,5 @@ func (d Debug) LogWarning(v ...interface{}) {
 }
 
 func (d Debug) PrintVersion(v ...interface{}) {
-	info.Println(v...)
+	plain.Println(v...)
 }

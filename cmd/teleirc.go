@@ -23,16 +23,16 @@ var (
 
 func main() {
 	flag.Parse()
-
-	debug := internal.Debug { DebugLevel:  *flagDebug }
+	debug := internal.Debug{DebugLevel: *flagDebug}
 
 	if *flagVersion {
-		debug.PrintVersion("Current TeleIRC version: " + version)
+		debug.PrintVersion("Current TeleIRC version:", version)
 		return
 	}
 
+	debug.LogInfo("Current TeleIRC version:", version)
 	// Notify that debug is enabled
-	debug.LogInfo("Debug mode enabled!")
+	debug.LogDebug("Debug mode enabled!")
 
 	settings, err := internal.LoadConfig(*flagPath)
 	if err != nil {

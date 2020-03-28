@@ -56,7 +56,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 		tg.logger.LogError(err)
 		errChan <- err
 	}
-	tg.logger.LogInfo("Authorized on account",tg.api.Self.UserName)
+	tg.logger.LogDebug("Authorized on account",tg.api.Self.UserName)
 	tg.sendToIrc = sendMessage
 
 	u := tgbotapi.NewUpdate(0)
