@@ -69,16 +69,18 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 
 	// TODO: Move these lines into the updateHandler when available
 	for update := range updates {
-		if update.Message == nil {
-			continue
+		switch {
+			case update.Message == nil:
+				continue
+			case update.Message.Text != "":
+				messageHandler(tg, update)
+			case update.Message.Sticker != nil:
+				stickerHandler(tg, update)
+			case update.Message.Document != nil:
+				documentHandler(tg, update.Message)
+			default:
+				continue
 		}
-
-		if update.Message.Document != nil {
-			documentHandler(tg, update.Message)
-		} else {
-			messageHandler(tg, update)
-		}
-
 	}
 	errChan <- nil
 }

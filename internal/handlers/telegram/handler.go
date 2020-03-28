@@ -31,6 +31,17 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 }
 
 /*
+messageHandler handles the Message Telegram Object, which formats the
+Telegram update into a simple string for IRC.
+*/
+func stickerHandler(tg *Client, u tgbotapi.Update) {
+	formatted := tg.Settings.Prefix + u.Message.From.UserName +
+		tg.Settings.Suffix + u.Message.Sticker.Emoji
+
+	tg.sendToIrc(formatted)
+}
+
+/*
 documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
