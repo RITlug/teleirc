@@ -69,8 +69,8 @@ addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
 func (c Client) addHandlers() {
-	c.logger.LogInfo("Adding IRC event handlers...")
 	for eventType, handler := range getHandlerMapping() {
+		c.logger.LogInfo("Adding IRC event handler:", eventType)
 		c.Handlers.Add(eventType, handler(c))
 	}
 }
