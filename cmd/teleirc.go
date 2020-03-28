@@ -23,36 +23,36 @@ var (
 
 func main() {
 	flag.Parse()
-	debug := internal.Debug{DebugLevel: *flagDebug}
+	logger := internal.Debug{DebugLevel: *flagDebug}
 
 	if *flagVersion {
-		debug.PrintVersion("Current TeleIRC version:", version)
+		logger.PrintVersion("Current TeleIRC version:", version)
 		return
 	}
 
-	debug.LogInfo("Current TeleIRC version:", version)
-	// Notify that debug is enabled
-	debug.LogDebug("Debug mode enabled!")
+	logger.LogInfo("Current TeleIRC version:", version)
+	// Notify that logger is enabled
+	logger.LogDebug("Debug mode enabled!")
 
 	settings, err := internal.LoadConfig(*flagPath)
 	if err != nil {
-		debug.LogError(err)
+		logger.LogError(err)
 		os.Exit(1)
 	}
 
 	var tgapi *tgbotapi.BotAPI
-	tgClient := tg.NewClient(settings.Telegram, tgapi, debug)
+	tgClient := tg.NewClient(settings.Telegram, tgapi, logger)
 	tgChan := make(chan error)
 
-	ircClient := irc.NewClient(settings.IRC, debug)
+	ircClient := irc.NewClient(settings.IRC, logger)
 	ircChan := make(chan error)
 	go ircClient.StartBot(ircChan, tgClient.SendMessage)
 	go tgClient.StartBot(tgChan, ircClient.SendMessage)
 
 	select {
 	case ircErr := <-ircChan:
-		debug.LogError(ircErr)
+		logger.LogError(ircErr)
 	case tgErr := <-tgChan:
-		debug.LogError(tgErr)
+		logger.LogError(tgErr)
 	}
 }
