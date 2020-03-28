@@ -31,8 +31,8 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 }
 
 /*
-messageHandler handles the Message Telegram Object, which formats the
-Telegram update into a simple string for IRC.
+stickerHandler handles the Message.Sticker Telegram Object, which formats the
+Telegram message into its base Emoji unicode character.
 */
 func stickerHandler(tg *Client, u tgbotapi.Update) {
 	formatted := tg.Settings.Prefix + u.Message.From.UserName +
