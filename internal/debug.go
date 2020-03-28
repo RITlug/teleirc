@@ -14,10 +14,10 @@ var (
 
 // DebugLogger provides an interface to call the logging functions
 type DebugLogger interface {
-	LogInfo(string)
-	LogError(error)
-	LogWarning(string)
-	PrintVersion(string)
+	LogInfo(v ...interface{})
+	LogError(v ...interface{})
+	LogWarning(v ...interface{})
+	PrintVersion(v ...interface{})
 }
 
 // Debug contains information about the debug level
@@ -25,22 +25,22 @@ type Debug struct {
 	DebugLevel  bool
 }
 
-func (d Debug) LogInfo(message string) {
+func (d Debug) LogInfo(v ...interface{}) {
 	if d.DebugLevel {
-		info.Println(message)
+		info.Println(v...)
 	}
 }
 
-func (d Debug) LogError(message error) {
-	errorLog.Println(message)
+func (d Debug) LogError(v ...interface{}) {
+	errorLog.Println(v...)
 }
 
-func (d Debug) LogWarning(message string) {
+func (d Debug) LogWarning(v ...interface{}) {
 	if d.DebugLevel {
-		warning.Println(message)
+		warning.Println(v...)
 	}
 }
 
-func (d Debug) PrintVersion(message string) {
-	info.Println(message)
+func (d Debug) PrintVersion(v ...interface{}) {
+	info.Println(v...)
 }

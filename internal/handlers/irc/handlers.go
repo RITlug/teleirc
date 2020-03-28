@@ -39,6 +39,7 @@ so that the specified channel is joined after the server connection is establish
 */
 func connectHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
+		c.logger.LogInfo("connectHandler triggered")
 		if c.Settings.ChannelKey != "" {
 			c.Cmd.JoinKey(c.Settings.Channel, c.Settings.ChannelKey)
 		} else {
@@ -53,6 +54,7 @@ and channel messages. However, it only cares about channel messages
 */
 func messageHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
+		c.logger.LogInfo("messageHandler triggered")
 		// Only send if user is not in blacklist
 		if !(checkBlacklist(c, e.Source.Name)) {
 			formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
@@ -65,18 +67,21 @@ func messageHandler(c Client) func(*girc.Client, girc.Event) {
 
 func joinHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
+		c.logger.LogInfo("joinHandler triggered")
 		c.sendToTg(fmt.Sprintf(joinFmt, e.Source.Name))
 	}
 }
 
 func partHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
+		c.logger.LogInfo("partHandler triggered")
 		c.sendToTg(fmt.Sprintf(partFmt, e.Source.Name))
 	}
 }
 
 func quitHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
+		c.logger.LogInfo("quitHandler triggered")
 		c.sendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
 	}
 }
