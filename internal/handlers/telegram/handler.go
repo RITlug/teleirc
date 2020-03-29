@@ -19,14 +19,19 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 	for u := range updates {
 		switch {
 		case u.Message == nil:
+			tg.logger.LogDebug("Missing message data")
 			continue
 		case u.Message.Text != "":
+			tg.logger.LogDebug("messageHandler triggered")
 			messageHandler(tg, u)
 		case u.Message.Sticker != nil:
+			tg.logger.LogDebug("stickerHandler triggered")
 			stickerHandler(tg, u)
 		case u.Message.Document != nil:
+			tg.logger.LogDebug("documentHandler triggered")
 			documentHandler(tg, u.Message)
 		default:
+			tg.logger.LogDebug("triggered, but message type is currently unsupported")
 			continue
 		}
 	}
