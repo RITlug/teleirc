@@ -4,20 +4,33 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-// TODO: These format strings are currently unused, so commenting out for now
-/*
-const (
-	joinFmt = "%s (@%s) has joined the Telegram Group!"
-	partFmt = "%s (@%s) has left the Telegram Group."
-)
-*/
-
 /*
 Handler specifies a function that handles a Telegram update.
 In this case, we take a Telegram client and update object,
 where the specific Handler will "handle" the given event.
 */
 type Handler = func(tg *Client, u tgbotapi.Update)
+
+/*
+updateHandler takes in a Telegram Update channel, and determines
+which handler to fire off
+*/
+func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
+	for u := range updates {
+		switch {
+		case u.Message == nil:
+			continue
+		case u.Message.Text != "":
+			messageHandler(tg, u)
+		case u.Message.Sticker != nil:
+			stickerHandler(tg, u)
+		case u.Message.Document != nil:
+			documentHandler(tg, u.Message)
+		default:
+			continue
+		}
+	}
+}
 
 /*
 messageHandler handles the Message Telegram Object, which formats the
