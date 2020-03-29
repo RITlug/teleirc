@@ -22,8 +22,8 @@ type Client struct {
 /*
 NewClient returns a new IRCClient based on the provided settings
 */
-func NewClient(settings internal.IRCSettings, debug internal.DebugLogger) Client {
-	debug.LogInfo("Creating new IRC bot client...")
+func NewClient(settings internal.IRCSettings, logger internal.DebugLogger) Client {
+	logger.LogInfo("Creating new IRC bot client...")
 	client := girc.New(girc.Config{
 		Server: settings.Server,
 		Port:   settings.Port,
@@ -36,7 +36,7 @@ func NewClient(settings internal.IRCSettings, debug internal.DebugLogger) Client
 			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings, debug, nil}
+	return Client{client, settings, logger, nil}
 }
 
 /*
@@ -69,8 +69,8 @@ addHandlers adds handlers for the client struct based on the settings
 that were passed in to NewClient
 */
 func (c Client) addHandlers() {
-	c.logger.LogInfo("Adding IRC event handlers...")
 	for eventType, handler := range getHandlerMapping() {
+		c.logger.LogDebug("Adding IRC event handler:", eventType)
 		c.Handlers.Add(eventType, handler(c))
 	}
 }
