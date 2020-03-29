@@ -21,9 +21,9 @@ type Client struct {
 /*
 NewClient creates a new Telegram bot client
 */
-func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI, debug internal.DebugLogger) *Client {
-	debug.LogInfo("Creating new Telegram bot client...")
-	return &Client{api: tgapi, Settings: settings, logger: debug}
+func NewClient(settings internal.TelegramSettings, tgapi *tgbotapi.BotAPI, logger internal.DebugLogger) *Client {
+	logger.LogInfo("Creating new Telegram bot client...")
+	return &Client{api: tgapi, Settings: settings, logger: logger}
 }
 
 /*
@@ -56,7 +56,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 		tg.logger.LogError(err)
 		errChan <- err
 	}
-	tg.logger.LogInfo("Authorized on account",tg.api.Self.UserName)
+	tg.logger.LogDebug("Authorized on account",tg.api.Self.UserName)
 	tg.sendToIrc = sendMessage
 
 	u := tgbotapi.NewUpdate(0)
@@ -70,16 +70,18 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 
 	// TODO: Move these lines into the updateHandler when available
 	for update := range updates {
-		if update.Message == nil {
-			continue
+		switch {
+			case update.Message == nil:
+				continue
+			case update.Message.Text != "":
+				messageHandler(tg, update)
+			case update.Message.Sticker != nil:
+				stickerHandler(tg, update)
+			case update.Message.Document != nil:
+				documentHandler(tg, update.Message)
+			default:
+				continue
 		}
-
-		if update.Message.Document != nil {
-			documentHandler(tg, update.Message)
-		} else {
-			messageHandler(tg, update)
-		}
-
 	}
 	errChan <- nil
 }
