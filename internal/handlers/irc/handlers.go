@@ -2,6 +2,7 @@ package irc
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/lrstanley/girc"
 )
@@ -18,6 +19,19 @@ In this case, we take an IRC client and return a function that
 handles an IRC event
 */
 type Handler = func(c Client) func(*girc.Client, girc.Event)
+
+/*
+checkBlacklist checks the IRC blacklist for a name, and returns whether
+or not the name is in the blacklist
+*/
+func checkBlacklist(c Client, toCheck string) bool {
+	for _, name := range c.Settings.IRCBlacklist {
+		if strings.EqualFold(toCheck, name) {
+			return true
+		}
+	}
+	return false
+}
 
 /*
 connectHandler returns a function to use as the connect handler for girc,
@@ -41,9 +55,12 @@ and channel messages. However, it only cares about channel messages
 func messageHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.logger.LogDebug("messageHandler triggered")
-		formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
-		if e.IsFromChannel() {
-			c.sendToTg(formatted)
+		// Only send if user is not in blacklist
+		if !(checkBlacklist(c, e.Source.Name)) {
+			formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
+			if e.IsFromChannel() {
+				c.sendToTg(formatted)
+			}
 		}
 	}
 }
