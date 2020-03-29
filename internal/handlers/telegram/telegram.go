@@ -2,7 +2,6 @@
 package telegram
 
 import (
-
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
 )
@@ -56,7 +55,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 		tg.logger.LogError(err)
 		errChan <- err
 	}
-	tg.logger.LogDebug("Authorized on account",tg.api.Self.UserName)
+	tg.logger.LogInfo("Authorized on account", tg.api.Self.UserName)
 	tg.sendToIrc = sendMessage
 
 	u := tgbotapi.NewUpdate(0)
@@ -68,20 +67,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 		tg.logger.LogError(err)
 	}
 
-	// TODO: Move these lines into the updateHandler when available
-	for update := range updates {
-		switch {
-			case update.Message == nil:
-				continue
-			case update.Message.Text != "":
-				messageHandler(tg, update)
-			case update.Message.Sticker != nil:
-				stickerHandler(tg, update)
-			case update.Message.Document != nil:
-				documentHandler(tg, update.Message)
-			default:
-				continue
-		}
-	}
+	updateHandler(tg, updates)
+
 	errChan <- nil
 }
