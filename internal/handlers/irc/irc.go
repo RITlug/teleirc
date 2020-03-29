@@ -56,6 +56,10 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	}
 }
 
+func (c Client) AddHandler(eventType string, cb func(*girc.Client, girc.Event)) {
+	c.Handlers.Add(eventType, cb)
+}
+
 /*
 SendMessage sends a message to the IRC channel specified in the
 settings
@@ -71,6 +75,6 @@ that were passed in to NewClient
 func (c Client) addHandlers() {
 	for eventType, handler := range getHandlerMapping() {
 		c.logger.LogDebug("Adding IRC event handler:", eventType)
-		c.Handlers.Add(eventType, handler(c))
+		c.AddHandler(eventType, handler(c))
 	}
 }
