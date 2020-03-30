@@ -5,6 +5,9 @@ import (
 	"github.com/ritlug/teleirc/internal"
 )
 
+/*
+ClientInterface represents an IRC client
+*/
 type ClientInterface interface {
 	NewClient(internal.IRCSettings, internal.DebugLogger)
 	SendMessage(string)
@@ -13,6 +16,6 @@ type ClientInterface interface {
 	addHandlers()
 
 	AddHandler(string, func(*girc.Client, girc.Event))
-	DialerConnect(girc.Dialer)
-	Message()
+	ConnectDialer(girc.Dialer) error
+	Message(string, string)
 }

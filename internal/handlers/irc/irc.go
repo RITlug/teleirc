@@ -48,7 +48,7 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	c.sendToTg = sendMessage
 	c.addHandlers()
 	// 10 second timeout for connection
-	if err := c.DialerConnect(&net.Dialer{Timeout: 10 * time.Second}); err != nil {
+	if err := c.ConnectDialer(&net.Dialer{Timeout: 10 * time.Second}); err != nil {
 		errChan <- err
 		c.logger.LogError(err)
 	} else {
@@ -60,12 +60,20 @@ func (c Client) AddHandler(eventType string, cb func(*girc.Client, girc.Event)) 
 	c.Handlers.Add(eventType, cb)
 }
 
+func (c Client) ConnectDialer(dialer girc.Dialer) error {
+	return c.DialerConnect(dialer)
+}
+
+func (c Client) Message(channel string, msg string) {
+	c.Cmd.Message(channel, msg)
+}
+
 /*
 SendMessage sends a message to the IRC channel specified in the
 settings
 */
 func (c Client) SendMessage(msg string) {
-	c.Cmd.Message(c.Settings.Channel, msg)
+	c.Message(c.Settings.Channel, msg)
 }
 
 /*
