@@ -4,11 +4,6 @@ dist: bionic
 jobs:
   include:
     - language: go
-      go: 1.12.x
-      before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
-      script: "golangci-lint run"
-
-    - language: go
       go: 1.13.x
       before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
       script: "golangci-lint run"
