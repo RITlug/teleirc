@@ -2,6 +2,7 @@ package telegram
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"strings"
 )
 
 /*
@@ -56,7 +57,7 @@ func stickerHandler(tg *Client, u tgbotapi.Update) {
 	formatted := tg.Settings.Prefix + u.Message.From.UserName +
 		tg.Settings.Suffix + u.Message.Sticker.Emoji
 
-	tg.sendToIrc(formatted)
+	tg.sendToIrc(strings.Trim(formatted," "))
 }
 
 /*
