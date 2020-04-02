@@ -44,7 +44,7 @@ func main() {
 	tgClient := tg.NewClient(settings.Telegram, tgapi, logger)
 	tgChan := make(chan error)
 
-	ircClient := irc.NewClient(settings.IRC, logger)
+	ircClient := irc.NewClient(&settings.IRC, &settings.Telegram, logger)
 	ircChan := make(chan error)
 	go ircClient.StartBot(ircChan, tgClient.SendMessage)
 	go tgClient.StartBot(tgChan, ircClient.SendMessage)
