@@ -57,6 +57,7 @@ func stickerHandler(tg *Client, u tgbotapi.Update) {
 	formatted := tg.Settings.Prefix + u.Message.From.UserName +
 		tg.Settings.Suffix + u.Message.Sticker.Emoji
 
+	// Trim unexpected trailing whitespace
 	tg.sendToIrc(strings.Trim(formatted, " "))
 }
 
