@@ -57,7 +57,7 @@ func stickerHandler(tg *Client, u tgbotapi.Update) {
 	formatted := tg.Settings.Prefix + u.Message.From.UserName +
 		tg.Settings.Suffix + u.Message.Sticker.Emoji
 
-	tg.sendToIrc(strings.Trim(formatted," "))
+	tg.sendToIrc(strings.Trim(formatted, " "))
 }
 
 /*
