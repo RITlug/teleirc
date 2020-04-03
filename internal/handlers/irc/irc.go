@@ -14,15 +14,16 @@ and the IRCSettings that were passed into NewClient
 */
 type Client struct {
 	*girc.Client
-	Settings internal.IRCSettings
-	logger   internal.DebugLogger
-	sendToTg func(string)
+	Settings         *internal.IRCSettings
+	TelegramSettings *internal.TelegramSettings
+	logger           internal.DebugLogger
+	sendToTg         func(string)
 }
 
 /*
 NewClient returns a new IRCClient based on the provided settings
 */
-func NewClient(settings internal.IRCSettings, logger internal.DebugLogger) Client {
+func NewClient(settings *internal.IRCSettings, telegramSettings *internal.TelegramSettings, logger internal.DebugLogger) Client {
 	logger.LogInfo("Creating new IRC bot client...")
 	client := girc.New(girc.Config{
 		Server: settings.Server,
@@ -36,7 +37,7 @@ func NewClient(settings internal.IRCSettings, logger internal.DebugLogger) Clien
 			Pass: settings.NickServPassword,
 		}
 	}
-	return Client{client, settings, logger, nil}
+	return Client{client, settings, telegramSettings, logger, nil}
 }
 
 /*

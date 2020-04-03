@@ -68,21 +68,27 @@ func messageHandler(c Client) func(*girc.Client, girc.Event) {
 func joinHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.logger.LogDebug("joinHandler triggered")
-		c.sendToTg(fmt.Sprintf(joinFmt, e.Source.Name))
+		if c.TelegramSettings != nil && c.TelegramSettings.ShowJoinMessage {
+			c.sendToTg(fmt.Sprintf(joinFmt, e.Source.Name))
+		}
 	}
 }
 
 func partHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.logger.LogDebug("partHandler triggered")
-		c.sendToTg(fmt.Sprintf(partFmt, e.Source.Name))
+		if c.TelegramSettings != nil && c.TelegramSettings.ShowLeaveMessage {
+			c.sendToTg(fmt.Sprintf(partFmt, e.Source.Name))
+		}
 	}
 }
 
 func quitHandler(c Client) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.logger.LogDebug("quitHandler triggered")
-		c.sendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
+		if c.TelegramSettings != nil && c.TelegramSettings.ShowLeaveMessage {
+			c.sendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
+		}
 	}
 }
 
