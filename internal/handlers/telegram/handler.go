@@ -57,10 +57,12 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 joinHandler handles when users join the Telegram group
 */
 func joinHandler(tg *Client, users *[]tgbotapi.User) {
-	for _, user := range *users {
-		username := GetUsername(&user)
-		formatted := username + " has joined the Telegram Group!"
-		tg.sendToIrc(formatted)
+	if tg.IRCSettings != nil && tg.IRCSettings.ShowJoinMessage {
+		for _, user := range *users {
+			username := GetUsername(&user)
+			formatted := username + " has joined the Telegram Group!"
+			tg.sendToIrc(formatted)
+		}
 	}
 }
 
@@ -68,10 +70,12 @@ func joinHandler(tg *Client, users *[]tgbotapi.User) {
 partHandler handles when users leave the Telegram group
 */
 func partHandler(tg *Client, user *tgbotapi.User) {
-	username := GetUsername(user)
-	formatted := username + " has left the Telegram Group!"
+	if tg.IRCSettings != nil && tg.IRCSettings.ShowLeaveMessage {
+		username := GetUsername(user)
+		formatted := username + " has left the Telegram Group!"
 
-	tg.sendToIrc(formatted)
+		tg.sendToIrc(formatted)
+	}
 }
 
 /*
