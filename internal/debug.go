@@ -28,26 +28,31 @@ type Debug struct {
 	DebugLevel bool
 }
 
+// LogInfo prints info-level messages to standard out
 func (d Debug) LogInfo(v ...interface{}) {
 	info.Println(v...)
 }
 
+// LogDebug prints debug-level messages to standard out
 func (d Debug) LogDebug(v ...interface{}) {
 	if d.DebugLevel {
 		debug.Println(v...)
 	}
 }
 
+// LogError prints error-level messages to standard out
 func (d Debug) LogError(v ...interface{}) {
 	errorLog.Println(v...)
 }
 
+// LogWarning prints warning-level messages to standard out
 func (d Debug) LogWarning(v ...interface{}) {
 	if d.DebugLevel {
 		warning.Println(v...)
 	}
 }
 
+// PrintVersion prints the TeleIRC version number
 func (d Debug) PrintVersion(v ...interface{}) {
 	plain.Println(v...)
 }
