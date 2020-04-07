@@ -69,6 +69,30 @@ func (c Client) Message(channel string, msg string) {
 	c.Cmd.Message(channel, msg)
 }
 
+func (c Client) Join(channels ...string) {
+	c.Cmd.Join(channels...)
+}
+
+func (c Client) JoinKey(channel string, key string) {
+	c.Cmd.JoinKey(channel, key)
+}
+
+func (c Client) Logger() internal.DebugLogger {
+	return c.logger
+}
+
+func (c Client) SendToTg(msg string) {
+	c.sendToTg(msg)
+}
+
+func (c Client) IRCSettings() *internal.IRCSettings {
+	return c.Settings
+}
+
+func (c Client) TgSettings() *internal.TelegramSettings {
+	return c.TelegramSettings
+}
+
 /*
 SendMessage sends a message to the IRC channel specified in the
 settings
