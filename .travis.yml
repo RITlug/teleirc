@@ -1,6 +1,7 @@
 ---
 os: linux
 dist: bionic
+
 jobs:
   include:
     - language: go
@@ -10,19 +11,27 @@ jobs:
         - curl -Lo /tmp/cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
         - chmod +x /tmp/cc-test-reporter
         - /tmp/cc-test-reporter before-build
-      script: "golangci-lint run"
+      script:
+        - golangci-lint run
+        - go test -coverprofile=c.out ./...
+      # sed removes the package prefix, which is not a local path in directory
       after_script:
+        - sed -i 's/github.com\/ritlug\/teleirc\///g' c.out
         - /tmp/cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
     - language: go
-      go: master
+      go: 1.14.x
       before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
       before_script:
         - curl -Lo /tmp/cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
         - chmod +x /tmp/cc-test-reporter
         - /tmp/cc-test-reporter before-build
-      script: "golangci-lint run"
+      script:
+        - golangci-lint run
+        - go test -coverprofile=c.out ./...
+      # sed removes the package prefix, which is not a local path in directory
       after_script:
+        - sed -i 's/github.com\/ritlug\/teleirc\///g' c.out
         - /tmp/cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
     - language: python
