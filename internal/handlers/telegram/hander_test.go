@@ -1,10 +1,10 @@
 package telegram
 
 import (
-	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/kyokomi/emoji"
 	"github.com/ritlug/teleirc/internal"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -26,9 +26,7 @@ func TestStickerSmile(t *testing.T) {
 			Suffix: ">",
 		},
 		sendToIrc: func(s string) {
-			if s != correct {
-				t.Errorf(fmt.Sprintf("stickerHandler(\":smile:\") = \"%s\"; want \"%s\"", s, correct))
-			}
+			assert.Equal(t, correct, s)
 		},
 	}
 
@@ -51,9 +49,7 @@ func TestMessageRandom(t *testing.T) {
 			Suffix: ">",
 		},
 		sendToIrc: func(s string) {
-			if s != correct {
-				t.Errorf(fmt.Sprintf("messageHandler(\"Random Text\") = \"%s\"; want \"%s\"", s, correct))
-			}
+			assert.Equal(t, correct, s)
 		},
 	}
 
