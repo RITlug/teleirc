@@ -3,11 +3,9 @@ package irc
 import (
 	"testing"
 
-	"github.com/lrstanley/girc"
-
-	"github.com/ritlug/teleirc/internal"
-
 	gomock "github.com/golang/mock/gomock"
+	"github.com/lrstanley/girc"
+	"github.com/ritlug/teleirc/internal"
 )
 
 func TestJoinHandler_On(t *testing.T) {
