@@ -64,8 +64,10 @@ documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
 func documentHandler(tg *Client, u *tgbotapi.Message) {
-
-	formatted := u.From.UserName + " shared a file (" + u.Document.MimeType + ")"
+	formatted := u.From.String() + " shared a file"
+	if u.Document.MimeType != "" {
+		formatted += " (" + u.Document.MimeType + ")"
+	}
 
 	if u.Caption != "" {
 		formatted += " on Telegram with caption: " + "'" + u.Caption + "'."
