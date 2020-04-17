@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestGetFullUsername(t *testing.T) {
+func TestGetUsername(t *testing.T) {
 	username := &tgbotapi.User{ID: 1, FirstName: "John", UserName: "jsmith"}
 	correct := username.FirstName + " (@" + username.UserName + ")"
 	name := GetUsername(username)
@@ -14,7 +14,7 @@ func TestGetFullUsername(t *testing.T) {
 	assert.Equal(t, correct, name)
 }
 
-func TestGetUserNoUsername(t *testing.T) {
+func TestGetNoUsername(t *testing.T) {
 	username := &tgbotapi.User{ID: 1, FirstName: "John"}
 	correct := username.FirstName
 	name := GetUsername(username)
