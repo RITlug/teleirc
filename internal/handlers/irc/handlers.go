@@ -11,7 +11,7 @@ const (
 	joinFmt = "* %s joins"
 	partFmt = "* %s parts"
 	quitFmt = "* %s quit (%s)"
-	kickFmt = "* %s kicked %s from %s"
+	kickFmt = "* %s kicked %s from %s: %s"
 )
 
 /*
@@ -102,7 +102,7 @@ func kickHandler(c Client) func(*girc.Client, girc.Event) {
 		if c.TelegramSettings.ShowKickMessage {
 
 			// Params are obtained from the kick command: /kick #channel nickname [reason]
-			c.sendToTg(fmt.Sprintf(kickFmt, e.Source.Name, e.Params[1], e.Params[0]))
+			c.sendToTg(fmt.Sprintf(kickFmt, e.Source.Name, e.Params[1], e.Params[0], e.Last()))
 		}
 	}
 }
