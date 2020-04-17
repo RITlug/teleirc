@@ -57,38 +57,67 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	}
 }
 
+/*
+AddHandler registers the handler function for the given event.
+*/
 func (c Client) AddHandler(eventType string, cb func(*girc.Client, girc.Event)) {
 	c.Handlers.Add(eventType, cb)
 }
 
+/*
+ConnectDialer allows you to specify your own custom dialer which implements
+the Dialer interface.
+*/
 func (c Client) ConnectDialer(dialer girc.Dialer) error {
 	return c.DialerConnect(dialer)
 }
 
+/*
+Message sends a PRIVMSG to target (either channel, service, or user).
+*/
 func (c Client) Message(channel string, msg string) {
 	c.Cmd.Message(channel, msg)
 }
 
+/*
+Join attempts to enter a list of IRC channels, at bulk if possible to
+prevent sending extensive JOIN commands.
+*/
 func (c Client) Join(channels ...string) {
 	c.Cmd.Join(channels...)
 }
 
+/*
+JoinKey attempts to enter an IRC channel with a password.
+*/
 func (c Client) JoinKey(channel string, key string) {
 	c.Cmd.JoinKey(channel, key)
 }
 
+/*
+Logger returns the DebugLogger to be used for logging
+*/
 func (c Client) Logger() internal.DebugLogger {
 	return c.logger
 }
 
+/*
+SendToTg sends a message to Telegram
+*/
 func (c Client) SendToTg(msg string) {
 	c.sendToTg(msg)
 }
 
+/*
+IRCSettings returns the IRCSettings struct associated with this client
+*/
 func (c Client) IRCSettings() *internal.IRCSettings {
 	return c.Settings
 }
 
+/*
+TgSettings returns the TgSettings struct associated with this client
+*/
 func (c Client) TgSettings() *internal.TelegramSettings {
 	return c.TelegramSettings
 }
