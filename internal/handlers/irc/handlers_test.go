@@ -74,3 +74,68 @@ func TestJoinHandler_Off(t *testing.T) {
 	myHandler := joinHandler(mockClient)
 	myHandler(&girc.Client{}, girc.Event{})
 }
+
+func TestPartHandler_On(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowLeaveMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("partHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME parts"))
+
+	myHandler := partHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+	})
+}
+
+func TestPartHandler_Off(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowLeaveMessage: false,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("partHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Any()).
+		MaxTimes(0)
+
+	myHandler := partHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{})
+}
