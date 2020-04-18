@@ -9,11 +9,11 @@ import (
 )
 
 func TestNewClientBasic(t *testing.T) {
-	tgRequiredSettings := internal.TelegramSettings{
+	tgRequiredSettings := &internal.TelegramSettings{
 		Token:  "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
 		ChatID: -0000000000000,
 	}
-	tgExpectedSettings := internal.TelegramSettings{
+	tgExpectedSettings := &internal.TelegramSettings{
 		Token:               "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
 		ChatID:              -0000000000000,
 		ShowJoinMessage:     false,
@@ -23,15 +23,15 @@ func TestNewClientBasic(t *testing.T) {
 		MaxMessagePerMinute: 0,
 	}
 	logger := internal.Debug{
-		DebugLevel:  false,
+		DebugLevel: false,
 	}
 	var tgapi *tgbotapi.BotAPI
-	client := NewClient(tgRequiredSettings, tgapi, logger)
+	client := NewClient(tgRequiredSettings, nil, tgapi, logger)
 	assert.Equal(t, client.Settings, tgExpectedSettings, "Basic client settings should be properly set")
 }
 
 func TestNewClientFull(t *testing.T) {
-	tgSettings := internal.TelegramSettings{
+	tgSettings := &internal.TelegramSettings{
 		Token:               "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
 		ChatID:              -0000000000000,
 		ShowJoinMessage:     true,
@@ -40,7 +40,7 @@ func TestNewClientFull(t *testing.T) {
 		ShowKickMessage:     true,
 		MaxMessagePerMinute: 10,
 	}
-	tgDefaultSettings := internal.TelegramSettings{
+	tgDefaultSettings := &internal.TelegramSettings{
 		Token:               "000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA",
 		ChatID:              -0000000000000,
 		ShowJoinMessage:     false,
@@ -50,10 +50,10 @@ func TestNewClientFull(t *testing.T) {
 		MaxMessagePerMinute: 0,
 	}
 	logger := internal.Debug{
-		DebugLevel:  false,
+		DebugLevel: false,
 	}
 	var tgapi *tgbotapi.BotAPI
-	client := NewClient(tgSettings, tgapi, logger)
+	client := NewClient(tgSettings, nil, tgapi, logger)
 	assert.Equal(t, client.Settings, tgSettings, "All client settings should be properly set")
 	assert.NotEqual(t, client.Settings, tgDefaultSettings, "tgSettings should override defaults")
 }

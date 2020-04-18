@@ -41,7 +41,7 @@ func main() {
 	}
 
 	var tgapi *tgbotapi.BotAPI
-	tgClient := tg.NewClient(settings.Telegram, tgapi, logger)
+	tgClient := tg.NewClient(&settings.Telegram, &settings.IRC, tgapi, logger)
 	tgChan := make(chan error)
 
 	ircClient := irc.NewClient(&settings.IRC, &settings.Telegram, logger)
