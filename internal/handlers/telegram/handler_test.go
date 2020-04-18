@@ -133,14 +133,14 @@ func TestJoinNoUsername(t *testing.T) {
 	joinHandler(clientObj, testListUser)
 }
 
-func TestStickerSmile_withusername(t *testing.T) {
+func TestStickerSmileWithUsername(t *testing.T) {
 	testUser := &tgbotapi.User{
 		ID:        1,
 		UserName:  "test",
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s (@%s)> 😄", testUser.FirstName, testUser.UserName)
+	correct := fmt.Sprintf("<%s> 😄", testUser.String())
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
@@ -164,14 +164,14 @@ func TestStickerSmile_withusername(t *testing.T) {
 
 }
 
-func TestStickerSmile_withoutusername(t *testing.T) {
+func TestStickerSmileWithoutUsername(t *testing.T) {
 	testUser := &tgbotapi.User{
 		ID:        1,
 		UserName:  "",
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s> 😄", testUser.FirstName)
+	correct := fmt.Sprintf("<%s> 😄", testUser.String())
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
@@ -192,17 +192,16 @@ func TestStickerSmile_withoutusername(t *testing.T) {
 	}
 
 	stickerHandler(clientObj, updateObj)
-
 }
 
-func TestMessageRandom_withusername(t *testing.T) {
+func TestMessageRandomWithUsername(t *testing.T) {
 	testUser := &tgbotapi.User{
 		ID:        1,
 		UserName:  "test",
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s (@%s)> Random Text", testUser.FirstName, testUser.UserName)
+	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -224,14 +223,14 @@ func TestMessageRandom_withusername(t *testing.T) {
 	messageHandler(clientObj, updateObj)
 }
 
-func TestMessageRandom_withoutusername(t *testing.T) {
+func TestMessageRandomWithoutUsername(t *testing.T) {
 	testUser := &tgbotapi.User{
 		ID:        1,
 		UserName:  "",
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s> Random Text", testUser.FirstName)
+	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
