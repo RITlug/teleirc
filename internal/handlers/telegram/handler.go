@@ -93,14 +93,16 @@ func stickerHandler(tg *Client, u tgbotapi.Update) {
 documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
-func documentHandler(tg *Client, m *tgbotapi.Message) {
+func documentHandler(tg *Client, u *tgbotapi.Message) {
+	formatted := u.From.String() + " shared a file"
+	if u.Document.MimeType != "" {
+		formatted += " (" + u.Document.MimeType + ")"
+	}
 
-	formatted := m.From.UserName + " shared a file (" + m.Document.MimeType + ")"
-
-	if m.Caption != "" {
-		formatted += " on Telegram with caption: " + "'" + m.Caption + "'."
-	} else {
-		formatted += " on Telegram with title: " + "'" + m.Document.FileName + "'."
+	if u.Caption != "" {
+		formatted += " on Telegram with caption: " + "'" + u.Caption + "'."
+	} else if u.Document.FileName != "" {
+		formatted += " on Telegram with title: " + "'" + u.Document.FileName + "'."
 	}
 
 	tg.sendToIrc(formatted)
