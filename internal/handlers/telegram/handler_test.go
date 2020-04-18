@@ -6,6 +6,7 @@ import (
 	"github.com/kyokomi/emoji"
 	"github.com/ritlug/teleirc/internal"
 	"github.com/stretchr/testify/assert"
+	"strings"
 	"testing"
 )
 
@@ -419,7 +420,7 @@ func TestStickerSmileWithUsername(t *testing.T) {
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Sticker: &tgbotapi.Sticker{
-				Emoji: emoji.Sprint(":smile:"),
+				Emoji: strings.Trim(emoji.Sprint(":smile:"), " "),
 			},
 		},
 	}
@@ -450,7 +451,7 @@ func TestStickerSmileWithoutUsername(t *testing.T) {
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Sticker: &tgbotapi.Sticker{
-				Emoji: emoji.Sprint(":smile:"),
+				Emoji: strings.Trim(emoji.Sprint(":smile:"), " "),
 			},
 		},
 	}
