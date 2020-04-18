@@ -34,6 +34,9 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 		case u.Message.Document != nil:
 			tg.logger.LogDebug("documentHandler triggered")
 			documentHandler(tg, u.Message)
+		case u.Message.Photo != nil:
+			tg.logger.LogDebug("photoHandler triggered")
+			photoHandler(tg, u)
 		default:
 			tg.logger.LogWarning("Triggered, but message type is currently unsupported")
 			tg.logger.LogWarning("Unhandled Update:", u)
@@ -85,6 +88,18 @@ Telegram message into its base Emoji unicode character.
 func stickerHandler(tg *Client, u tgbotapi.Update) {
 	formatted := tg.Settings.Prefix + u.Message.From.UserName +
 		tg.Settings.Suffix + u.Message.Sticker.Emoji
+
+	tg.sendToIrc(formatted)
+}
+
+/*
+photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
+exists, and sends notification to IRC
+*/
+func photoHandler(tg *Client, u tgbotapi.Update) {
+	user := u.Message.From
+	formatted := user.String() + " shared a photo on Telegram with caption: '" +
+		u.Message.Caption + "'"
 
 	tg.sendToIrc(formatted)
 }
