@@ -4,7 +4,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/kyokomi/emoji"
 	"github.com/ritlug/teleirc/internal"
-	brige "github.com/ritlug/teleirc/internal/handlers/telegram"
+	bridge "github.com/ritlug/teleirc/internal/handlers/telegram"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -21,22 +21,19 @@ func TestStickerSmile(t *testing.T) {
 			},
 		},
 	}
-	clientObj := &brige.Client{}
+
+	clientObj := &bridge.Client{}
+
 	clientObj.Settings = internal.TelegramSettings{
 		Prefix: "<",
 		Suffix: ">",
 	}
-	clientObj
-
-Settings: internal.TelegramSettings{
-	Prefix: "<",
-	Suffix: ">",
-},
-	sendToIrc: func(s string) {
+	clientObj.SendToIrc = func(s string) {
 		assert.Equal(t, correct, s)
-	},
+	}
 
-	stickerHandler(clientObj, updateObj)
+	// clientObj.handler.stickerHandler(clientObj, updateObj)
+
 }
 
 func TestMessageRandom(t *testing.T) {
@@ -49,15 +46,15 @@ func TestMessageRandom(t *testing.T) {
 			Text: "Random Text",
 		},
 	}
-	clientObj := &Client{
-		Settings: internal.TelegramSettings{
-			Prefix: "<",
-			Suffix: ">",
-		},
-		sendToIrc: func(s string) {
-			assert.Equal(t, correct, s)
-		},
+	clientObj := &bridge.Client{}
+
+	clientObj.Settings = internal.TelegramSettings{
+		Prefix: "<",
+		Suffix: ">",
+	}
+	clientObj.SendToIrc = func(s string) {
+		assert.Equal(t, correct, s)
 	}
 
-	messageHandler(clientObj, updateObj)
+	// clientObj.handler.messageHandler(clientObj, updateObj)
 }

@@ -14,7 +14,7 @@ type Client struct {
 	api       *tgbotapi.BotAPI
 	Settings  internal.TelegramSettings
 	logger    internal.DebugLogger
-	sendToIrc func(string)
+	SendToIrc func(string)
 }
 
 /*
@@ -56,7 +56,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 		errChan <- err
 	}
 	tg.logger.LogInfo("Authorized on account", tg.api.Self.UserName)
-	tg.sendToIrc = sendMessage
+	tg.SendToIrc = sendMessage
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
