@@ -1,4 +1,5 @@
 ---
+version: "2"
 plugins:
   gofmt:
     enabled: true
@@ -8,3 +9,11 @@ plugins:
       min_confidence: 0.8
   govet:
     enabled: true
+exclude_patterns:
+  - "**/*_test.go"
+  - "**/mock_*.go"
+  - ".github/"
+  - "assets/"
+  - "build/"
+  - "deployments/"
+  - "docs/"
