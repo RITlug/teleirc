@@ -21,6 +21,10 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 		case u.Message == nil:
 			tg.logger.LogError("Missing message data")
 			continue
+		case u.Message.NewChatMembers != nil:
+			joinHandler(tg, u.Message.NewChatMembers)
+		case u.Message.LeftChatMember != nil:
+			partHandler(tg, u.Message.LeftChatMember)
 		case u.Message.Text != "":
 			tg.logger.LogDebug("messageHandler triggered")
 			messageHandler(tg, u)
@@ -31,7 +35,8 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 			tg.logger.LogDebug("documentHandler triggered")
 			documentHandler(tg, u.Message)
 		default:
-			tg.logger.LogWarning("triggered, but message type is currently unsupported")
+			tg.logger.LogWarning("Triggered, but message type is currently unsupported")
+			tg.logger.LogWarning("Unhandled Update:", u)
 			continue
 		}
 	}
@@ -46,6 +51,31 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 		tg.Settings.Suffix + u.Message.Text
 
 	tg.sendToIrc(formatted)
+}
+
+/*
+joinHandler handles when users join the Telegram group
+*/
+func joinHandler(tg *Client, users *[]tgbotapi.User) {
+	if tg.IRCSettings.ShowJoinMessage {
+		for _, user := range *users {
+			username := GetUsername(&user)
+			formatted := username + " has joined the Telegram Group!"
+			tg.sendToIrc(formatted)
+		}
+	}
+}
+
+/*
+partHandler handles when users leave the Telegram group
+*/
+func partHandler(tg *Client, user *tgbotapi.User) {
+	if tg.IRCSettings.ShowLeaveMessage {
+		username := GetUsername(user)
+		formatted := username + " has left the Telegram Group!"
+
+		tg.sendToIrc(formatted)
+	}
 }
 
 /*
