@@ -71,7 +71,7 @@ func documentHandler(tg *Client, u *tgbotapi.Message) {
 
 	if u.Caption != "" {
 		formatted += " on Telegram with caption: " + "'" + u.Caption + "'."
-	} else {
+	} else if u.Document.FileName != "" {
 		formatted += " on Telegram with title: " + "'" + u.Document.FileName + "'."
 	}
 
