@@ -97,11 +97,8 @@ exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
 	user := u.Message.From
-	formatted := user.String() + " shared a photo on Telegram"
-
-	if u.Message.Caption != "" {
-		formatted += " with caption: " + "'" + u.Message.Caption + "'"
-	}
+	formatted := user.String() + " shared a photo on Telegram with caption: '" +
+		u.Message.Caption + "'"
 
 	tg.sendToIrc(formatted)
 }
