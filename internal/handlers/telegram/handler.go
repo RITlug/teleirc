@@ -38,6 +38,9 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 		case u.Message.Document != nil:
 			tg.logger.LogDebug("documentHandler triggered")
 			documentHandler(tg, u.Message)
+		case u.Message.Photo != nil:
+			tg.logger.LogDebug("photoHandler triggered")
+			photoHandler(tg, u)
 		default:
 			tg.logger.LogWarning("Triggered, but message type is currently unsupported")
 			tg.logger.LogWarning("Unhandled Update:", u)
@@ -101,17 +104,31 @@ func stickerHandler(tg *Client, u tgbotapi.Update) {
 }
 
 /*
+photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
+exists, and sends notification to IRC
+*/
+func photoHandler(tg *Client, u tgbotapi.Update) {
+	user := u.Message.From
+	formatted := user.String() + " shared a photo on Telegram with caption: '" +
+		u.Message.Caption + "'"
+
+	tg.sendToIrc(formatted)
+}
+
+/*
 documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
-func documentHandler(tg *Client, m *tgbotapi.Message) {
+func documentHandler(tg *Client, u *tgbotapi.Message) {
+	formatted := u.From.String() + " shared a file"
+	if u.Document.MimeType != "" {
+		formatted += " (" + u.Document.MimeType + ")"
+	}
 
-	formatted := m.From.UserName + " shared a file (" + m.Document.MimeType + ")"
-
-	if m.Caption != "" {
-		formatted += " on Telegram with caption: " + "'" + m.Caption + "'."
-	} else {
-		formatted += " on Telegram with title: " + "'" + m.Document.FileName + "'."
+	if u.Caption != "" {
+		formatted += " on Telegram with caption: " + "'" + u.Caption + "'."
+	} else if u.Document.FileName != "" {
+		formatted += " on Telegram with title: " + "'" + u.Document.FileName + "'."
 	}
 
 	tg.sendToIrc(formatted)
