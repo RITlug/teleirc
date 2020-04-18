@@ -11,6 +11,7 @@ const (
 	joinFmt = "* %s joins"
 	partFmt = "* %s parts"
 	quitFmt = "* %s quit (%s)"
+	kickFmt = "* %s kicked %s from %s: %s"
 )
 
 /*
@@ -93,14 +94,29 @@ func quitHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 }
 
 /*
+kickHandler handles the event when a user is kicked from the IRC channel.
+*/
+func kickHandler(c ClientInterface) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.Logger().LogDebug("kickHandler triggered")
+		if c.TgSettings().ShowKickMessage {
+
+			// Params are obtained from the kick command: /kick #channel nickname [reason]
+			c.SendToTg(fmt.Sprintf(kickFmt, e.Source.Name, e.Params[1], e.Params[0], e.Last()))
+		}
+	}
+}
+
+/*
 getHandlerMapping returns a mapping of girc event types to handlers
 */
 func getHandlerMapping() map[string]Handler {
 	return map[string]Handler{
 		girc.CONNECTED: connectHandler,
+		girc.JOIN:      joinHandler,
+		girc.KICK:      kickHandler,
 		girc.PRIVMSG:   messageHandler,
 		girc.PART:      partHandler,
 		girc.QUIT:      quitHandler,
-		girc.JOIN:      joinHandler,
 	}
 }
