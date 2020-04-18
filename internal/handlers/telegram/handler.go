@@ -92,10 +92,12 @@ func stickerHandler(tg *Client, u tgbotapi.Update) {
 }
 
 /*
-photoHandler handles the Message.Photo Telegram object
+photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
+exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
-	formatted := u.Message.From.UserName + " shared a photo on Telegram"
+	user := u.Message.From
+	formatted := user.String() + " shared a photo on Telegram"
 
 	if u.Message.Caption != "" {
 		formatted += " with caption: " + "'" + u.Message.Caption + "'"

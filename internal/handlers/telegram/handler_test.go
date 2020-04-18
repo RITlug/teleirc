@@ -289,3 +289,33 @@ func TestDocumentFull(t *testing.T) {
 	}
 	documentHandler(clientObj, updateObj.Message)
 }
+
+/*
+TestPhotoFull tests a complete Photo object
+*/
+func TestPhotoFull(t *testing.T) {
+	correct := "user shared a photo on Telegram with caption: 'Random Caption'"
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: &tgbotapi.User{
+				FirstName: "test",
+				UserName:  "user",
+			},
+			Photo: &[]tgbotapi.PhotoSize{
+				tgbotapi.PhotoSize{
+					FileID:   "https://teleirc.com/file.png",
+					Width:    1,
+					Height:   1,
+					FileSize: 1,
+				},
+			},
+			Caption: "Random Caption",
+		},
+	}
+	clientObj := &Client{
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+	photoHandler(clientObj, updateObj)
+}
