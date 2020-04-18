@@ -7,10 +7,10 @@ import (
 )
 
 /*
-TestDocument_plain checks the behavior of the document handlers if only required
+TestDocumentPlain checks the behavior of the document handlers if only required
 fields are available.
 */
-func TestDocument_plain(t *testing.T) {
+func TestDocumentPlain(t *testing.T) {
 	correct := "test shared a file"
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -31,10 +31,10 @@ func TestDocument_plain(t *testing.T) {
 }
 
 /*
-TestDocument_basic checks the behavior of the document handlers when
+TestDocumentBasic checks the behavior of the document handlers when
 the update just has required informations in addition to the caption.
 */
-func TestDocument_basic(t *testing.T) {
+func TestDocumentBasic(t *testing.T) {
 	correct := "test shared a file on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -56,10 +56,10 @@ func TestDocument_basic(t *testing.T) {
 }
 
 /*
-TestDocument_with_mime checks the behavior of the document handlers when
+TestDocumentMime checks the behavior of the document handlers when
 the document contains the mimetype information.
 */
-func TestDocument_with_mime(t *testing.T) {
+func TestDocumentMime(t *testing.T) {
 	correct := "test shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -82,10 +82,10 @@ func TestDocument_with_mime(t *testing.T) {
 }
 
 /*
-TestDocument_with_bothNames checks the behavior of the document handlers when
+TestDocumentUsername checks the behavior of the document handlers when
 both firstname and username exist. It also incorporates the availability of a mimetype.
 */
-func TestDocument_with_bothNames(t *testing.T) {
+func TestDocumentUsername(t *testing.T) {
 	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -109,11 +109,11 @@ func TestDocument_with_bothNames(t *testing.T) {
 }
 
 /*
-TestDocument_wout_caption checks the behavior of the document handlers when neither
+TestDocumentNoCaption checks the behavior of the document handlers when neither
 a caption nor a username is attached to the document. It also test a case where
 both filename and mimetype exist.
 */
-func TestDocument_wout_caption(t *testing.T) {
+func TestDocumentNoCaption(t *testing.T) {
 	correct := "test shared a file (test/txt) on Telegram with title: 'test.txt'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -137,11 +137,11 @@ func TestDocument_wout_caption(t *testing.T) {
 }
 
 /*
-TestDocument_with_CapAndFile checks the behavior of the document handlers when
+TestDocumentFull checks the behavior of the document handlers when
 both caption and filename exist. It also incorporates the availability of both
 firstname and username
 */
-func TestDocument_with_CapAndFile(t *testing.T) {
+func TestDocumentFull(t *testing.T) {
 	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
