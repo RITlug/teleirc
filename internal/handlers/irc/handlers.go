@@ -19,14 +19,14 @@ Handler specifies a function that handles an IRC event
 In this case, we take an IRC client and return a function that
 handles an IRC event
 */
-type Handler = func(c Client) func(*girc.Client, girc.Event)
+type Handler = func(c ClientInterface) func(*girc.Client, girc.Event)
 
 /*
 checkBlacklist checks the IRC blacklist for a name, and returns whether
 or not the name is in the blacklist
 */
-func checkBlacklist(c Client, toCheck string) bool {
-	for _, name := range c.Settings.IRCBlacklist {
+func checkBlacklist(c ClientInterface, toCheck string) bool {
+	for _, name := range c.IRCSettings().IRCBlacklist {
 		if strings.EqualFold(toCheck, name) {
 			return true
 		}
@@ -38,13 +38,13 @@ func checkBlacklist(c Client, toCheck string) bool {
 connectHandler returns a function to use as the connect handler for girc,
 so that the specified channel is joined after the server connection is established
 */
-func connectHandler(c Client) func(*girc.Client, girc.Event) {
+func connectHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.logger.LogDebug("connectHandler triggered")
-		if c.Settings.ChannelKey != "" {
-			c.Cmd.JoinKey(c.Settings.Channel, c.Settings.ChannelKey)
+		c.Logger().LogDebug("connectHandler triggered")
+		if c.IRCSettings().ChannelKey != "" {
+			c.JoinKey(c.IRCSettings().Channel, c.IRCSettings().ChannelKey)
 		} else {
-			c.Cmd.Join(c.Settings.Channel)
+			c.Join(c.IRCSettings().Channel)
 		}
 	}
 }
@@ -53,42 +53,42 @@ func connectHandler(c Client) func(*girc.Client, girc.Event) {
 messageHandler handles the PRIVMSG IRC event, which entails both private
 and channel messages. However, it only cares about channel messages
 */
-func messageHandler(c Client) func(*girc.Client, girc.Event) {
+func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.logger.LogDebug("messageHandler triggered")
+		c.Logger().LogDebug("messageHandler triggered")
 		// Only send if user is not in blacklist
 		if !(checkBlacklist(c, e.Source.Name)) {
-			formatted := c.Settings.Prefix + e.Source.Name + c.Settings.Suffix + " " + e.Params[1]
+			formatted := c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
 			if e.IsFromChannel() {
-				c.sendToTg(formatted)
+				c.SendToTg(formatted)
 			}
 		}
 	}
 }
 
-func joinHandler(c Client) func(*girc.Client, girc.Event) {
+func joinHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.logger.LogDebug("joinHandler triggered")
-		if c.TelegramSettings != nil && c.TelegramSettings.ShowJoinMessage {
-			c.sendToTg(fmt.Sprintf(joinFmt, e.Source.Name))
+		c.Logger().LogDebug("joinHandler triggered")
+		if c.TgSettings().ShowJoinMessage {
+			c.SendToTg(fmt.Sprintf(joinFmt, e.Source.Name))
 		}
 	}
 }
 
-func partHandler(c Client) func(*girc.Client, girc.Event) {
+func partHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.logger.LogDebug("partHandler triggered")
-		if c.TelegramSettings != nil && c.TelegramSettings.ShowLeaveMessage {
-			c.sendToTg(fmt.Sprintf(partFmt, e.Source.Name))
+		c.Logger().LogDebug("partHandler triggered")
+		if c.TgSettings().ShowLeaveMessage {
+			c.SendToTg(fmt.Sprintf(partFmt, e.Source.Name))
 		}
 	}
 }
 
-func quitHandler(c Client) func(*girc.Client, girc.Event) {
+func quitHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.logger.LogDebug("quitHandler triggered")
-		if c.TelegramSettings != nil && c.TelegramSettings.ShowLeaveMessage {
-			c.sendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
+		c.Logger().LogDebug("quitHandler triggered")
+		if c.TgSettings().ShowLeaveMessage {
+			c.SendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
 		}
 	}
 }

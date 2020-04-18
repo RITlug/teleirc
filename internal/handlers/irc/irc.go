@@ -49,7 +49,7 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	c.sendToTg = sendMessage
 	c.addHandlers()
 	// 10 second timeout for connection
-	if err := c.DialerConnect(&net.Dialer{Timeout: 10 * time.Second}); err != nil {
+	if err := c.ConnectDialer(&net.Dialer{Timeout: 10 * time.Second}); err != nil {
 		errChan <- err
 		c.logger.LogError(err)
 	} else {
@@ -58,11 +58,76 @@ func (c Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 }
 
 /*
+AddHandler registers the handler function for the given event.
+*/
+func (c Client) AddHandler(eventType string, cb func(*girc.Client, girc.Event)) {
+	c.Handlers.Add(eventType, cb)
+}
+
+/*
+ConnectDialer allows you to specify your own custom dialer which implements
+the Dialer interface.
+*/
+func (c Client) ConnectDialer(dialer girc.Dialer) error {
+	return c.DialerConnect(dialer)
+}
+
+/*
+Message sends a PRIVMSG to target (either channel, service, or user).
+*/
+func (c Client) Message(channel string, msg string) {
+	c.Cmd.Message(channel, msg)
+}
+
+/*
+Join attempts to enter a list of IRC channels, at bulk if possible to
+prevent sending extensive JOIN commands.
+*/
+func (c Client) Join(channels ...string) {
+	c.Cmd.Join(channels...)
+}
+
+/*
+JoinKey attempts to enter an IRC channel with a password.
+*/
+func (c Client) JoinKey(channel string, key string) {
+	c.Cmd.JoinKey(channel, key)
+}
+
+/*
+Logger returns the DebugLogger to be used for logging
+*/
+func (c Client) Logger() internal.DebugLogger {
+	return c.logger
+}
+
+/*
+SendToTg sends a message to Telegram
+*/
+func (c Client) SendToTg(msg string) {
+	c.sendToTg(msg)
+}
+
+/*
+IRCSettings returns the IRCSettings struct associated with this client
+*/
+func (c Client) IRCSettings() *internal.IRCSettings {
+	return c.Settings
+}
+
+/*
+TgSettings returns the TgSettings struct associated with this client
+*/
+func (c Client) TgSettings() *internal.TelegramSettings {
+	return c.TelegramSettings
+}
+
+/*
 SendMessage sends a message to the IRC channel specified in the
 settings
 */
 func (c Client) SendMessage(msg string) {
-	c.Cmd.Message(c.Settings.Channel, msg)
+	c.Message(c.Settings.Channel, msg)
 }
 
 /*
@@ -72,6 +137,6 @@ that were passed in to NewClient
 func (c Client) addHandlers() {
 	for eventType, handler := range getHandlerMapping() {
 		c.logger.LogDebug("Adding IRC event handler:", eventType)
-		c.Handlers.Add(eventType, handler(c))
+		c.AddHandler(eventType, handler(c))
 	}
 }
