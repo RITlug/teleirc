@@ -1,6 +1,7 @@
 package telegram
 
 import (
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"strings"
 )
@@ -43,9 +44,12 @@ messageHandler handles the Message Telegram Object, which formats the
 Telegram update into a simple string for IRC.
 */
 func messageHandler(tg *Client, u tgbotapi.Update) {
-	formatted := tg.Settings.Prefix + u.Message.From.UserName +
-		tg.Settings.Suffix + u.Message.Text
-
+	formatted := fmt.Sprintf("%s%s%s %s",
+		tg.Settings.Prefix,
+		u.Message.From.String(),
+		tg.Settings.Suffix,
+		// Trim unexpected trailing whitespace
+		strings.Trim(u.Message.Text, " "))
 	tg.sendToIrc(formatted)
 }
 
@@ -54,11 +58,14 @@ stickerHandler handles the Message.Sticker Telegram Object, which formats the
 Telegram message into its base Emoji unicode character.
 */
 func stickerHandler(tg *Client, u tgbotapi.Update) {
-	formatted := tg.Settings.Prefix + u.Message.From.UserName +
-		tg.Settings.Suffix + u.Message.Sticker.Emoji
 
-	// Trim unexpected trailing whitespace
-	tg.sendToIrc(strings.Trim(formatted, " "))
+	formatted := fmt.Sprintf("%s%s%s %s",
+		tg.Settings.Prefix,
+		u.Message.From.String(),
+		tg.Settings.Suffix,
+		// Trim unexpected trailing whitespace
+		strings.Trim(u.Message.Sticker.Emoji, " "))
+	tg.sendToIrc(formatted)
 }
 
 /*
