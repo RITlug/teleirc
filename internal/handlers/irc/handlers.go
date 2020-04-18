@@ -96,13 +96,13 @@ func quitHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 /*
 kickHandler handles the event when a user is kicked from the IRC channel.
 */
-func kickHandler(c Client) func(*girc.Client, girc.Event) {
+func kickHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
-		c.logger.LogDebug("kickHandler triggered")
-		if c.TelegramSettings.ShowKickMessage {
+		c.Logger().LogDebug("kickHandler triggered")
+		if c.TgSettings().ShowKickMessage {
 
 			// Params are obtained from the kick command: /kick #channel nickname [reason]
-			c.sendToTg(fmt.Sprintf(kickFmt, e.Source.Name, e.Params[1], e.Params[0], e.Last()))
+			c.SendToTg(fmt.Sprintf(kickFmt, e.Source.Name, e.Params[1], e.Params[0], e.Last()))
 		}
 	}
 }
