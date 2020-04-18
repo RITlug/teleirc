@@ -23,14 +23,14 @@ func TestStickerSmile_withusername(t *testing.T) {
 		},
 	}
 
-	clientObj := &Client{}
-
-	clientObj.Settings = internal.TelegramSettings{
-		Prefix: "<",
-		Suffix: ">",
-	}
-	clientObj.sendToIrc = func(s string) {
-		assert.Equal(t, correct, s)
+	clientObj := &Client{
+		Settings: internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
 	}
 
 	stickerHandler(clientObj, updateObj)
@@ -52,14 +52,14 @@ func TestStickerSmile_withoutusername(t *testing.T) {
 		},
 	}
 
-	clientObj := &Client{}
-
-	clientObj.Settings = internal.TelegramSettings{
-		Prefix: "<",
-		Suffix: ">",
-	}
-	clientObj.sendToIrc = func(s string) {
-		assert.Equal(t, correct, s)
+	clientObj := &Client{
+		Settings: internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
 	}
 
 	stickerHandler(clientObj, updateObj)
@@ -68,6 +68,7 @@ func TestStickerSmile_withoutusername(t *testing.T) {
 
 func TestMessageRandom_withusername(t *testing.T) {
 	correct := "<test> Random Text"
+
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -78,14 +79,15 @@ func TestMessageRandom_withusername(t *testing.T) {
 			Text: "Random Text",
 		},
 	}
-	clientObj := &Client{}
 
-	clientObj.Settings = internal.TelegramSettings{
-		Prefix: "<",
-		Suffix: ">",
-	}
-	clientObj.sendToIrc = func(s string) {
-		assert.Equal(t, correct, s)
+	clientObj := &Client{
+		Settings: internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
 	}
 
 	messageHandler(clientObj, updateObj)
@@ -103,14 +105,14 @@ func TestMessageRandom_withoutusername(t *testing.T) {
 			Text: "Random Text",
 		},
 	}
-	clientObj := &Client{}
-
-	clientObj.Settings = internal.TelegramSettings{
-		Prefix: "<",
-		Suffix: ">",
-	}
-	clientObj.sendToIrc = func(s string) {
-		assert.Equal(t, correct, s)
+	clientObj := &Client{
+		Settings: internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
 	}
 
 	messageHandler(clientObj, updateObj)
