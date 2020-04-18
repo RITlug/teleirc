@@ -35,6 +35,7 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 			tg.logger.LogDebug("documentHandler triggered")
 			documentHandler(tg, u.Message)
 		case u.Message.Photo != nil:
+			tg.logger.LogDebug("photoHandler triggered")
 			photoHandler(tg, u)
 		default:
 			tg.logger.LogWarning("Triggered, but message type is currently unsupported")
