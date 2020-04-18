@@ -24,8 +24,10 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 			tg.logger.LogError("Missing message data")
 			continue
 		case u.Message.NewChatMembers != nil:
+			tg.logger.LogDebug("joinHandler triggered")
 			joinHandler(tg, u.Message.NewChatMembers)
 		case u.Message.LeftChatMember != nil:
+			tg.logger.LogDebug("partHandler triggered")
 			partHandler(tg, u.Message.LeftChatMember)
 		case u.Message.Text != "":
 			tg.logger.LogDebug("messageHandler triggered")
@@ -51,7 +53,7 @@ Telegram update into a simple string for IRC.
 func messageHandler(tg *Client, u tgbotapi.Update) {
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
-		u.Message.From.String(),
+		GetUsername(u.Message.From),
 		tg.Settings.Suffix,
 		// Trim unexpected trailing whitespace
 		strings.Trim(u.Message.Text, " "))
@@ -91,7 +93,7 @@ func stickerHandler(tg *Client, u tgbotapi.Update) {
 
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
-		u.Message.From.String(),
+		GetUsername(u.Message.From),
 		tg.Settings.Suffix,
 		// Trim unexpected trailing whitespace
 		strings.Trim(u.Message.Sticker.Emoji, " "))

@@ -1,6 +1,7 @@
 package telegram
 
 import (
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/kyokomi/emoji"
 	"github.com/ritlug/teleirc/internal"
@@ -133,14 +134,16 @@ func TestJoinNoUsername(t *testing.T) {
 }
 
 func TestStickerSmile_withusername(t *testing.T) {
-	correct := "<test> 😄"
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s (@%s)> 😄", testUser.FirstName, testUser.UserName)
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
-			From: &tgbotapi.User{
-				UserName:  "test",
-				FirstName: "testing",
-				LastName:  "123",
-			},
+			From: testUser,
 			Sticker: &tgbotapi.Sticker{
 				Emoji: emoji.Sprint(":smile:"),
 			},
@@ -162,14 +165,16 @@ func TestStickerSmile_withusername(t *testing.T) {
 }
 
 func TestStickerSmile_withoutusername(t *testing.T) {
-	correct := "<testing 123> 😄"
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> 😄", testUser.FirstName)
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
-			From: &tgbotapi.User{
-				UserName:  "",
-				FirstName: "testing",
-				LastName:  "123",
-			},
+			From: testUser,
 			Sticker: &tgbotapi.Sticker{
 				Emoji: emoji.Sprint(":smile:"),
 			},
@@ -191,15 +196,17 @@ func TestStickerSmile_withoutusername(t *testing.T) {
 }
 
 func TestMessageRandom_withusername(t *testing.T) {
-	correct := "<test> Random Text"
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s (@%s)> Random Text", testUser.FirstName, testUser.UserName)
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
-			From: &tgbotapi.User{
-				UserName:  "test",
-				FirstName: "testing",
-				LastName:  "123",
-			},
+			From: testUser,
 			Text: "Random Text",
 		},
 	}
@@ -218,14 +225,17 @@ func TestMessageRandom_withusername(t *testing.T) {
 }
 
 func TestMessageRandom_withoutusername(t *testing.T) {
-	correct := "<testing 123> Random Text"
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> Random Text", testUser.FirstName)
+
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
-			From: &tgbotapi.User{
-				UserName:  "",
-				FirstName: "testing",
-				LastName:  "123",
-			},
+			From: testUser,
 			Text: "Random Text",
 		},
 	}
