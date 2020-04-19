@@ -205,3 +205,111 @@ func TestQuitHandler_Off(t *testing.T) {
 	myHandler := quitHandler(mockClient)
 	myHandler(&girc.Client{}, girc.Event{})
 }
+
+func TestKickHandler_On(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowKickMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("kickHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME kicked TEST_KICKEDNAME from TEST_GROUP: TEST_REASON"))
+
+	myHandler := kickHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"TEST_GROUP",
+			"TEST_KICKEDNAME",
+			"TEST_REASON",
+		},
+	})
+}
+
+func TestKickHandler_Off(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowKickMessage: false,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("kickHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Any()).
+		MaxTimes(0)
+
+	myHandler := kickHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{})
+}
+
+func TestKickHandlerNoReason(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowKickMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("kickHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME kicked TEST_KICKEDNAME from TEST_GROUP: TEST_KICKEDNAME"))
+
+	myHandler := kickHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"TEST_GROUP",
+			"TEST_KICKEDNAME",
+		},
+	})
+}
