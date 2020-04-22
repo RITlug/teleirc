@@ -1,9 +1,12 @@
 package telegram
 
 import (
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/kyokomi/emoji"
 	"github.com/ritlug/teleirc/internal"
 	"github.com/stretchr/testify/assert"
+	"strings"
 	"testing"
 )
 
@@ -403,4 +406,122 @@ func TestPhotoNoCaption(t *testing.T) {
 		},
 	}
 	photoHandler(clientObj, updateObj)
+}
+
+func TestStickerSmileWithUsername(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> 😄", testUser.String())
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Sticker: &tgbotapi.Sticker{
+				Emoji: strings.Trim(emoji.Sprint(":smile:"), " "),
+			},
+		},
+	}
+
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	stickerHandler(clientObj, updateObj)
+
+}
+
+func TestStickerSmileWithoutUsername(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> 😄", testUser.String())
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Sticker: &tgbotapi.Sticker{
+				Emoji: strings.Trim(emoji.Sprint(":smile:"), " "),
+			},
+		},
+	}
+
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	stickerHandler(clientObj, updateObj)
+}
+
+func TestMessageRandomWithUsername(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
+
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Text: "Random Text",
+		},
+	}
+
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	messageHandler(clientObj, updateObj)
+}
+
+func TestMessageRandomWithoutUsername(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
+
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Text: "Random Text",
+		},
+	}
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	messageHandler(clientObj, updateObj)
 }
