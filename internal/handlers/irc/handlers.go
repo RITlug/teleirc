@@ -100,9 +100,14 @@ func kickHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("kickHandler triggered")
 		if c.TgSettings().ShowKickMessage {
-
+			var reason string
 			// Params are obtained from the kick command: /kick #channel nickname [reason]
-			c.SendToTg(fmt.Sprintf(kickFmt, e.Source.Name, e.Params[1], e.Params[0], e.Last()))
+			if len(e.Params) == 2 {
+				reason = "Reason Undefined"
+			} else {
+				reason = e.Last()
+			}
+			c.SendToTg(fmt.Sprintf(kickFmt, e.Source.Name, e.Params[1], e.Params[0], reason))
 		}
 	}
 }

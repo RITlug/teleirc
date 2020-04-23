@@ -300,7 +300,8 @@ func TestKickHandlerNoReason(t *testing.T) {
 		Return(&tgSettings)
 	mockClient.
 		EXPECT().
-		SendToTg(gomock.Eq("* TEST_NAME kicked TEST_KICKEDNAME from TEST_GROUP: TEST_KICKEDNAME"))
+		// SendToTg(gomock.Eq("* TEST_NAME kicked TEST_KICKEDNAME from TEST_GROUP: TEST_KICKEDNAME"))
+		SendToTg(gomock.Eq("* TEST_NAME kicked TEST_KICKEDNAME from TEST_GROUP: Reason Undefined"))
 
 	myHandler := kickHandler(mockClient)
 	myHandler(&girc.Client{}, girc.Event{
