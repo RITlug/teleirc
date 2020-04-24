@@ -10,8 +10,17 @@ plugins:
   govet:
     enabled: true
 exclude_patterns:
+  # glob patterns
+  - "**/.dockerignore"
+  - "**/.gitignore"
+  - "**/go.mod"
+  - "**/go.sum"
   - "**/*_test.go"
   - "**/mock_*.go"
+  - "**/*.md"
+  - "**/*.txt"
+  - "**/*.yml"
+  # project-specific folders
   - ".github/"
   - "assets/"
   - "build/"
