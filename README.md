@@ -3,6 +3,7 @@ TeleIRC
 
 <a href="https://github.com/RITlug/teleirc"><img src="/assets/svg/horizontal_color.svg" alt="TeleIRC logo by Ura Design" width="60%" height="auto"></a>
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=devel)](https://travis-ci.org/RITlug/teleirc)
 [![Documentation Status](https://readthedocs.org/projects/teleirc/badge/?version=latest)](http://docs.teleirc.com/en/latest/?badge=latest)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/maintainability)](https://codeclimate.com/github/RITlug/teleirc/maintainability)
@@ -48,5 +49,6 @@ See the [project documentation](https://docs.teleirc.com/) to install and use Te
 
 ## License
 
-TeleIRC is provided under the [MIT License](https://github.com/RITlug/teleirc/blob/master/LICENSE).
-If you're working on TeleIRC, please share improvements back upstream!
+TeleIRC is licensed under the [GNU General Public License 3.0](https://www.gnu.org/licenses/gpl-3.0).
+Not a lawyer?
+Get a [quick summary from tldrlegal.com](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)) on what you can, cannot, and must do.
