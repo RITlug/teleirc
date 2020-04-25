@@ -314,3 +314,66 @@ func TestKickHandlerNoReason(t *testing.T) {
 		},
 	})
 }
+
+func TestConnectHandlerKey(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	ircSettings := internal.IRCSettings{
+		Channel:    "SomeChannel",
+		ChannelKey: "SomeKey",
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("connectHandler triggered"))
+	mockClient.
+		EXPECT().
+		IRCSettings().
+		Return(&ircSettings).
+		AnyTimes()
+	mockClient.
+		EXPECT().
+		JoinKey(gomock.Eq("SomeChannel"), gomock.Eq("SomeKey"))
+
+	myHandler := connectHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{})
+}
+
+func TestConnectHandlerNoKey(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	ircSettings := internal.IRCSettings{
+		Channel: "SomeChannel",
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("connectHandler triggered"))
+	mockClient.
+		EXPECT().
+		IRCSettings().
+		Return(&ircSettings).
+		AnyTimes()
+	mockClient.
+		EXPECT().
+		Join(gomock.Eq("SomeChannel"))
+
+	myHandler := connectHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{})
+}
