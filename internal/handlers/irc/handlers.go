@@ -58,8 +58,8 @@ func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 		c.Logger().LogDebug("messageHandler triggered")
 		// Only send if user is not in blacklist
 		if !(checkBlacklist(c, e.Source.Name)) {
-			formatted := c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
 			if e.IsFromChannel() {
+				formatted := c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
 				c.SendToTg(formatted)
 			}
 		}
