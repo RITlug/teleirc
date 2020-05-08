@@ -10,6 +10,160 @@ import (
 	"testing"
 )
 
+func MockUpdateHandler(updates tgbotapi.UpdatesChannel) string {
+	for u := range updates {
+		switch {
+		case u.Message == nil:
+			return "Missing message data"
+		case u.Message.NewChatMembers != nil:
+			return "joinHandler triggered"
+		case u.Message.LeftChatMember != nil:
+			return "partHandler triggered"
+		case u.Message.Text != "":
+			return "messageHandler triggered"
+		case u.Message.Sticker != nil:
+			return "stickerHandler triggered"
+		case u.Message.Document != nil:
+			return "documentHandler triggered"
+		case u.Message.Photo != nil:
+			return "photoHandler triggered"
+		default:
+			return "Triggered, but message type is currently unsupported"
+		}
+	}
+	return ""
+}
+
+func TestJoinUpdate(t *testing.T) {
+
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+			Message: &tgbotapi.Message{
+				NewChatMembers: &[]tgbotapi.User{
+					tgbotapi.User{
+						ID:        1,
+						FirstName: "test",
+						UserName:  "testUser",
+					},
+				},
+			},
+		}
+	updates <- update
+
+	correct := "joinHandler triggered"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+
+	// clientObj := &Client{
+	// 	IRCSettings: &internal.IRCSettings{
+	// 		Prefix:          "<",
+	// 		Suffix:          ">",
+	// 		ShowJoinMessage: true,
+	// 	},
+	// 	logger: internal.Debug {
+	// 		DebugLevel: true,
+	// 	},
+	// 	sendToIrc: func(s string) {
+	// 	},
+	// }
+	// updateHandler(clientObj, updates)
+}
+
+func TestPartUpdate(t *testing.T) {
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+			Message: &tgbotapi.Message{
+				LeftChatMember: &tgbotapi.User{
+						ID:        1,
+						FirstName: "test",
+						UserName:  "testUser",
+				},
+			},
+		}
+	updates <- update
+	correct := "partHandler triggered"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+}
+
+func TestTextUpdate(t *testing.T) {
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+		Message: &tgbotapi.Message{
+			Text: "Random Text",
+		},
+	}
+	updates <- update
+	correct := "messageHandler triggered"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+}
+
+func TestStickerUpdate(t *testing.T) {
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+		Message: &tgbotapi.Message{
+			Sticker: &tgbotapi.Sticker{
+				FileID: "Random ID",
+			},
+		},
+	}
+	updates <- update
+	correct := "stickerHandler triggered"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+}
+
+func TestDocumentUpdate(t *testing.T) {
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+		Message: &tgbotapi.Message{
+			Document: &tgbotapi.Document {
+				FileID: "Random ID",
+			},
+		},
+	}
+	updates <- update
+	correct := "documentHandler triggered"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+}
+
+func TestPhotoUpdate(t *testing.T) {
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+		Message: &tgbotapi.Message{
+			Photo: &[]tgbotapi.PhotoSize{
+				tgbotapi.PhotoSize{
+					FileID:   "https://teleirc.com/file.png",
+					Width:    1,
+					Height:   1,
+				},
+			},
+		},
+	}
+	updates <- update
+	correct := "photoHandler triggered"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+}
+
+func TestEmptyUpdate(t *testing.T) {
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+		Message: nil,
+	}
+	updates <- update
+	correct := "Missing message data"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+}
+
+func TestUnsupportedUpdate(t *testing.T) {
+	updates := make(chan tgbotapi.Update, 1)
+	update := tgbotapi.Update {
+		Message: &tgbotapi.Message { },
+	}
+	updates <- update
+	correct := "Triggered, but message type is currently unsupported"
+	assert.Equal(t, correct, MockUpdateHandler(updates))
+}
+
+
+
 /*
 TestPartFullOn tests the ability of the partHandler to send messages
 when ShowLeaveMessage is set to true
