@@ -17,6 +17,8 @@ teleirc
 cmd/cmd
 
 
+############################# ----- EXTRA DOCKERFILES ----- #############################
+Dockerfile
 
 ######################## ----- OPERATING SYSTEMS ----- ########################
 
@@ -319,6 +321,7 @@ tags
 
 
 ##### ---- VSCode ---- #####
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
