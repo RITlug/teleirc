@@ -100,7 +100,7 @@ func LoadConfig(path string) (*Settings, error) {
 		return nil, err
 	}
 	// Attempt to load environment variables from path if path was provided
-	if path != "" {
+	if path != ".env" && path != "" {
 		if err := godotenv.Load(path); err != nil {
 			return nil, err
 		}
@@ -110,16 +110,16 @@ func LoadConfig(path string) (*Settings, error) {
 			return nil, err
 		}
 	}
-	settings := Settings{}
-	if err := env.Parse(&settings); err != nil {
+	settings := &Settings{}
+	if err := env.Parse(settings); err != nil {
 		return nil, err
 	}
-	if err := validate.Struct(&settings); err != nil {
+	if err := validate.Struct(settings); err != nil {
 		fieldErrs := ConfigErrors{}
 		for _, errs := range err.(validator.ValidationErrors) {
 			fieldErrs = append(fieldErrs, errs)
 		}
 		return nil, fieldErrs
 	}
-	return &settings, nil
+	return settings, nil
 }
