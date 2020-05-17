@@ -8,8 +8,9 @@ import (
 
 func TestGetUsername(t *testing.T) {
 	username := &tgbotapi.User{ID: 1, FirstName: "John", UserName: "jsmith"}
-	correct := username.FirstName + " (@" + username.UserName + ")"
-	name := GetUsername(username)
+	correct := username.FirstName + " (@" + username.UserName[:1] +
+		"" + username.UserName[1:] + ")"
+	name := GetFullUsername(username)
 
 	assert.Equal(t, correct, name)
 }
@@ -17,7 +18,15 @@ func TestGetUsername(t *testing.T) {
 func TestGetNoUsername(t *testing.T) {
 	username := &tgbotapi.User{ID: 1, FirstName: "John"}
 	correct := username.FirstName
-	name := GetUsername(username)
+	name := GetFullUsername(username)
+
+	assert.Equal(t, correct, name)
+}
+
+func TestResolveUserName(t *testing.T) {
+	username := &tgbotapi.User{ID: 1, FirstName: "John", UserName: "jsmith"}
+	correct := username.UserName[:1] + "" + username.UserName[1:]
+	name := ResolveUserName(username)
 
 	assert.Equal(t, correct, name)
 }

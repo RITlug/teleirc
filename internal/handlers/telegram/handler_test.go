@@ -505,7 +505,7 @@ func TestMessageRandomWithoutUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
+	correct := fmt.Sprintf("<%s> Random Text", testUser.FirstName)
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
