@@ -6,6 +6,10 @@ RITlug TeleIRC documentation
     :alt: "License: CC BY-SA 4.0"
     :target: https://creativecommons.org/licenses/by-sa/4.0/
 
+.. note::
+   This documentation is for v2.x.x releases of TeleIRC.
+   See the `v1.3.4 documentation </en/v1.3.4/>`_ for support with older releases.
+
 RITlug TeleIRC is a Go implementation of a `Telegram <https://telegram.org/>`_ <=> `IRC <https://en.wikipedia.org/wiki/Internet_Relay_Chat>`_ bridge.
 TeleIRC works with any IRC channel and Telegram group.
 It bridges messages and images between a Telegram group and an IRC channel.
