@@ -29,11 +29,9 @@ Today, it is used by various communities.
     :maxdepth: 2
     :name: user
     :caption: User documentation:
+    :glob:
 
-    quick-install
-    deploy-teleirc
-    config-file-glossary
-    faq
+    user/*
 
 .. toctree::
     :maxdepth: 2
