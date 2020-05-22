@@ -41,7 +41,7 @@ To set up a TeleIRC development environment, you need the following:
 ### Create Telegram bot
 
 Create a Telegram bot using the Telegram [BotFather](https://t.me/botfather).
-See the [TeleIRC Quick Install](/quick-install) for more instructions on how to do this.
+See the [TeleIRC Quick Start](/user/quick-start#create-a-telegram-bot) for more instructions on how to do this.
 
 ### Create Telegram group
 
@@ -60,7 +60,7 @@ See your IRC network's documentation on registering a channel.
 
 Change the `env.example` file to `.env`.
 Change the configuration values to the Telegram bot's tokens.
-For more help with configuration, see the [TeleIRC Quick Install](/quick-install).
+For more help with configuration, see the [_Config file glossary_](/user/config-file-glossary).
 
 
 ## Open a pull request

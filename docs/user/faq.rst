@@ -55,3 +55,14 @@ If a Telegram bot is not used for a while, it "goes to sleep".
 Even if TeleIRC is configured and installed correctly, you need to "wake up" the bot.
 To fix this, *remove the bot from the group and add it again*.
 Restart TeleIRC and it should work again.
+
+.. _disable-privacy:
+
+Why do I have to disable privacy on the Telegram bot during setup?
+==================================================================
+
+The privacy setting must be disabled for TeleIRC bot to "see" messages in the Telegram group.
+By default, bots cannot see messages unless a person uses a command to interact directly with a bot.
+Since TeleIRC forwards all sent messages from Telegram to IRC, it must see all messages to work.
+
+Messages are not stored or tracked by TeleIRC (but may optionally be logged by an administrator).
