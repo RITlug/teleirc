@@ -13,8 +13,7 @@ func GetUsername(u *tgbotapi.User) string {
 	}
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
-	username := u.UserName[:1] + "" + u.UserName[1:]
-	return username
+	return u.UserName[:1] + "" + u.UserName[1:]
 }
 
 /*
@@ -37,6 +36,5 @@ func ZwspUsername(u *tgbotapi.User) string {
 	}
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
-	username := u.UserName[:1] + "" + u.UserName[1:]
-	return username
+	return u.UserName[:1] + "" + u.UserName[1:]
 }
