@@ -54,7 +54,12 @@ messageHandler handles the Message Telegram Object, which formats the
 Telegram update into a simple string for IRC.
 */
 func messageHandler(tg *Client, u tgbotapi.Update) {
-	username := ResolveUserName(u.Message.From)
+	username := ""
+	if tg.IRCSettings.ShowZWSP {
+		username = ZwspUsername(u.Message.From)
+	} else {
+		username = GetUsername(u.Message.From)
+	}
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
 		username,
@@ -109,7 +114,7 @@ photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
 exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
-	username := ResolveUserName(u.Message.From)
+	username := GetUsername(u.Message.From)
 	formatted := username + " shared a photo on Telegram with caption: '" +
 		u.Message.Caption + "'"
 
@@ -121,7 +126,7 @@ documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
 func documentHandler(tg *Client, u *tgbotapi.Message) {
-	username := ResolveUserName(u.From)
+	username := GetUsername(u.From)
 	formatted := username + " shared a file"
 	if u.Document.MimeType != "" {
 		formatted += " (" + u.Document.MimeType + ")"

@@ -5,9 +5,9 @@ import (
 )
 
 /*
-ResolveUserName does basic cleanup if a user does not have a username on Telegram.
+GetUsername returns a Telegram user's username if one is set, or first name otherwise.
 */
-func ResolveUserName(u *tgbotapi.User) string {
+func GetUsername(u *tgbotapi.User) string {
 	if u.UserName == "" {
 		return u.FirstName
 	}
@@ -18,12 +18,25 @@ func ResolveUserName(u *tgbotapi.User) string {
 }
 
 /*
-GetFullUsername returns the name and username of a user. Since usernames are optional
-on Telegram, we first need to check to see if they have one set.
+GetFullUsername returns both the Telegram user's first name and username, if available.
 */
 func GetFullUsername(u *tgbotapi.User) string {
 	if u.UserName == "" {
 		return u.FirstName
 	}
 	return u.FirstName + " (@" + u.UserName[:1] + "" + u.UserName[1:] + ")"
+}
+
+/*
+ZwspUsername adds a zero-width space after the first character of a Telegram user's
+username.
+*/
+func ZwspUsername(u *tgbotapi.User) string {
+	if u.UserName == "" {
+		return u.FirstName
+	}
+	// Add ZWSP to prevent pinging across platforms
+	// See https://github.com/42wim/matterbridge/issues/175
+	username := u.UserName[:1] + "" + u.UserName[1:]
+	return username
 }

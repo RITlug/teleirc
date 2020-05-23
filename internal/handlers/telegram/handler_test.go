@@ -490,6 +490,9 @@ func TestMessageRandomWithUsername(t *testing.T) {
 			Prefix: "<",
 			Suffix: ">",
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
@@ -517,6 +520,40 @@ func TestMessageRandomWithoutUsername(t *testing.T) {
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	messageHandler(clientObj, updateObj)
+}
+
+func TestMessageZwsp(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> Random Text", "t"+""+"est")
+
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Text: "Random Text",
+		},
+	}
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: true,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
