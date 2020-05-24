@@ -18,10 +18,11 @@ Note this does not apply to v1.x.x releases; see the [v1.3.4 documentation][1].
     1. [Configure Imgur Image Upload (IIU)](#configure-imgur-image-upload-iiu)
 1. [Deployment Guide](#deployment-guide)
     1. [Run binary](#run-binary)
-        1. [Requirements](#requirements)
-        1. [Install dependencies](#install-dependencies)
+        1. [Pre-requirements](#pre-requirements)
+        1. [Build TeleIRC](#build-teleirc)
         1. [Configuration](#configuration)
         1. [Start bot](#start-bot)
+            1. [Example Linux setup](#example-linux-setup)
     1. [Run container](#run-container)
 
 
@@ -30,10 +31,9 @@ Note this does not apply to v1.x.x releases; see the [v1.3.4 documentation][1].
 This section is a written, high-level overview of how to configure and deploy a TeleIRC bot.
 The Quick Start Guide will cover these topics:
 
-1. Create a Telegram bot to obtain a Telegram API token
-1. Set up an IRC channel for best user experience
-1. Configure TeleIRC with your Telegram bot and IRC channel
-1. Deploy TeleIRC publicly in one of many officially-supported pathways
+1. [Create a Telegram bot to obtain a Telegram API token](#create-a-telegram-bot)
+1. [Set up an IRC channel for best user experience](#configure-irc-channel)
+1. [Deploy TeleIRC to your system](#deployment-guide)
 
 **It is important each step is followed exactly and in order.**
 Missing a step or skipping a section often results in common frustrations, such as one-way relay of chat messages.
@@ -97,11 +97,14 @@ If your IRC channel is on the Freenode IRC network, use these exact commands to 
 1. `/query ChanServ ACCESS #channel ADD <NickServ account> +AORfiorstv` (_repeat for each IRC user who needs admin access_) ([_what do these mean?_][6])
 1. `/query ChanServ SET mlock #channel +Ccnt`
 1. `/mode #channel +q $~a`
-1. `/query ChanServ ACCESS #channel ADD <NickServ account or hostmask of TeleIRC bot> +V`
+1. `/query ChanServ ACCESS #channel ADD *!*@gateway/* +V`
+1. `/query ChanServ ACCESS #channel ADD *!*@freenode/staff/* +Aiotv`
+1. `/query ChanServ ACCESS #channel ADD <bot NickServ account or hostmask> +V`
 
 ### Configure Imgur Image Upload (IIU)
 
-**NOTE**: The Imgur Image Upload (IIU) feature is not yet available in v2.x.x releases.
+**NOTE**:
+The Imgur Image Upload (IIU) feature is not yet available in v2.x.x releases.
 
 _By default_, TeleIRC uploads images sent to the Telegram group to [Imgur][7].
 Since IRC does not support images, Imgur is an intermediary approach to sending pictures sent on Telegram over to IRC.
@@ -130,15 +133,26 @@ There are two ways to deploy TeleIRC persistently:
 
 This section explains how to configure and install TeleIRC as a simple executable binary.
 
-#### Requirements
+**NOTE**:
+**This assumes you are building from source.**
+If you use a pre-built binary from a [GitHub Release][14], skip to [_Configuration_](#configuration).
+
+#### Pre-requirements
 
 - git
 - go (v1.13 and v1.14 supported)
 
-#### Install dependencies
+Packages for these pre-requirements are available on most `*NIX` distributions.
+Check your distribution documentation for more info on how to install these packages.
 
-1. Clone the repository (`git clone https://github.com/RITlug/teleirc.git`)
+#### Build TeleIRC
+
+This section is only required if you are building a binary from source:
+
+1. Clone repository (`git clone https://github.com/RITlug/teleirc.git`)
+1. Enter repository (`cd teleirc/`)
 1. Install dependencies (`go install`)
+1. Build binary (`go build cmd/teleirc.go`)
 
 #### Configuration
 
@@ -151,7 +165,54 @@ See [_Config file glossary_][11] for detailed information.
 
 #### Start bot
 
-<!-- #TODO @jwflory -->
+**NOTE**:
+This section is one opinionated way to start and configure TeleIRC.
+Experienced system administrators may have other preferences and slight deviation is permittable.
+However _upstream only offers free support for installations that follow our documentation_.
+
+To start the bot, you need to consider the following factors:
+
+1. Where will the binary go?
+1. Where is your config file on the system?
+1. How will you automate the bot to start-up automatically after a system reboot?
+
+##### Example Linux setup
+
+**NOTE**:
+_Looking for an easier way?_
+_Check out the [TeleIRC Ansible Role][17] for an automated installation of the following steps._
+
+Upstream offers a [systemd unit file][15] to automate TeleIRC on a Linux system that uses [systemd][16].
+This example uses the upstream systemd unit file to automatically run TeleIRC on a Linux system.
+
+This example was tested on a CentOS 8 system and is easily adaptable for other `*NIX` distributions:
+
+```sh
+# Change ~/teleirc and ~/teleirc-env with equivalents on your system.
+
+# Download systemd unit file from GitHub.
+$ curl -Lo ~/teleirc.service https://raw.githubusercontent.com/RITlug/teleirc/master/deployments/systemd/teleirc.service
+
+# Harden/fix file permissions.
+$ chmod 755 ~/teleirc
+$ chmod 600 ~/teleirc-env
+$ chmod 644 ~/teleirc.service
+
+# Systems with SELinux ONLY.
+$ chcon -t bin_t -u system_u ~/teleirc
+$ chcon -t etc_t -u system_u ~/teleirc-env
+$ chcon -t systemd_unit_file_t -u system_u ~/teleirc.service
+
+# Install TeleIRC locally on system.
+$ sudo chown root:root ~/teleirc*
+$ mkdir -p /etc/teleirc/
+$ sudo mv ~/teleirc /usr/local/bin/teleirc
+$ sudo mv ~/teleirc-env /etc/teleirc/env
+$ sudo mv ~/teleirc.service /usr/lib/systemd/system/teleirc.service
+
+# Start and enable TeleIRC.
+$ sudo systemctl enable --now teleirc.service
+```
 
 
 ## Run container
@@ -159,7 +220,12 @@ See [_Config file glossary_][11] for detailed information.
 Containers are another way to deploy TeleIRC.
 Dockerfiles and other deployment resources are available in ``deployments/``.
 
-**Coming soon.**
+**NOTE**:
+At time of v2.0.0 release, a container image is available, but mostly untested.
+Feeling bold and adventurous?
+Take our `Dockerfile` for a spin and [let us know on GitHub][12] how it works for you.
+
+[_Download Dockerfile (beta)_][13]
 
 <!-- #TODO
 Needs better documentation by someone with experience running and using the container image for TeleIRC v2.
@@ -177,3 +243,9 @@ Needs better documentation by someone with experience running and using the cont
 [9]: https://api.imgur.com/oauth2/addclient
 [10]: https://github.com/joho/godotenv
 [11]: config-file-glossary
+[12]: https://github.com/RITlug/teleirc/issues/new/choose
+[13]: https://raw.githubusercontent.com/RITlug/teleirc/master/deployments/container/Dockerfile
+[14]: https://github.com/RITlug/teleirc/releases
+[15]: https://github.com/RITlug/teleirc/blob/master/deployments/systemd/teleirc.service
+[16]: https://systemd.io/
+[17]: https://github.com/jwflory/ansible-role-teleirc
