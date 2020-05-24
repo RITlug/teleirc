@@ -152,7 +152,7 @@ This section is only required if you are building a binary from source:
 1. Clone repository (`git clone https://github.com/RITlug/teleirc.git`)
 1. Enter repository (`cd teleirc/`)
 1. Install dependencies (`go install`)
-1. Build binary (`go build ./...`)
+1. Build binary (`go build cmd/teleirc.go`)
 
 #### Configuration
 
