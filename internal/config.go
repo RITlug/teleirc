@@ -28,6 +28,7 @@ type IRCSettings struct {
 	Suffix              string   `env:"IRC_SUFFIX" envDefault:">"`
 	ShowJoinMessage     bool     `env:"IRC_SHOW_JOIN_MESSAGE" envDefault:"true"`
 	ShowLeaveMessage    bool     `env:"IRC_SHOW_LEAVE_MESSAGE" envDefault:"true"`
+	ShowZWSP            bool     `env:"IRC_SHOW_ZWSP" envDefault:"true"`
 	NickServPassword    string   `env:"IRC_NICKSERV_PASS" envDefault:""`
 	NickServService     string   `env:"IRC_NICKSERV_SERVICE" envDefault:""`
 	EditedPrefix        string   `env:"IRC_EDITED_PREFIX" envDefault:"[EDIT] "`
