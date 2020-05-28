@@ -200,17 +200,17 @@ $ chmod 755 ~/teleirc
 $ chmod 600 ~/teleirc-env
 $ chmod 644 ~/teleirc.service
 
-# Systems with SELinux ONLY.
-$ chcon --type bin_t --user system_u ~/teleirc
-$ chcon --type etc_t --user system_u ~/teleirc-env
-$ chcon --type systemd_unit_file_t --user system_u ~/teleirc.service
-
 # Install TeleIRC locally on system.
 $ sudo chown root:root ~/teleirc*
 $ mkdir -p /etc/teleirc/
 $ sudo mv ~/teleirc /usr/local/bin/teleirc
 $ sudo mv ~/teleirc-env /etc/teleirc/env
-$ sudo mv ~/teleirc.service /usr/lib/systemd/system/teleirc.service
+$ sudo mv ~/teleirc.service /usr/lib/systemd/system/multi-user.target.wants/teleirc.service
+
+# Systems with SELinux ONLY.
+$ sudo chcon --type bin_t --user system_u /usr/local/bin/teleirc
+$ sudo chcon --type etc_t --user system_u /etc/teleirc/env
+$ sudo chcon --type systemd_unit_file_t --user system_u /usr/lib/systemd/system/multi-user.target.wants/teleirc.service
 
 # Start and enable TeleIRC.
 $ sudo systemctl enable --now teleirc.service
