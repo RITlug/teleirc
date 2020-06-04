@@ -151,7 +151,6 @@ This section is only required if you are building a binary from source:
 
 1. Clone repository (`git clone https://github.com/RITlug/teleirc.git`)
 1. Enter repository (`cd teleirc/`)
-1. Install dependencies (`go install`)
 1. Build binary (`go build cmd/teleirc.go`)
 
 #### Configuration
@@ -185,30 +184,33 @@ _Check out the [TeleIRC Ansible Role][17] for an automated installation of the f
 Upstream offers a [systemd unit file][15] to automate TeleIRC on a Linux system that uses [systemd][16].
 This example uses the upstream systemd unit file to automatically run TeleIRC on a Linux system.
 
-This example was tested on a CentOS 8 system and is easily adaptable for other `*NIX` distributions:
+This example was tested on a CentOS 8 system and is easily adaptable for other `*NIX` distributions.
+It uses `v2.0.0` as a default:
 
 ```sh
 # Change ~/teleirc and ~/teleirc-env with equivalents on your system.
 
-# Download systemd unit file from GitHub.
-$ curl -Lo ~/teleirc.service https://raw.githubusercontent.com/RITlug/teleirc/master/deployments/systemd/teleirc.service
+# Download TeleIRC deployment assets from GitHub.
+$ curl --location --output ~/teleirc https://github.com/RITlug/teleirc/releases/download/v2.0.0/teleirc-2.0.0-linux-64bit
+$ curl --location --output ~/teleirc-env https://raw.githubusercontent.com/RITlug/teleirc/v2.0.0/env.example
+$ curl --location --output ~/teleirc.service https://raw.githubusercontent.com/RITlug/teleirc/v2.0.0/deployments/systemd/teleirc.service
 
 # Harden/fix file permissions.
 $ chmod 755 ~/teleirc
 $ chmod 600 ~/teleirc-env
 $ chmod 644 ~/teleirc.service
 
-# Systems with SELinux ONLY.
-$ chcon -t bin_t -u system_u ~/teleirc
-$ chcon -t etc_t -u system_u ~/teleirc-env
-$ chcon -t systemd_unit_file_t -u system_u ~/teleirc.service
-
 # Install TeleIRC locally on system.
 $ sudo chown root:root ~/teleirc*
 $ mkdir -p /etc/teleirc/
 $ sudo mv ~/teleirc /usr/local/bin/teleirc
 $ sudo mv ~/teleirc-env /etc/teleirc/env
-$ sudo mv ~/teleirc.service /usr/lib/systemd/system/teleirc.service
+$ sudo mv ~/teleirc.service /usr/lib/systemd/system/multi-user.target.wants/teleirc.service
+
+# Systems with SELinux ONLY.
+$ sudo chcon --type bin_t --user system_u /usr/local/bin/teleirc
+$ sudo chcon --type etc_t --user system_u /etc/teleirc/env
+$ sudo chcon --type systemd_unit_file_t --user system_u /usr/lib/systemd/system/multi-user.target.wants/teleirc.service
 
 # Start and enable TeleIRC.
 $ sudo systemctl enable --now teleirc.service
