@@ -20,7 +20,8 @@ func TestPartFullOn(t *testing.T) {
 		FirstName: "test",
 		UserName:  "testUser",
 	}
-	correct := testUser.FirstName + " (@" + testUser.UserName + ") has left the Telegram Group!"
+	correct := "test (@t" + "​" + "estUser) has left the Telegram Group!"
+
 	clientObj := &Client{
 		IRCSettings: &internal.IRCSettings{
 			Prefix:           "<",
@@ -93,7 +94,7 @@ func TestJoinFullOn(t *testing.T) {
 			UserName:  "testUser",
 		},
 	}
-	correct := "test (@testUser) has joined the Telegram Group!"
+	correct := "test (@t" + "​" + "estUser) has joined the Telegram Group!"
 	clientObj := &Client{
 		IRCSettings: &internal.IRCSettings{
 			Prefix:          "<",
@@ -238,7 +239,8 @@ TestDocumentUsername checks the behavior of the document handlers when
 both firstname and username exist. It also incorporates the availability of a mimetype.
 */
 func TestDocumentUsername(t *testing.T) {
-	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
+	correct := "u" + "​" +
+		"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -294,7 +296,8 @@ both caption and filename exist. It also incorporates the availability of both
 firstname and username
 */
 func TestDocumentFull(t *testing.T) {
-	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
+	correct := "u" + "​" +
+		"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -321,7 +324,8 @@ func TestDocumentFull(t *testing.T) {
 TestPhotoFull tests a complete Photo object
 */
 func TestPhotoFull(t *testing.T) {
-	correct := "user shared a photo on Telegram with caption: 'Random Caption'"
+	correct := "u" + "​" +
+		"ser shared a photo on Telegram with caption: 'Random Caption'"
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -382,7 +386,7 @@ TestPhotoNoCaption tests messages are correctly formatted when a photo
 is uploaded without a caption
 */
 func TestPhotoNoCaption(t *testing.T) {
-	correct := "user shared a photo on Telegram with caption: ''"
+	correct := "u" + "​" + "ser shared a photo on Telegram with caption: ''"
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -476,7 +480,7 @@ func TestMessageRandomWithUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
+	correct := fmt.Sprintf("<t" + "​" + "est> Random Text")
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -539,7 +543,7 @@ func TestMessageZwsp(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s> Random Text", "t"+""+"est")
+	correct := fmt.Sprintf("<%s> Random Text", "t"+"​"+"est")
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
