@@ -2,12 +2,13 @@ package telegram
 
 import (
 	"fmt"
+	"strings"
+	"testing"
+
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/kyokomi/emoji"
 	"github.com/ritlug/teleirc/internal"
 	"github.com/stretchr/testify/assert"
-	"strings"
-	"testing"
 )
 
 /*
@@ -20,6 +21,31 @@ func TestPartFullOn(t *testing.T) {
 		FirstName: "test",
 		UserName:  "testUser",
 	}
+	correct := "test (@testUser) has left the Telegram Group!"
+
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			Prefix:           "<",
+			Suffix:           ">",
+			ShowLeaveMessage: true,
+			ShowZWSP:         false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+	partHandler(clientObj, testUser)
+}
+
+/*
+TestPartFullZwsp tests the full capacity of the Part handler with zero-width spaces
+*/
+func TestPartFullZwsp(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		FirstName: "test",
+		UserName:  "testUser",
+	}
 	correct := "test (@t" + "​" + "estUser) has left the Telegram Group!"
 
 	clientObj := &Client{
@@ -27,6 +53,7 @@ func TestPartFullOn(t *testing.T) {
 			Prefix:           "<",
 			Suffix:           ">",
 			ShowLeaveMessage: true,
+			ShowZWSP:         true,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
@@ -51,6 +78,7 @@ func TestPartFullOff(t *testing.T) {
 			Prefix:           "<",
 			Suffix:           ">",
 			ShowLeaveMessage: false,
+			ShowZWSP:         false,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
@@ -74,6 +102,7 @@ func TestPartNoUsername(t *testing.T) {
 			Prefix:           "<",
 			Suffix:           ">",
 			ShowLeaveMessage: true,
+			ShowZWSP:         false,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
@@ -94,12 +123,39 @@ func TestJoinFullOn(t *testing.T) {
 			UserName:  "testUser",
 		},
 	}
+	correct := "test (@testUser) has joined the Telegram Group!"
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			Prefix:          "<",
+			Suffix:          ">",
+			ShowJoinMessage: true,
+			ShowZWSP:        false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+	joinHandler(clientObj, testListUser)
+}
+
+/*
+TestJoinFullZwsp tests the full capacity of the Join handler with zero-width spaces
+*/
+func TestJoinFullZwsp(t *testing.T) {
+	testListUser := &[]tgbotapi.User{
+		tgbotapi.User{
+			ID:        1,
+			FirstName: "test",
+			UserName:  "testUser",
+		},
+	}
 	correct := "test (@t" + "​" + "estUser) has joined the Telegram Group!"
 	clientObj := &Client{
 		IRCSettings: &internal.IRCSettings{
 			Prefix:          "<",
 			Suffix:          ">",
 			ShowJoinMessage: true,
+			ShowZWSP:        true,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
@@ -126,6 +182,7 @@ func TestJoinFullOff(t *testing.T) {
 			Prefix:          "<",
 			Suffix:          ">",
 			ShowJoinMessage: false,
+			ShowZWSP:        false,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
@@ -151,6 +208,7 @@ func TestJoinNoUsername(t *testing.T) {
 			Prefix:          "<",
 			Suffix:          ">",
 			ShowJoinMessage: true,
+			ShowZWSP:        false,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
@@ -239,8 +297,11 @@ TestDocumentUsername checks the behavior of the document handlers when
 both firstname and username exist. It also incorporates the availability of a mimetype.
 */
 func TestDocumentUsername(t *testing.T) {
-	correct := "u" + "​" +
-		"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
+	/*
+		correct := "u" + "​" +
+			"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
+	*/
+	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -296,8 +357,11 @@ both caption and filename exist. It also incorporates the availability of both
 firstname and username
 */
 func TestDocumentFull(t *testing.T) {
-	correct := "u" + "​" +
-		"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
+	/*
+		correct := "u" + "​" +
+			"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
+	*/
+	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -324,8 +388,11 @@ func TestDocumentFull(t *testing.T) {
 TestPhotoFull tests a complete Photo object
 */
 func TestPhotoFull(t *testing.T) {
-	correct := "u" + "​" +
-		"ser shared a photo on Telegram with caption: 'Random Caption'"
+	/*
+		correct := "u" + "​" +
+			"ser shared a photo on Telegram with caption: 'Random Caption'"
+	*/
+	correct := "user shared a photo on Telegram with caption: 'Random Caption'"
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -346,6 +413,9 @@ func TestPhotoFull(t *testing.T) {
 	clientObj := &Client{
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
 		},
 	}
 	photoHandler(clientObj, updateObj)
@@ -377,6 +447,9 @@ func TestPhotoNoUsername(t *testing.T) {
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
 	}
 	photoHandler(clientObj, updateObj)
 }
@@ -386,7 +459,7 @@ TestPhotoNoCaption tests messages are correctly formatted when a photo
 is uploaded without a caption
 */
 func TestPhotoNoCaption(t *testing.T) {
-	correct := "u" + "​" + "ser shared a photo on Telegram with caption: ''"
+	correct := "user shared a photo on Telegram with caption: ''"
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -408,11 +481,45 @@ func TestPhotoNoCaption(t *testing.T) {
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
 	}
 	photoHandler(clientObj, updateObj)
 }
 
 func TestStickerSmileWithUsername(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	correct := fmt.Sprintf("<%s> 😄", testUser.String())
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Sticker: &tgbotapi.Sticker{
+				Emoji: strings.Trim(emoji.Sprint(":smile:"), " "),
+			},
+		},
+	}
+
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	stickerHandler(clientObj, updateObj)
+
+}
+
+func TestStickerSmileZWSP(t *testing.T) {
 	testUser := &tgbotapi.User{
 		ID:        1,
 		UserName:  "test",
@@ -480,7 +587,7 @@ func TestMessageRandomWithUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<t" + "​" + "est> Random Text")
+	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{

@@ -2,8 +2,9 @@ package telegram
 
 import (
 	"fmt"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"strings"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 /*
@@ -74,8 +75,13 @@ joinHandler handles when users join the Telegram group
 */
 func joinHandler(tg *Client, users *[]tgbotapi.User) {
 	if tg.IRCSettings.ShowJoinMessage {
+		username := ""
 		for _, user := range *users {
-			username := GetFullUsername(&user)
+			if tg.IRCSettings.ShowZWSP {
+				username = GetFullUserZwsp(&user)
+			} else {
+				username = GetFullUsername(&user)
+			}
 			formatted := username + " has joined the Telegram Group!"
 			tg.sendToIrc(formatted)
 		}
@@ -87,7 +93,12 @@ partHandler handles when users leave the Telegram group
 */
 func partHandler(tg *Client, user *tgbotapi.User) {
 	if tg.IRCSettings.ShowLeaveMessage {
-		username := GetFullUsername(user)
+		username := ""
+		if tg.IRCSettings.ShowZWSP {
+			username = GetFullUserZwsp(user)
+		} else {
+			username = GetFullUsername(user)
+		}
 		formatted := username + " has left the Telegram Group!"
 
 		tg.sendToIrc(formatted)
@@ -114,7 +125,12 @@ photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
 exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
-	username := GetUsername(u.Message.From)
+	username := ""
+	if tg.IRCSettings.ShowZWSP {
+		username = ZwspUsername(u.Message.From)
+	} else {
+		username = GetUsername(u.Message.From)
+	}
 	formatted := username + " shared a photo on Telegram with caption: '" +
 		u.Message.Caption + "'"
 
