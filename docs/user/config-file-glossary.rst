@@ -63,6 +63,9 @@ IRC settings
     Maximum length of the message that can be sent to IRC.
     Longer messages are split into multiple messages.
 
+``IRC_SHOW_ZWSP=true``
+    Prevents users with the same Telegram and IRC username from pinging themselves across platforms.
+
 
 *****************
 Telegram settings
