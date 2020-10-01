@@ -237,6 +237,9 @@ func TestDocumentPlain(t *testing.T) {
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
 	}
 	documentHandler(clientObj, updateObj.Message)
 }
@@ -261,6 +264,9 @@ func TestDocumentBasic(t *testing.T) {
 	clientObj := &Client{
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
 		},
 	}
 	documentHandler(clientObj, updateObj.Message)
@@ -287,6 +293,9 @@ func TestDocumentMime(t *testing.T) {
 	clientObj := &Client{
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
 		},
 	}
 	documentHandler(clientObj, updateObj.Message)
@@ -319,6 +328,9 @@ func TestDocumentUsername(t *testing.T) {
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
 	}
 	documentHandler(clientObj, updateObj.Message)
 }
@@ -347,6 +359,9 @@ func TestDocumentNoCaption(t *testing.T) {
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
 	}
 	documentHandler(clientObj, updateObj.Message)
 }
@@ -357,11 +372,8 @@ both caption and filename exist. It also incorporates the availability of both
 firstname and username
 */
 func TestDocumentFull(t *testing.T) {
-	/*
-		correct := "u" + "​" +
-			"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
-	*/
-	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
+	correct := "u" + "​" +
+		"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -380,6 +392,9 @@ func TestDocumentFull(t *testing.T) {
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: true,
+		},
 	}
 	documentHandler(clientObj, updateObj.Message)
 }
@@ -388,11 +403,8 @@ func TestDocumentFull(t *testing.T) {
 TestPhotoFull tests a complete Photo object
 */
 func TestPhotoFull(t *testing.T) {
-	/*
-		correct := "u" + "​" +
-			"ser shared a photo on Telegram with caption: 'Random Caption'"
-	*/
-	correct := "user shared a photo on Telegram with caption: 'Random Caption'"
+	correct := "u" + "​" +
+		"ser shared a photo on Telegram with caption: 'Random Caption'"
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: &tgbotapi.User{
@@ -415,7 +427,7 @@ func TestPhotoFull(t *testing.T) {
 			assert.Equal(t, correct, s)
 		},
 		IRCSettings: &internal.IRCSettings{
-			ShowZWSP: false,
+			ShowZWSP: true,
 		},
 	}
 	photoHandler(clientObj, updateObj)
@@ -513,6 +525,9 @@ func TestStickerSmileWithUsername(t *testing.T) {
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
 		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
 	}
 
 	stickerHandler(clientObj, updateObj)
@@ -526,7 +541,7 @@ func TestStickerSmileZWSP(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s> 😄", testUser.String())
+	correct := "<t" + "​" + "est> 😄"
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
@@ -543,6 +558,9 @@ func TestStickerSmileZWSP(t *testing.T) {
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: true,
 		},
 	}
 
@@ -557,7 +575,7 @@ func TestStickerSmileWithoutUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := fmt.Sprintf("<%s> 😄", testUser.String())
+	correct := fmt.Sprintf("<%s> 😄", testUser.FirstName)
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
@@ -574,6 +592,9 @@ func TestStickerSmileWithoutUsername(t *testing.T) {
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
 		},
 	}
 

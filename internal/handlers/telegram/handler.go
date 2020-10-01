@@ -110,12 +110,16 @@ stickerHandler handles the Message.Sticker Telegram Object, which formats the
 Telegram message into its base Emoji unicode character.
 */
 func stickerHandler(tg *Client, u tgbotapi.Update) {
-
+	username := ""
+	if tg.IRCSettings.ShowZWSP {
+		username = ZwspUsername(u.Message.From)
+	} else {
+		username = GetUsername(u.Message.From)
+	}
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
-		u.Message.From.String(),
+		username,
 		tg.Settings.Suffix,
-		// Trim unexpected trailing whitespace
 		u.Message.Sticker.Emoji)
 	tg.sendToIrc(formatted)
 }
@@ -142,7 +146,12 @@ documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
 func documentHandler(tg *Client, u *tgbotapi.Message) {
-	username := GetUsername(u.From)
+	username := ""
+	if tg.IRCSettings.ShowZWSP {
+		username = ZwspUsername(u.From)
+	} else {
+		username = GetUsername(u.From)
+	}
 	formatted := username + " shared a file"
 	if u.Document.MimeType != "" {
 		formatted += " (" + u.Document.MimeType + ")"
