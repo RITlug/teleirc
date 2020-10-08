@@ -306,10 +306,6 @@ TestDocumentUsername checks the behavior of the document handlers when
 both firstname and username exist. It also incorporates the availability of a mimetype.
 */
 func TestDocumentUsername(t *testing.T) {
-	/*
-		correct := "u" + "​" +
-			"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
-	*/
 	correct := "user shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
