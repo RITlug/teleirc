@@ -11,9 +11,7 @@ func GetUsername(u *tgbotapi.User) string {
 	if u.UserName == "" {
 		return u.FirstName
 	}
-	// Add ZWSP to prevent pinging across platforms
-	// See https://github.com/42wim/matterbridge/issues/175
-	return u.UserName[:1] + "" + u.UserName[1:]
+	return u.UserName
 }
 
 /*
@@ -23,7 +21,20 @@ func GetFullUsername(u *tgbotapi.User) string {
 	if u.UserName == "" {
 		return u.FirstName
 	}
-	return u.FirstName + " (@" + u.UserName[:1] + "" + u.UserName[1:] + ")"
+	return u.FirstName + " (@" + u.UserName + ")"
+}
+
+/*
+GetFullUserZwsp returns both the Telegram user's first name and username, if available.
+Adds ZWSP to username to prevent username pinging across platform.
+*/
+func GetFullUserZwsp(u *tgbotapi.User) string {
+	if u.UserName == "" {
+		return u.FirstName
+	}
+	// Add ZWSP to prevent pinging across platforms
+	// See https://github.com/42wim/matterbridge/issues/175
+	return u.FirstName + " (@" + u.UserName[:1] + "​" + u.UserName[1:] + ")"
 }
 
 /*
@@ -36,5 +47,5 @@ func ZwspUsername(u *tgbotapi.User) string {
 	}
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
-	return u.UserName[:1] + "" + u.UserName[1:]
+	return u.UserName[:1] + "​" + u.UserName[1:]
 }
