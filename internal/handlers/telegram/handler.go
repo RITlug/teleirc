@@ -55,12 +55,7 @@ messageHandler handles the Message Telegram Object, which formats the
 Telegram update into a simple string for IRC.
 */
 func messageHandler(tg *Client, u tgbotapi.Update) {
-	username := ""
-	if tg.IRCSettings.ShowZWSP {
-		username = ZwspUsername(u.Message.From)
-	} else {
-		username = GetUsername(u.Message.From)
-	}
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
 		username,
@@ -75,13 +70,8 @@ joinHandler handles when users join the Telegram group
 */
 func joinHandler(tg *Client, users *[]tgbotapi.User) {
 	if tg.IRCSettings.ShowJoinMessage {
-		username := ""
 		for _, user := range *users {
-			if tg.IRCSettings.ShowZWSP {
-				username = GetFullUserZwsp(&user)
-			} else {
-				username = GetFullUsername(&user)
-			}
+			username := GetFullUsername(tg.IRCSettings.ShowZWSP, &user)
 			formatted := username + " has joined the Telegram Group!"
 			tg.sendToIrc(formatted)
 		}
@@ -93,12 +83,7 @@ partHandler handles when users leave the Telegram group
 */
 func partHandler(tg *Client, user *tgbotapi.User) {
 	if tg.IRCSettings.ShowLeaveMessage {
-		username := ""
-		if tg.IRCSettings.ShowZWSP {
-			username = GetFullUserZwsp(user)
-		} else {
-			username = GetFullUsername(user)
-		}
+		username := GetFullUsername(tg.IRCSettings.ShowZWSP, user)
 		formatted := username + " has left the Telegram Group!"
 
 		tg.sendToIrc(formatted)
@@ -110,12 +95,7 @@ stickerHandler handles the Message.Sticker Telegram Object, which formats the
 Telegram message into its base Emoji unicode character.
 */
 func stickerHandler(tg *Client, u tgbotapi.Update) {
-	username := ""
-	if tg.IRCSettings.ShowZWSP {
-		username = ZwspUsername(u.Message.From)
-	} else {
-		username = GetUsername(u.Message.From)
-	}
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
 		username,
@@ -129,12 +109,7 @@ photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
 exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
-	username := ""
-	if tg.IRCSettings.ShowZWSP {
-		username = ZwspUsername(u.Message.From)
-	} else {
-		username = GetUsername(u.Message.From)
-	}
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
 	formatted := username + " shared a photo on Telegram with caption: '" +
 		u.Message.Caption + "'"
 
@@ -146,12 +121,7 @@ documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
 func documentHandler(tg *Client, u *tgbotapi.Message) {
-	username := ""
-	if tg.IRCSettings.ShowZWSP {
-		username = ZwspUsername(u.From)
-	} else {
-		username = GetUsername(u.From)
-	}
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From)
 	formatted := username + " shared a file"
 	if u.Document.MimeType != "" {
 		formatted += " (" + u.Document.MimeType + ")"
