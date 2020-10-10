@@ -34,6 +34,19 @@ func checkBlacklist(c ClientInterface, toCheck string) bool {
 	return false
 }
 
+func hasNoForwardPrefix(c ClientInterface, toCheck string) bool {
+	noForwardPrefix := c.IRCSettings().NoForwardPrefix
+
+	if noForwardPrefix == "" {
+		return false
+	}
+
+	if strings.HasPrefix(toCheck, c.IRCSettings().NoForwardPrefix) {
+		return true
+	}
+	return false
+}
+
 /*
 connectHandler returns a function to use as the connect handler for girc,
 so that the specified channel is joined after the server connection is established
@@ -58,8 +71,15 @@ func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 		c.Logger().LogDebug("messageHandler triggered")
 		// Only send if user is not in blacklist
 		if !(checkBlacklist(c, e.Source.Name)) {
+
+
 			if e.IsFromChannel() {
 				formatted := c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
+
+				if hasNoForwardPrefix(c, e.Params[1]) {
+					return // sender didn't want this forwarded
+				}
+
 				c.SendToTg(formatted)
 			}
 		}
