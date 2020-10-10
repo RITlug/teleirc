@@ -69,6 +69,9 @@ IRC settings
 ``IRC_SHOW_ZWSP=true``
     Prevents users with the same Telegram and IRC username from pinging themselves across platforms.
 
+``IRC_NO_FORWARD_PREFIX="[off]"``
+    A string users can prefix their message with to prevent it from being relayed across the bridge. Removing this option or setting it to "" disables it.
+
 
 *****************
 Telegram settings
