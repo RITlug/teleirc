@@ -44,6 +44,9 @@ IRC settings
 ``IRC_SERVER_PORT=6697``
     IRC server port
 
+``IRC_USE_SSL=true``
+    Connect to the IRC server with SSL
+
 ``IRC_CERT_ALLOW_SELFSIGNED=false``
     Allows TeleIRC to accept TLS/SSL certificates from non-trusted/unknown Certificate Authorities (CA)
 
