@@ -30,6 +30,7 @@ func NewClient(settings *internal.IRCSettings, telegramSettings *internal.Telegr
 		Port:   settings.Port,
 		Nick:   settings.BotName,
 		User:   settings.BotName,
+		SSL:    settings.UseSSL,
 	})
 	if settings.NickServPassword != "" {
 		client.Config.SASL = &girc.SASLPlain{
