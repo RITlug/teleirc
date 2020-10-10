@@ -56,6 +56,11 @@ Telegram update into a simple string for IRC.
 */
 func messageHandler(tg *Client, u tgbotapi.Update) {
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
+
+	if tg.IRCSettings.NoForwardPrefix != "" && strings.HasPrefix(u.Message.Text, tg.IRCSettings.NoForwardPrefix) {
+		return
+	}
+
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
 		username,

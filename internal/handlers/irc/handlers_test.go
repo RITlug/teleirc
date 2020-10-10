@@ -452,6 +452,52 @@ func TestMessageHandlerNotChannel(t *testing.T) {
 	})
 }
 
+func TestMessageHandlerNoForward(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	ircSettings := internal.IRCSettings{
+		IRCBlacklist: []string{},
+		Prefix:       "<<",
+		Suffix:       ">>",
+		NoForwardPrefix: "[off]",
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("messageHandler triggered"))
+	mockClient.
+		EXPECT().
+		IRCSettings().
+		Return(&ircSettings).
+		AnyTimes()
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Any()).
+		MaxTimes(0)
+
+	myHandler := messageHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "SomeUser",
+		},
+		// Need to be PRIVMSG
+		Command: girc.PRIVMSG,
+		Params: []string{
+			"#testchannel",
+			"[off] a message",
+		},
+	})
+
+}
+
 func TestMessageHandlerFull(t *testing.T) {
 	ctrl := gomock.NewController(t)
 

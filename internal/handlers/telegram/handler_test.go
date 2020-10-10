@@ -660,6 +660,37 @@ func TestMessageRandomWithoutUsername(t *testing.T) {
 	messageHandler(clientObj, updateObj)
 }
 
+func TestMessageRandomWithNoForward(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Text: "[off] Random Text",
+		},
+	}
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+			NoForwardPrefix: "[off]",
+		},
+		sendToIrc: func(s string) {
+			assert.True(t, false)
+		},
+	}
+
+	messageHandler(clientObj, updateObj)
+}
+
 func TestMessageZwsp(t *testing.T) {
 	testUser := &tgbotapi.User{
 		ID:        1,
