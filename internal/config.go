@@ -34,6 +34,7 @@ type IRCSettings struct {
 	EditedPrefix        string   `env:"IRC_EDITED_PREFIX" envDefault:"[EDIT] "`
 	MaxMessageLength    int      `env:"IRC_MAX_MESSAGE_LENGTH" envDefault:"400"`
 	IRCBlacklist        []string `env:"IRC_BLACKLIST" envDefault:"[]string{}"`
+	UseSSL              bool     `env:"IRC_USE_SSL" envDefault:"false"`
 }
 
 // TelegramSettings includes settings related to the Telegram bot/message relaying
