@@ -378,6 +378,81 @@ func TestConnectHandlerNoKey(t *testing.T) {
 	myHandler(&girc.Client{}, girc.Event{})
 }
 
+func TestDisconnectHandlerWhenDisabled(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowDisconnectMesssage: false,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("disconnectHandler triggered"))
+	// We are disabled, should never be called.
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Any()).
+		MaxTimes(0)
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings).
+		AnyTimes()
+
+	myHandler := disconnectHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{})
+}
+
+func TestDisconnectHandlerWhenEnabled(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	ircSettings := internal.IRCSettings{
+		Server:  "irc.someserver.org",
+		Channel: "#somechannel",
+	}
+
+	tgSettings := internal.TelegramSettings{
+		ShowDisconnectMesssage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("disconnectHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings).
+		AnyTimes()
+	mockClient.
+		EXPECT().
+		IRCSettings().
+		Return(&ircSettings).
+		AnyTimes()
+	mockClient.
+		EXPECT().
+		SendToTg("Lost connection to '" + ircSettings.Channel + "' on '" + ircSettings.Server + "'").
+		MaxTimes(1)
+
+	myHandler := disconnectHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{})
+}
+
 func TestMessageHandlerInBlacklist(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
