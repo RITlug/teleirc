@@ -141,3 +141,17 @@ func (c Client) addHandlers() {
 		c.AddHandler(eventType, handler(c))
 	}
 }
+
+/*
+Disconnects from the IRC channel.  If a quit message
+was specified, it gets sent first.
+Some servers may not report the QUIT message unless the bot
+was in the channel for a minimum amount of time.
+*/
+func (c Client) Close() {
+	if c.IRCSettings().QuitMessage != "" {
+		c.Client.Quit(c.IRCSettings().QuitMessage)
+	} else {
+		c.Client.Close()
+	}
+}

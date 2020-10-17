@@ -72,6 +72,10 @@ IRC settings
 ``IRC_NO_FORWARD_PREFIX="[off]"``
     A string users can prefix their message with to prevent it from being relayed across the bridge. Removing this option or setting it to "" disables it.
 
+``IRC_QUIT_MESSAGE``
+    A string that TeleIRC sends to the IRC channel when the application exits using IRC's "QUIT" command.
+    If not specified, it simply closes the connection without providing a reason.
+    The bot must be connected to a server for a certain amount of time for the server to send the quit message to the channel.
 
 *****************
 Telegram settings
