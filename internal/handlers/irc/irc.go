@@ -143,7 +143,7 @@ func (c Client) addHandlers() {
 }
 
 /*
-Disconnects from the IRC channel.  If a quit message
+Close disconnects from the IRC channel.  If a quit message
 was specified, it gets sent first.
 Some servers may not report the QUIT message unless the bot
 was in the channel for a minimum amount of time.
