@@ -61,7 +61,7 @@ func main() {
 	case tgErr := <-tgChan:
 		logger.LogError(tgErr)
 	case signal := <-signalChannel:
-		logger.LogInfo("SIGNAL RECEIVED: " + signal.String())
+		logger.LogInfo("Signal Received: " + signal.String())
 		break
 	}
 
