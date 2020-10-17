@@ -42,7 +42,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	signalChannel := make(chan os.Signal)
+	signalChannel := make(chan os.Signal, 1)
 	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
 
 	var tgapi *tgbotapi.BotAPI
