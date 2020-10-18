@@ -36,6 +36,7 @@ type IRCSettings struct {
 	IRCBlacklist        []string `env:"IRC_BLACKLIST" envDefault:"[]string{}"`
 	UseSSL              bool     `env:"IRC_USE_SSL" envDefault:"false"`
 	NoForwardPrefix     string   `env:"IRC_NO_FORWARD_PREFIX" envDefault:""`
+	QuitMessage         string   `env:"IRC_QUIT_MESSAGE" envDefault:""`
 }
 
 // TelegramSettings includes settings related to the Telegram bot/message relaying
