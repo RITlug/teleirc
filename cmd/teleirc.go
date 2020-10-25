@@ -4,6 +4,8 @@ package main
 import (
 	"flag"
 	"os"
+	"os/signal"
+	"syscall"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
@@ -37,12 +39,16 @@ func main() {
 		os.Exit(1)
 	}
 
+	signalChannel := make(chan os.Signal, 1)
+	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
+
 	var tgapi *tgbotapi.BotAPI
 	tgClient := tg.NewClient(&settings.Telegram, &settings.IRC, tgapi, logger)
 	tgChan := make(chan error)
 
 	ircClient := irc.NewClient(&settings.IRC, &settings.Telegram, logger)
 	ircChan := make(chan error)
+
 	go ircClient.StartBot(ircChan, tgClient.SendMessage)
 	go tgClient.StartBot(tgChan, ircClient.SendMessage)
 
@@ -51,5 +57,12 @@ func main() {
 		logger.LogError(ircErr)
 	case tgErr := <-tgChan:
 		logger.LogError(tgErr)
+	case signal := <-signalChannel:
+		logger.LogInfo("Signal Received: " + signal.String())
+		break
 	}
+
+	logger.LogInfo("Shutting Down...")
+	ircClient.Close()
+	logger.LogInfo("Exiting")
 }

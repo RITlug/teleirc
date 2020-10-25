@@ -19,6 +19,8 @@ The following projects and communities use a v1.x.x release of RITlug TeleIRC:
 
 - `BSD Argentina <http://sysarmy.com/bsdar>`_ (`@bsdar <https://t.me/bsdar>`_ | `#bsdar <https://webchat.freenode.net/?channels=bsdar>`_)
 
+- `Chaskis IRC Bot Framework <https://github.com/xforever1313/Chaskis>`_ (`@ChaskisIrc <https://t.me/ChaskisIrc>`_ | `#chaskis <https://webchat.freenode.net/?channels=chaskis>`_)
+
 - `CityZen app <https://cityzenapp.co>`_ (`@CityZenApp <https://t.me/CityZenApp>`_ | `#cityzen <https://webchat.freenode.net/?channels=cityzen>`_)
 
 - `Fedora Project <https://docs.fedoraproject.org/en-US/project/>`_ (`@fedora <https://t.me/fedora>`_ | `#fedora-telegram <https://webchat.freenode.net/?channels=fedora-telegram>`_)

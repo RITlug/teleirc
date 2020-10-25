@@ -62,6 +62,15 @@ func connectHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	}
 }
 
+func disconnectHandler(c ClientInterface) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.Logger().LogDebug("disconnectHandler triggered")
+		if c.TgSettings().ShowDisconnectMesssage {
+			c.SendToTg("Lost connection to '" + c.IRCSettings().Channel + "' on '" + c.IRCSettings().Server + "'")
+		}
+	}
+}
+
 /*
 messageHandler handles the PRIVMSG IRC event, which entails both private
 and channel messages. However, it only cares about channel messages
@@ -136,11 +145,12 @@ getHandlerMapping returns a mapping of girc event types to handlers
 */
 func getHandlerMapping() map[string]Handler {
 	return map[string]Handler{
-		girc.CONNECTED: connectHandler,
-		girc.JOIN:      joinHandler,
-		girc.KICK:      kickHandler,
-		girc.PRIVMSG:   messageHandler,
-		girc.PART:      partHandler,
-		girc.QUIT:      quitHandler,
+		girc.CONNECTED:    connectHandler,
+		girc.DISCONNECTED: disconnectHandler,
+		girc.JOIN:         joinHandler,
+		girc.KICK:         kickHandler,
+		girc.PRIVMSG:      messageHandler,
+		girc.PART:         partHandler,
+		girc.QUIT:         quitHandler,
 	}
 }

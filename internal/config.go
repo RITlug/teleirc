@@ -36,19 +36,21 @@ type IRCSettings struct {
 	IRCBlacklist        []string `env:"IRC_BLACKLIST" envDefault:"[]string{}"`
 	UseSSL              bool     `env:"IRC_USE_SSL" envDefault:"false"`
 	NoForwardPrefix     string   `env:"IRC_NO_FORWARD_PREFIX" envDefault:""`
+	QuitMessage         string   `env:"IRC_QUIT_MESSAGE" envDefault:""`
 }
 
 // TelegramSettings includes settings related to the Telegram bot/message relaying
 type TelegramSettings struct {
-	Token               string `env:"TELEIRC_TOKEN,required"`
-	ChatID              int64  `env:"TELEGRAM_CHAT_ID,required"`
-	Prefix              string `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
-	Suffix              string `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:">"`
-	ShowJoinMessage     bool   `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
-	ShowActionMessage   bool   `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
-	ShowLeaveMessage    bool   `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
-	ShowKickMessage     bool   `env:"SHOW_KICK_MESSAGE" envDefault:"false"`
-	MaxMessagePerMinute int    `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
+	Token                  string `env:"TELEIRC_TOKEN,required"`
+	ChatID                 int64  `env:"TELEGRAM_CHAT_ID,required"`
+	Prefix                 string `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
+	Suffix                 string `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:">"`
+	ShowJoinMessage        bool   `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
+	ShowActionMessage      bool   `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
+	ShowLeaveMessage       bool   `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
+	ShowKickMessage        bool   `env:"SHOW_KICK_MESSAGE" envDefault:"false"`
+	ShowDisconnectMesssage bool   `env:"SHOW_DISCONNECT_MESSAGE" envDefault:"false"`
+	MaxMessagePerMinute    int    `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
 }
 
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
