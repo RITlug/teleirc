@@ -28,16 +28,25 @@ func NewClient(settings *internal.IRCSettings, telegramSettings *internal.Telegr
 	client := girc.New(girc.Config{
 		Server: settings.Server,
 		Port:   settings.Port,
-		Nick:   settings.BotName,
-		User:   settings.BotName,
+		Nick:   settings.BotNick,
+		Name:   settings.BotName,
+		User:   settings.BotIdent,
 		SSL:    settings.UseSSL,
 	})
-	if settings.NickServPassword != "" {
+
+	// IRC server authentication
+	if settings.ServerPass != "" {
+		client.Config.ServerPass = settings.ServerPass
+	}
+
+	// NickServ authentication
+	if settings.NickServUser != "" && settings.NickServPassword != "" {
 		client.Config.SASL = &girc.SASLPlain{
-			User: settings.BotName,
+			User: settings.NickServUser,
 			Pass: settings.NickServPassword,
 		}
 	}
+
 	return Client{client, settings, telegramSettings, logger, nil}
 }
 
