@@ -12,7 +12,7 @@ import (
 func TestNewClientBasic(t *testing.T) {
 	ircSettings := &internal.IRCSettings{
 		Server:   "irc.batcave.intl",
-		Port:	  1337,
+		Port:     1337,
 		BotIdent: "alfred",
 		BotName:  "Alfred Pennyworth",
 		BotNick:  "alfred-p",
@@ -22,13 +22,13 @@ func TestNewClientBasic(t *testing.T) {
 	}
 	client := NewClient(ircSettings, nil, logger)
 
-	expectedPing, _:= time.ParseDuration("20s")
+	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
 		Server:    "irc.batcave.intl",
-		Port:	   1337,
-		Nick:	   "alfred-p",
-		Name:	   "Alfred Pennyworth",
-		User:	   "alfred",
+		Port:      1337,
+		Nick:      "alfred-p",
+		Name:      "Alfred Pennyworth",
+		User:      "alfred",
 		PingDelay: expectedPing,
 	}
 	assert.Equal(t, client.Settings, ircSettings, "Client settings should be properly set")
@@ -37,13 +37,14 @@ func TestNewClientBasic(t *testing.T) {
 
 func TestNewClientFull(t *testing.T) {
 	ircSettings := &internal.IRCSettings{
-		Server:			  "irc.batcave.intl",
-		ServerPass:		  "BatmanNeverDies!",
-		Port:			  1337,
-		BotIdent:		  "alfred",
-		BotName:		  "Alfred Pennyworth",
-		BotNick:		  "alfred-p",
-		NickServUser:	  "irc_moderators",
+		BindAddress:      "129.21.13.37",
+		Server:           "irc.batcave.intl",
+		ServerPass:       "BatmanNeverDies!",
+		Port:             1337,
+		BotIdent:         "alfred",
+		BotName:          "Alfred Pennyworth",
+		BotNick:          "alfred-p",
+		NickServUser:     "irc_moderators",
 		NickServPassword: "ProtectGotham",
 	}
 	logger := internal.Debug{
@@ -52,14 +53,15 @@ func TestNewClientFull(t *testing.T) {
 	client := NewClient(ircSettings, nil, logger)
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
-		Server:			"irc.batcave.intl",
-		ServerPass:		"BatmanNeverDies!",
-		Port:			1337,
-		Nick:			"alfred-p",
-		Name:			"Alfred Pennyworth",
-		User:			"alfred",
-		PingDelay:		expectedPing,
-		SASL:			&girc.SASLPlain{
+		Bind:       "129.21.13.37",
+		Server:     "irc.batcave.intl",
+		ServerPass: "BatmanNeverDies!",
+		Port:       1337,
+		Nick:       "alfred-p",
+		Name:       "Alfred Pennyworth",
+		User:       "alfred",
+		PingDelay:  expectedPing,
+		SASL: &girc.SASLPlain{
 			User: "irc_moderators",
 			Pass: "ProtectGotham",
 		},
