@@ -16,12 +16,15 @@ const defaultPath = ".env"
 // IRCSettings includes settings related to the IRC bot/message relaying
 type IRCSettings struct {
 	Server              string   `env:"IRC_SERVER,required"`
+	ServerPass          string   `env:"IRC_SERVER_PASSWORD envDefault:""`
 	Port                int      `env:"IRC_PORT" envDefault:"6667" validate:"min=0,max=65535"`
 	TLSAllowSelfSigned  bool     `env:"IRC_CERT_ALLOW_SELFSIGNED" envDefault:"true"`
 	TLSAllowCertExpired bool     `env:"IRC_CERT_ALLOW_EXPIRED" envDefault:"true"`
 	Channel             string   `env:"IRC_CHANNEL,required" validate:"notempty"`
 	ChannelKey          string   `env:"IRC_CHANNEL_KEY" envDefault:""`
-	BotName             string   `env:"IRC_BOT_NAME" envDefault:"teleirc"`
+	BotIdent            string   `env:"IRC_BOT_IDENT,required" envDefault:"teleirc"`
+	BotName             string   `env:"IRC_BOT_REALNAME" envDefault:"Powered by TeleIRC <github.com/RITlug/teleirc>"`
+	BotNick             string   `env:"IRC_BOT_NAME,required" validate:"notempty"`
 	SendStickerEmoji    bool     `env:"IRC_SEND_STICKER_EMOJI" envDefault:"true"`
 	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"true"`
 	Prefix              string   `env:"IRC_PREFIX" envDefault:"<"`
@@ -29,6 +32,7 @@ type IRCSettings struct {
 	ShowJoinMessage     bool     `env:"IRC_SHOW_JOIN_MESSAGE" envDefault:"true"`
 	ShowLeaveMessage    bool     `env:"IRC_SHOW_LEAVE_MESSAGE" envDefault:"true"`
 	ShowZWSP            bool     `env:"IRC_SHOW_ZWSP" envDefault:"true"`
+	NickServUser        string   `env:"IRC_NICKSERV_USER" envDefault:""`
 	NickServPassword    string   `env:"IRC_NICKSERV_PASS" envDefault:""`
 	NickServService     string   `env:"IRC_NICKSERV_SERVICE" envDefault:""`
 	EditedPrefix        string   `env:"IRC_EDITED_PREFIX" envDefault:"[EDIT] "`
