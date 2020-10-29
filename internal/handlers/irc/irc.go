@@ -41,7 +41,7 @@ func NewClient(settings *internal.IRCSettings, telegramSettings *internal.Telegr
 
 	// NickServ authentication
 	if settings.NickServUser != "" && settings.NickServPassword != "" {
-		client.Config.SASLMech = &girc.SASLPlain{
+		client.Config.SASL = &girc.SASLPlain{
 			User: settings.NickServUser,
 			Pass: settings.NickServPassword,
 		}
