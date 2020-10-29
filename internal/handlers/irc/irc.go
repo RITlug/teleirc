@@ -34,6 +34,11 @@ func NewClient(settings *internal.IRCSettings, telegramSettings *internal.Telegr
 		SSL:    settings.UseSSL,
 	})
 
+	// Bind an IP address for IRC connection
+	if settings.BindAddress != "" {
+		client.Config.Bind = settings.BindAddress
+	}
+
 	// IRC server authentication
 	if settings.ServerPass != "" {
 		client.Config.ServerPass = settings.ServerPass

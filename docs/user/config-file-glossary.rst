@@ -11,7 +11,12 @@ This glossary is intended for advanced users.
 IRC settings
 ************
 
+Host connection settings
+========================
 
+``IRC_HOST_IP=""``
+    Specify IP address to use for IRC connection.
+    Useful for hosts with multiple IP addresses.
 
 Server connection settings
 ==============================

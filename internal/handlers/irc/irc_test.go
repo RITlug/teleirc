@@ -37,6 +37,7 @@ func TestNewClientBasic(t *testing.T) {
 
 func TestNewClientFull(t *testing.T) {
 	ircSettings := &internal.IRCSettings{
+		BindAddress:      "129.21.13.37",
 		Server:			  "irc.batcave.intl",
 		ServerPass:		  "BatmanNeverDies!",
 		Port:			  1337,
@@ -52,6 +53,7 @@ func TestNewClientFull(t *testing.T) {
 	client := NewClient(ircSettings, nil, logger)
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
+		Bind:           "129.21.13.37",
 		Server:			"irc.batcave.intl",
 		ServerPass:		"BatmanNeverDies!",
 		Port:			1337,

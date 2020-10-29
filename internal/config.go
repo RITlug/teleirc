@@ -15,6 +15,7 @@ const defaultPath = ".env"
 
 // IRCSettings includes settings related to the IRC bot/message relaying
 type IRCSettings struct {
+	BindAddress         string   `env:"IRC_HOST_IP" envDefault:""`
 	Server              string   `env:"IRC_SERVER,required"`
 	ServerPass          string   `env:"IRC_SERVER_PASSWORD" envDefault:""`
 	Port                int      `env:"IRC_PORT" envDefault:"6667" validate:"min=0,max=65535"`
