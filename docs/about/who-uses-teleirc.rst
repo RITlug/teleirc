@@ -8,8 +8,8 @@ v2.x.x
 
 The following projects and communities use RITlug TeleIRC v2.0.0 or later:
 
-- None yet.
-  Check back later!
+- mIRC Italia Crew (`@mircitaliacrew <https://t.me/mircitaliacrew>`_ | `#mircitaliacrew <https://webchat.freenode.net/#mircitaliacrew>`_)
+
 
 ******
 v1.x.x
