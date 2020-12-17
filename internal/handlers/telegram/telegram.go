@@ -11,11 +11,12 @@ Client contains information for the Telegram bridge, including
 the TelegramSettings needed to run the bot
 */
 type Client struct {
-	api         *tgbotapi.BotAPI
-	Settings    *internal.TelegramSettings
-	IRCSettings *internal.IRCSettings
-	logger      internal.DebugLogger
-	sendToIrc   func(string)
+	api         	*tgbotapi.BotAPI
+	Settings    	*internal.TelegramSettings
+	IRCSettings 	*internal.IRCSettings
+	ImgurSettings 	*internal.ImgurSettings
+	logger      	internal.DebugLogger
+	sendToIrc   	func(string)
 }
 
 /*
