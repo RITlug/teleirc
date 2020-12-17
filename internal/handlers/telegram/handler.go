@@ -122,9 +122,10 @@ photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
 exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
+	img := uploadImage(tg, u)
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
 	formatted := username + " shared a photo on Telegram with caption: '" +
-		u.Message.Caption + "'"
+		u.Message.Caption + "'" + "(" + img.Link + ")"
 
 	tg.sendToIrc(formatted)
 }
@@ -147,4 +148,24 @@ func documentHandler(tg *Client, u *tgbotapi.Message) {
 	}
 
 	tg.sendToIrc(formatted)
+}
+
+/*
+uploadImage uploads a Photo object from Telegram to the Imgur API and
+returns a string with the Imgur URL.
+*/
+func uploadImage(tg *Client, u tgbotapi.Update) (img *imgur.ImageInfo) {
+	var tgapi *tgbotapi.BotAPI
+	client := new(imgur.Client)
+	photo := (*u.Message.Photo)[len(*u.Message.Photo)-1]
+	imgUrl, err := tgapi.GetFileDirectURL(photo.FileID)
+
+	client.HTTPClient = new(http.Client)
+	client.ImgurClientID = tg.ImgurSettings.ImgurClientID
+	imgurUrl, st, err := client.UploadImageFromFile(imgUrl, "", "Uploaded via RITlug/TeleIRC", u.Message.Caption)
+	if st != 200 || err != nil {
+		tg.logger.LogDebug("Status: %v\n", st)
+		tg.logger.LogError("Err: %v\n", err)
+	}
+	return imgurUrl
 }

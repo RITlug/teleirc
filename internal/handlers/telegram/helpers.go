@@ -5,6 +5,23 @@ import (
 )
 
 /*
+GetLargestPhoto takes a slice of PhotoSize objects and returns the instance with the
+largest file size. This is used to upload the highest-resolution photo to a photo-
+hosting service like Imgur, but could be used for other purposes.
+*/
+// func GetLargestPhoto(u tgbotapi.Message) *tgbotapi.PhotoSize {
+// 	var largestPhoto = new(tgbotapi.PhotoSize)
+// 	var photos := *u.Message.Photo
+// 	for _, img := range photos {
+// 		if img.FileSize > largestPhoto.FileSize {
+// 			largestPhoto = img
+// 			continue
+// 		}
+// 	}
+// 	return largestPhoto
+// }
+
+/*
 GetUsername takes showZWSP condition and user then returns username with or without ​.
 */
 func GetUsername(showZWSP bool, u *tgbotapi.User) string {
