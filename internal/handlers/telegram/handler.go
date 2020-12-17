@@ -2,9 +2,11 @@ package telegram
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/koffeinsource/go-imgur"
 )
 
 /*
