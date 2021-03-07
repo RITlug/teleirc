@@ -641,18 +641,24 @@ func TestMessageRandomWithoutUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
+
 	correct := fmt.Sprintf("<%s> Random Text", testUser.FirstName)
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "Random Text",
+			Chat: testChat,
 		},
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: false,
@@ -672,17 +678,22 @@ func TestMessageRandomWithNoForward(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "[off] Random Text",
+			Chat: testChat,
 		},
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: false,
@@ -703,18 +714,23 @@ func TestMessageZwsp(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
 	correct := fmt.Sprintf("<%s> Random Text", "t"+"​"+"est")
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "Random Text",
+			Chat: testChat,
 		},
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: true,
