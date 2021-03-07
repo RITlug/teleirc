@@ -604,12 +604,16 @@ func TestMessageRandomWithUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat {
+		ID: 100,
+	}
 	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "Random Text",
+			Chat: testChat,
 		},
 	}
 
@@ -617,6 +621,7 @@ func TestMessageRandomWithUsername(t *testing.T) {
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: false,
