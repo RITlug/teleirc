@@ -753,7 +753,6 @@ func TestMessageFromWrongTelegramChat(t *testing.T) {
 	testChat := &tgbotapi.Chat{
 		ID: 100,
 	}
-	correct := fmt.Sprintf("<%s> Random Text", "t"+"​"+"est")
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
