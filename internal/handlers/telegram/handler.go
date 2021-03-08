@@ -61,6 +61,12 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 		return
 	}
 
+	// Don't forward messages to IRC that didn't come from the
+	// chat we're bridging
+	if u.Message.Chat.ID != tg.Settings.ChatID {
+		return
+	}
+
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
 		username,

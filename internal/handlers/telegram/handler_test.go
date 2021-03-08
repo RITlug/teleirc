@@ -604,12 +604,16 @@ func TestMessageRandomWithUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat {
+		ID: 100,
+	}
 	correct := fmt.Sprintf("<%s> Random Text", testUser.String())
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "Random Text",
+			Chat: testChat,
 		},
 	}
 
@@ -617,6 +621,7 @@ func TestMessageRandomWithUsername(t *testing.T) {
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: false,
@@ -636,18 +641,24 @@ func TestMessageRandomWithoutUsername(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
+
 	correct := fmt.Sprintf("<%s> Random Text", testUser.FirstName)
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "Random Text",
+			Chat: testChat,
 		},
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: false,
@@ -667,17 +678,22 @@ func TestMessageRandomWithNoForward(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "[off] Random Text",
+			Chat: testChat,
 		},
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: false,
@@ -698,24 +714,64 @@ func TestMessageZwsp(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
 	correct := fmt.Sprintf("<%s> Random Text", "t"+"​"+"est")
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
 			Text: "Random Text",
+			Chat: testChat,
 		},
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
 			Prefix: "<",
 			Suffix: ">",
+			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
 			ShowZWSP: true,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
+		},
+	}
+
+	messageHandler(clientObj, updateObj)
+}
+
+func TestMessageFromWrongTelegramChat(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
+
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From: testUser,
+			Text: "Random Text",
+			Chat: testChat,
+		},
+	}
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix: "<",
+			Suffix: ">",
+			ChatID: 101,
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: true,
+		},
+		sendToIrc: func(s string) {
+			assert.False(t, true, "sendToIrc should not be called if the telegram chat ID has a mismatch")
 		},
 	}
 
