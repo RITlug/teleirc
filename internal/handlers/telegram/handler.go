@@ -56,6 +56,7 @@ Telegram update into a simple string for IRC.
 */
 func messageHandler(tg *Client, u tgbotapi.Update) {
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
+	replyUsername := ""
 
 	if tg.IRCSettings.NoForwardPrefix != "" && strings.HasPrefix(u.Message.Text, tg.IRCSettings.NoForwardPrefix) {
 		return
@@ -67,10 +68,14 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 		return
 	}
 
-	formatted := fmt.Sprintf("%s%s%s %s",
+	if u.Message.ReplyToMessage != nil {
+		replyUsername = GetUsername(tg.IRCSettings.ShowZWSP, u.Message.ReplyToMessage.From) + ":"
+	}
+	formatted := fmt.Sprintf("%s%s%s%s %s",
 		tg.Settings.Prefix,
 		username,
 		tg.Settings.Suffix,
+		replyUsername,
 		// Trim unexpected trailing whitespace
 		strings.Trim(u.Message.Text, " "))
 	tg.sendToIrc(formatted)
