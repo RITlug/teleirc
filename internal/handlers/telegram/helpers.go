@@ -9,7 +9,7 @@ GetUsername takes showZWSP condition and user then returns username with or with
 */
 func GetUsername(showZWSP bool, u *tgbotapi.User) string {
 	if u.UserName == "" {
-		return u.FirstName
+		return "!" + u.FirstName
 	}
 	if showZWSP {
 		return ZwspUsername(u)
@@ -22,7 +22,7 @@ GetFullUsername takes showZWSP condition and user then returns full username wit
 */
 func GetFullUsername(showZWSP bool, u *tgbotapi.User) string {
 	if u.UserName == "" {
-		return u.FirstName
+		return "!" + u.FirstName
 	}
 	if showZWSP {
 		return GetFullUserZwsp(u)
