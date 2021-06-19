@@ -10,7 +10,6 @@ require (
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/golang/mock v1.4.3
 	github.com/joho/godotenv v1.3.0
-	github.com/koffeinsource/go-imgur v0.3.0
 	github.com/kyokomi/emoji v2.1.0+incompatible
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/lrstanley/girc v0.0.0-20190801035559-4fc93959e1a7

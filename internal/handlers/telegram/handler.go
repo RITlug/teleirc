@@ -2,11 +2,9 @@ package telegram
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/koffeinsource/go-imgur"
 )
 
 /*
@@ -122,10 +120,9 @@ photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
 exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
-	img := uploadImage(tg, u)
+	link := uploadImage(tg, u)
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
-	formatted := username + " shared a photo on Telegram with caption: '" +
-		u.Message.Caption + "'" + "(" + img.Link + ")"
+	formatted := "'" + u.Message.Caption + "' uploaded by " + username + ": " + link
 
 	tg.sendToIrc(formatted)
 }
@@ -154,18 +151,31 @@ func documentHandler(tg *Client, u *tgbotapi.Message) {
 uploadImage uploads a Photo object from Telegram to the Imgur API and
 returns a string with the Imgur URL.
 */
-func uploadImage(tg *Client, u tgbotapi.Update) (img *imgur.ImageInfo) {
-	var tgapi *tgbotapi.BotAPI
-	client := new(imgur.Client)
+func uploadImage(tg *Client, u tgbotapi.Update) string {
 	photo := (*u.Message.Photo)[len(*u.Message.Photo)-1]
-	imgUrl, err := tgapi.GetFileDirectURL(photo.FileID)
 
-	client.HTTPClient = new(http.Client)
-	client.ImgurClientID = tg.ImgurSettings.ImgurClientID
-	imgurUrl, st, err := client.UploadImageFromFile(imgUrl, "", "Uploaded via RITlug/TeleIRC", u.Message.Caption)
-	if st != 200 || err != nil {
-		tg.logger.LogDebug("Status: %v\n", st)
-		tg.logger.LogError("Err: %v\n", err)
+	// Gets Telegram file URL
+	res, err := tg.api.GetFileDirectURL(photo.FileID)
+	if err != nil {
+		tg.logger.LogError("Could not get Telegram Photo URL:", err)
 	}
-	return imgurUrl
+	fmt.Println("file link:", res)
+
+	// Now upload link to Imgur
+	/**
+	imgurClientID := ""
+	tgUrl := []byte(res)
+	fmt.Println("tgUrl bytes:", tgUrl)
+	client := new(imgur.Client)
+	client.HTTPClient = new(http.Client)
+	client.ImgurClientID = imgurClientID
+
+	_, status, err := client.UploadImage(tgUrl, "", "URL", "test title", "test desc")
+	if status != 200 || err != nil {
+		fmt.Printf("Status: %v\n", status)
+		fmt.Printf("Err: %v\n", err)
+	}
+	*/
+
+	return "empty link"
 }

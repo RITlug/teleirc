@@ -117,7 +117,7 @@ when ShowJoinMessage is set to true
 */
 func TestJoinFullOn(t *testing.T) {
 	testListUser := &[]tgbotapi.User{
-		tgbotapi.User{
+		{
 			ID:        1,
 			FirstName: "test",
 			UserName:  "testUser",
@@ -143,7 +143,7 @@ TestJoinFullZwsp tests the full capacity of the Join handler with zero-width spa
 */
 func TestJoinFullZwsp(t *testing.T) {
 	testListUser := &[]tgbotapi.User{
-		tgbotapi.User{
+		{
 			ID:        1,
 			FirstName: "test",
 			UserName:  "testUser",
@@ -170,7 +170,7 @@ when ShowJoinMessage is set to false
 */
 func TestJoinFullOff(t *testing.T) {
 	testListUser := &[]tgbotapi.User{
-		tgbotapi.User{
+		{
 			ID:        1,
 			FirstName: "test",
 			UserName:  "testUser",
@@ -197,7 +197,7 @@ formatted messages when a TG user has no username
 */
 func TestJoinNoUsername(t *testing.T) {
 	testListUser := &[]tgbotapi.User{
-		tgbotapi.User{
+		{
 			ID:        1,
 			FirstName: "test",
 		},
@@ -408,7 +408,7 @@ func TestPhotoFull(t *testing.T) {
 				UserName:  "user",
 			},
 			Photo: &[]tgbotapi.PhotoSize{
-				tgbotapi.PhotoSize{
+				{
 					FileID:   "https://teleirc.com/file.png",
 					Width:    1,
 					Height:   1,
@@ -441,7 +441,7 @@ func TestPhotoNoUsername(t *testing.T) {
 				FirstName: "test",
 			},
 			Photo: &[]tgbotapi.PhotoSize{
-				tgbotapi.PhotoSize{
+				{
 					FileID:   "https://teleirc.com/file.png",
 					Width:    1,
 					Height:   1,
@@ -475,7 +475,7 @@ func TestPhotoNoCaption(t *testing.T) {
 				UserName:  "user",
 			},
 			Photo: &[]tgbotapi.PhotoSize{
-				tgbotapi.PhotoSize{
+				{
 					FileID:   "https://teleirc.com/file.png",
 					Width:    1,
 					Height:   1,
@@ -696,7 +696,7 @@ func TestMessageRandomWithNoForward(t *testing.T) {
 			ChatID: 100,
 		},
 		IRCSettings: &internal.IRCSettings{
-			ShowZWSP: false,
+			ShowZWSP:        false,
 			NoForwardPrefix: "[off]",
 		},
 		sendToIrc: func(s string) {
