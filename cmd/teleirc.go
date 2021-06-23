@@ -43,7 +43,7 @@ func main() {
 	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
 
 	var tgapi *tgbotapi.BotAPI
-	tgClient := tg.NewClient(&settings.Telegram, &settings.IRC, tgapi, logger)
+	tgClient := tg.NewClient(&settings.Telegram, &settings.IRC, &settings.Imgur, tgapi, logger)
 	tgChan := make(chan error)
 
 	ircClient := irc.NewClient(&settings.IRC, &settings.Telegram, logger)
