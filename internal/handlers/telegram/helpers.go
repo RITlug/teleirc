@@ -5,23 +5,6 @@ import (
 )
 
 /*
-GetLargestPhoto takes a slice of PhotoSize objects and returns the instance with the
-largest file size. This is used to upload the highest-resolution photo to a photo-
-hosting service like Imgur, but could be used for other purposes.
-*/
-// func GetLargestPhoto(u tgbotapi.Message) *tgbotapi.PhotoSize {
-// 	var largestPhoto = new(tgbotapi.PhotoSize)
-// 	var photos := *u.Message.Photo
-// 	for _, img := range photos {
-// 		if img.FileSize > largestPhoto.FileSize {
-// 			largestPhoto = img
-// 			continue
-// 		}
-// 	}
-// 	return largestPhoto
-// }
-
-/*
 GetUsername takes showZWSP condition and user then returns username with or without ​.
 */
 func GetUsername(showZWSP bool, u *tgbotapi.User) string {
@@ -65,4 +48,20 @@ func ZwspUsername(u *tgbotapi.User) string {
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
 	return u.UserName[:1] + "​" + u.UserName[1:]
+}
+
+/*
+uploadImage uploads a Photo object from Telegram to the Imgur API and
+returns a string with the Imgur URL.
+*/
+func uploadImage(tg *Client, u tgbotapi.Update) string {
+	photo := (*u.Message.Photo)[len(*u.Message.Photo)-1]
+
+	// Get Telegram file URL
+	tgLink, err := tg.api.GetFileDirectURL(photo.FileID)
+	if err != nil {
+		tg.logger.LogError("Could not get Telegram Photo URL:", err)
+	}
+
+	return GetImgurLink(tg, tgLink)
 }

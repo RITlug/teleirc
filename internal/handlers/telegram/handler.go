@@ -122,7 +122,11 @@ exists, and sends notification to IRC
 func photoHandler(tg *Client, u tgbotapi.Update) {
 	link := uploadImage(tg, u)
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
-	formatted := "'" + u.Message.Caption + "' uploaded by " + username + ": " + link
+	caption := u.Message.Caption
+	if caption == "" {
+		caption = "Untitled Message"
+	}
+	formatted := "'" + caption + "' uploaded by " + username + ": " + link
 
 	tg.sendToIrc(formatted)
 }
@@ -145,37 +149,4 @@ func documentHandler(tg *Client, u *tgbotapi.Message) {
 	}
 
 	tg.sendToIrc(formatted)
-}
-
-/*
-uploadImage uploads a Photo object from Telegram to the Imgur API and
-returns a string with the Imgur URL.
-*/
-func uploadImage(tg *Client, u tgbotapi.Update) string {
-	photo := (*u.Message.Photo)[len(*u.Message.Photo)-1]
-
-	// Gets Telegram file URL
-	res, err := tg.api.GetFileDirectURL(photo.FileID)
-	if err != nil {
-		tg.logger.LogError("Could not get Telegram Photo URL:", err)
-	}
-	fmt.Println("file link:", res)
-
-	// Now upload link to Imgur
-	/**
-	imgurClientID := ""
-	tgUrl := []byte(res)
-	fmt.Println("tgUrl bytes:", tgUrl)
-	client := new(imgur.Client)
-	client.HTTPClient = new(http.Client)
-	client.ImgurClientID = imgurClientID
-
-	_, status, err := client.UploadImage(tgUrl, "", "URL", "test title", "test desc")
-	if status != 200 || err != nil {
-		fmt.Printf("Status: %v\n", status)
-		fmt.Printf("Err: %v\n", err)
-	}
-	*/
-
-	return "empty link"
 }
