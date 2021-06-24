@@ -8,13 +8,13 @@ import (
 	"net/http"
 )
 
-type ImgurDataWrapper struct {
-	Data    *ImageData `json:"data"`
+type imgurDataWrapper struct {
+	Data    *imageData `json:"data"`
 	Success bool       `json:"success"`
 	Status  int        `json:"status"`
 }
 
-type ImageData struct {
+type imageData struct {
 	ID          string `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
@@ -73,7 +73,7 @@ func GetImgurLink(tg *Client, tgLink string) string {
 		tg.logger.LogError("Could not read imgur response:", err)
 	}
 
-	var resp ImgurDataWrapper
+	var resp imgurDataWrapper
 	err = json.Unmarshal([]byte(body), &resp)
 	if err != nil {
 		tg.logger.LogError("Could not retrieve imgur json data:", err)
