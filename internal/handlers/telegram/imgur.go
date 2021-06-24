@@ -40,7 +40,7 @@ type imageData struct {
 	InGallery   bool   `json:"in_gallery"`
 }
 
-func GetImgurLink(tg *Client, tgLink string) string {
+func getImgurLink(tg *Client, tgLink string) string {
 	url := "https://api.imgur.com/3/image"
 	method := "POST"
 
