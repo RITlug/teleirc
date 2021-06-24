@@ -60,8 +60,7 @@ type TelegramSettings struct {
 
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
 type ImgurSettings struct {
-	UseImgurForImageLinks bool   `env:"USE_IMGUR_FOR_IMAGE" envDefault:"true"`
-	ImgurClientID         string `env:"IMGUR_CLIENT_ID" envDefault:"7d6b00b87043f58"`
+	ImgurClientID string `env:"IMGUR_CLIENT_ID" envDefault:"7d6b00b87043f58"`
 }
 
 // Settings includes all user-configurable settings for TeleIRC

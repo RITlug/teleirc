@@ -23,8 +23,7 @@ func TestNewClientBasic(t *testing.T) {
 		MaxMessagePerMinute: 0,
 	}
 	imgurSettings := &internal.ImgurSettings{
-		UseImgurForImageLinks: true,
-		ImgurClientID:         "7d6b00b87043f58",
+		ImgurClientID: "7d6b00b87043f58",
 	}
 	logger := internal.Debug{
 		DebugLevel: false,
@@ -54,8 +53,7 @@ func TestNewClientFull(t *testing.T) {
 		MaxMessagePerMinute: 0,
 	}
 	imgurSettings := &internal.ImgurSettings{
-		UseImgurForImageLinks: true,
-		ImgurClientID:         "7d6b00b87043f58",
+		ImgurClientID: "7d6b00b87043f58",
 	}
 	logger := internal.Debug{
 		DebugLevel: false,
