@@ -22,11 +22,15 @@ func TestNewClientBasic(t *testing.T) {
 		ShowKickMessage:     false,
 		MaxMessagePerMinute: 0,
 	}
+	imgurSettings := &internal.ImgurSettings{
+		UseImgurForImageLinks: true,
+		ImgurClientID:         "7d6b00b87043f58",
+	}
 	logger := internal.Debug{
 		DebugLevel: false,
 	}
 	var tgapi *tgbotapi.BotAPI
-	client := NewClient(tgRequiredSettings, nil, tgapi, logger)
+	client := NewClient(tgRequiredSettings, nil, imgurSettings, tgapi, logger)
 	assert.Equal(t, client.Settings, tgExpectedSettings, "Basic client settings should be properly set")
 }
 
@@ -49,11 +53,15 @@ func TestNewClientFull(t *testing.T) {
 		ShowKickMessage:     false,
 		MaxMessagePerMinute: 0,
 	}
+	imgurSettings := &internal.ImgurSettings{
+		UseImgurForImageLinks: true,
+		ImgurClientID:         "7d6b00b87043f58",
+	}
 	logger := internal.Debug{
 		DebugLevel: false,
 	}
 	var tgapi *tgbotapi.BotAPI
-	client := NewClient(tgSettings, nil, tgapi, logger)
+	client := NewClient(tgSettings, nil, imgurSettings, tgapi, logger)
 	assert.Equal(t, client.Settings, tgSettings, "All client settings should be properly set")
 	assert.NotEqual(t, client.Settings, tgDefaultSettings, "tgSettings should override defaults")
 }
