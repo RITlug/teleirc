@@ -46,7 +46,7 @@ func TestPartFullZwsp(t *testing.T) {
 		FirstName: "test",
 		UserName:  "testUser",
 	}
-	correct := "test (@t" + "​" + "estUser) has left the Telegram Group!"
+	correct := "test (@t" + "\u200b" + "estUser) has left the Telegram Group!"
 
 	clientObj := &Client{
 		IRCSettings: &internal.IRCSettings{
@@ -149,7 +149,7 @@ func TestJoinFullZwsp(t *testing.T) {
 			UserName:  "testUser",
 		},
 	}
-	correct := "test (@t" + "​" + "estUser) has joined the Telegram Group!"
+	correct := "test (@t" + "\u200b" + "estUser) has joined the Telegram Group!"
 	clientObj := &Client{
 		IRCSettings: &internal.IRCSettings{
 			Prefix:          "<",
@@ -368,7 +368,7 @@ both caption and filename exist. It also incorporates the availability of both
 firstname and username
 */
 func TestDocumentFull(t *testing.T) {
-	correct := "u" + "​" +
+	correct := "u" + "\u200b" +
 		"ser shared a file (test/txt) on Telegram with caption: 'Random Caption'."
 	updateObj := &tgbotapi.Update{
 		Message: &tgbotapi.Message{
@@ -540,7 +540,7 @@ func TestStickerSmileZWSP(t *testing.T) {
 		FirstName: "testing",
 		LastName:  "123",
 	}
-	correct := "<t" + "​" + "est> 😄"
+	correct := "<t" + "\u200b" + "est> 😄"
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
 			From: testUser,
@@ -720,7 +720,7 @@ func TestMessageZwsp(t *testing.T) {
 	testChat := &tgbotapi.Chat{
 		ID: 100,
 	}
-	correct := fmt.Sprintf("<%s> Random Text", "t"+"​"+"est")
+	correct := fmt.Sprintf("<%s> Random Text", "t"+"\u200b"+"est")
 
 	updateObj := tgbotapi.Update{
 		Message: &tgbotapi.Message{
