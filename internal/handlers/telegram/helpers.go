@@ -37,7 +37,7 @@ Adds ZWSP to username to prevent username pinging across platform.
 func GetFullUserZwsp(u *tgbotapi.User) string {
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
-	return u.FirstName + " (@" + u.UserName[:1] + "​" + u.UserName[1:] + ")"
+	return u.FirstName + " (@" + u.UserName[:1] + "\u200b" + u.UserName[1:] + ")"
 }
 
 /*
@@ -47,5 +47,21 @@ username.
 func ZwspUsername(u *tgbotapi.User) string {
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
-	return u.UserName[:1] + "​" + u.UserName[1:]
+	return u.UserName[:1] + "\u200b" + u.UserName[1:]
+}
+
+/*
+uploadImage uploads a Photo object from Telegram to the Imgur API and
+returns a string with the Imgur URL.
+*/
+func uploadImage(tg *Client, u tgbotapi.Update) string {
+	photo := (*u.Message.Photo)[len(*u.Message.Photo)-1]
+
+	// Get Telegram file URL
+	tgLink, err := tg.api.GetFileDirectURL(photo.FileID)
+	if err != nil {
+		tg.logger.LogError("Could not get Telegram Photo URL:", err)
+	}
+
+	return getImgurLink(tg, tgLink)
 }

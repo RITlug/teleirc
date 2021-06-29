@@ -1,6 +1,6 @@
 module github.com/ritlug/teleirc
 
-go 1.12
+go 1.14
 
 require (
 	github.com/caarlos0/env/v6 v6.0.0

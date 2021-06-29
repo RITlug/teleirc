@@ -11,19 +11,20 @@ Client contains information for the Telegram bridge, including
 the TelegramSettings needed to run the bot
 */
 type Client struct {
-	api         *tgbotapi.BotAPI
-	Settings    *internal.TelegramSettings
-	IRCSettings *internal.IRCSettings
-	logger      internal.DebugLogger
-	sendToIrc   func(string)
+	api           *tgbotapi.BotAPI
+	Settings      *internal.TelegramSettings
+	IRCSettings   *internal.IRCSettings
+	ImgurSettings *internal.ImgurSettings
+	logger        internal.DebugLogger
+	sendToIrc     func(string)
 }
 
 /*
 NewClient creates a new Telegram bot client
 */
-func NewClient(settings *internal.TelegramSettings, ircsettings *internal.IRCSettings, tgapi *tgbotapi.BotAPI, logger internal.DebugLogger) *Client {
+func NewClient(settings *internal.TelegramSettings, ircsettings *internal.IRCSettings, imgur *internal.ImgurSettings, tgapi *tgbotapi.BotAPI, logger internal.DebugLogger) *Client {
 	logger.LogInfo("Creating new Telegram bot client...")
-	return &Client{api: tgapi, Settings: settings, IRCSettings: ircsettings, logger: logger}
+	return &Client{api: tgapi, Settings: settings, IRCSettings: ircsettings, ImgurSettings: imgur, logger: logger}
 }
 
 /*

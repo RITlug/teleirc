@@ -1,4 +1,4 @@
-FROM golang:1.13 AS teleirc-builder
+FROM golang:1.15 AS teleirc-builder
 WORKDIR /opt/teleirc
 COPY go.mod go.sum ./
 COPY internal ./internal

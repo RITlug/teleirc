@@ -120,9 +120,13 @@ photoHandler handles the Message.Photo Telegram object. Only acknowledges Photo
 exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
+	link := uploadImage(tg, u)
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
-	formatted := username + " shared a photo on Telegram with caption: '" +
-		u.Message.Caption + "'"
+	caption := u.Message.Caption
+	if caption == "" {
+		caption = "No caption provided."
+	}
+	formatted := "'" + caption + "' uploaded by " + username + ": " + link
 
 	tg.sendToIrc(formatted)
 }

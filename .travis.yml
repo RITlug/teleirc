@@ -5,7 +5,7 @@ dist: bionic
 jobs:
   include:
     - language: go
-      go: 1.13.x
+      go: 1.14.x
       before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
       before_script:
         - curl -Lo /tmp/cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
@@ -20,7 +20,7 @@ jobs:
         - /tmp/cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
     - language: go
-      go: 1.14.x
+      go: 1.15.x
       before_install: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION"
       before_script:
         - curl -Lo /tmp/cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
