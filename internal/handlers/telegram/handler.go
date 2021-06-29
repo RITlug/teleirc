@@ -124,7 +124,7 @@ func photoHandler(tg *Client, u tgbotapi.Update) {
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
 	caption := u.Message.Caption
 	if caption == "" {
-		caption = "Untitled Message"
+		caption = "No caption provided."
 	}
 	formatted := "'" + caption + "' uploaded by " + username + ": " + link
 
