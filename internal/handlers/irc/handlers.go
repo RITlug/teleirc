@@ -82,7 +82,14 @@ func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 		if !(checkBlacklist(c, e.Source.Name)) {
 
 			if e.IsFromChannel() {
-				formatted := c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
+				formatted := ""
+				if e.IsAction() {
+					msg := e.Last()
+					// Strips out ACTION word from text
+					formatted = "* " + e.Source.Name + " " + msg[8:len(msg)-1]
+				} else {
+					formatted = c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
+				}
 
 				if hasNoForwardPrefix(c, e.Params[1]) {
 					return // sender didn't want this forwarded

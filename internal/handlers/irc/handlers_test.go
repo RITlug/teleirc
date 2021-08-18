@@ -533,9 +533,9 @@ func TestMessageHandlerNoForward(t *testing.T) {
 	defer ctrl.Finish()
 
 	ircSettings := internal.IRCSettings{
-		IRCBlacklist: []string{},
-		Prefix:       "<<",
-		Suffix:       ">>",
+		IRCBlacklist:    []string{},
+		Prefix:          "<<",
+		Suffix:          ">>",
 		NoForwardPrefix: "[off]",
 	}
 
