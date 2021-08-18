@@ -103,16 +103,13 @@ If your IRC channel is on the Freenode IRC network, use these exact commands to 
 
 ### Configure Imgur Image Upload (IIU)
 
-**NOTE**:
-The Imgur Image Upload (IIU) feature is not yet available in v2.x.x releases.
-
 _By default_, TeleIRC uploads images sent to the Telegram group to [Imgur][7].
 Since IRC does not support images, Imgur is an intermediary approach to sending pictures sent on Telegram over to IRC.
 Note that images will be publicly visible on the Internet if the URL is known.
 [See context][8] for why Imgur is enabled by default.
 
-By default, TeleIRC uses the generic Imgur API key.
-Imgur highly recommends registering each bot.
+By default, TeleIRC uses the TeleIRC-registered Imgur API key.
+We highly recommend registering your own API key in high-traffic channels.
 
 To register your own Imgur API key, follow these steps:
 
@@ -140,7 +137,7 @@ If you use a pre-built binary from a [GitHub Release][14], skip to [_Configurati
 #### Pre-requirements
 
 - git
-- go (v1.13 and v1.14 supported)
+- go (v1.14 and v1.15 supported)
 
 Packages for these pre-requirements are available on most `*NIX` distributions.
 Check your distribution documentation for more info on how to install these packages.

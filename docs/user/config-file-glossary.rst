@@ -147,9 +147,6 @@ Telegram settings
 Imgur settings
 **************
 
-``USE_IMGUR_FOR_IMAGES=true``
-    Upload picture messages from Telegram to Imgur, send Imgur link to IRC
-
 ``IMGUR_CLIENT_ID=7d6b00b87043f58``
     Imgur API client ID value to access Imgur API.
     Uses a default API key.
