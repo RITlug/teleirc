@@ -136,12 +136,19 @@ Telegram settings
 ``SHOW_JOIN_MESSAGE=false``
     Send Telegram message when someone joins IRC channel
 
+``JOIN_MESSAGE_ALLOW_LIST=""``
+    List of users (separated by a space character) whose IRC leave messages will be sent to Telegram, even if SHOW_JOIN_MESSAGE is false.
+    This is ignored if SHOW_JOIN_MESSAGE is set to true.
+
 ``SHOW_KICK_MESSAGE=true``
     Send Telegram message when someone is kicked from IRC channel
 
 ``SHOW_LEAVE_MESSAGE=false``
     Send Telegram message when someone leaves IRC channel
 
+``LEAVE_MESSAGE_ALLOW_LIST=""``
+    List of users (separated by a space character) whose IRC leave messages will be sent to Telegram, even if SHOW_LEAVE_MESSAGE is false.
+    This is ignored if SHOW_LEAVE_MESSAGE is set to true.
 
 **************
 Imgur settings
