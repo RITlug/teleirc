@@ -50,7 +50,7 @@ func shouldSendJoin(c ClientInterface, toCheck string) bool {
 	return false
 }
 
-func shouldSendPart(c ClientInterface, toCheck string) bool {
+func shouldSendLeave(c ClientInterface, toCheck string) bool {
 	var settings = c.TgSettings()
 	if settings.ShowLeaveMessage {
 		return true
@@ -145,7 +145,7 @@ func joinHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 func partHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("partHandler triggered")
-		if (e.Source != nil) && shouldSendPart(c, e.Source.Name) {
+		if (e.Source != nil) && shouldSendLeave(c, e.Source.Name) {
 			c.SendToTg(fmt.Sprintf(partFmt, e.Source.Name))
 		}
 	}
@@ -154,7 +154,7 @@ func partHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 func quitHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("quitHandler triggered")
-		if c.TgSettings().ShowLeaveMessage {
+		if (e.Source != nil) && shouldSendLeave(c, e.Source.Name) {
 			c.SendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
 		}
 	}

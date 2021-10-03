@@ -329,6 +329,44 @@ func TestQuitHandler_On(t *testing.T) {
 	})
 }
 
+func TestQuitHandlerWithAllowList_On(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowLeaveMessage:      true,
+		LeaveMessageAllowList: []string{"TEST", "USER"},
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("quitHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME quit (TEST_REASON)"))
+
+	myHandler := quitHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"TEST_REASON",
+		},
+	})
+}
+
 func TestQuitHandler_Off(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
@@ -357,7 +395,55 @@ func TestQuitHandler_Off(t *testing.T) {
 		MaxTimes(0)
 
 	myHandler := quitHandler(mockClient)
-	myHandler(&girc.Client{}, girc.Event{})
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"TEST_REASON",
+		},
+	})
+}
+
+func TestQuitHandlerWithAllowList_Off(t *testing.T) {
+	var name string
+	name = "TEST_NAME"
+
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowLeaveMessage:      false,
+		LeaveMessageAllowList: []string{name},
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("quitHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq(fmt.Sprintf("* %s quit (TEST_REASON)", name)))
+
+	myHandler := quitHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: name,
+		},
+		Params: []string{
+			"TEST_REASON",
+		},
+	})
 }
 
 func TestKickHandler_On(t *testing.T) {
