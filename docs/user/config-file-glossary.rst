@@ -146,6 +146,9 @@ Telegram settings
 ``SHOW_KICK_MESSAGE=true``
     Send Telegram message when someone is kicked from IRC channel.
 
+``SHOW_NICK_MESSAGE=false``
+    Send Telegram message when someone changes their nickname in the IRC channel.
+
 ``SHOW_LEAVE_MESSAGE=false``
     Send Telegram message when someone leaves IRC channel either by quitting or parting.
 

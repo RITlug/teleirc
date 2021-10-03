@@ -58,6 +58,7 @@ type TelegramSettings struct {
 	ShowLeaveMessage      bool     `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
 	LeaveMessageAllowList []string `env:"LEAVE_MESSAGE_ALLOW_LIST" envDefault:"[]string{}"`
 	ShowKickMessage       bool     `env:"SHOW_KICK_MESSAGE" envDefault:"false"`
+	ShowNickMessage       bool     `env:"SHOW_NICK_MESSAGE" envDefault:"false"`
 	ShowDisconnectMessage bool     `env:"SHOW_DISCONNECT_MESSAGE" envDefault:"false"`
 	MaxMessagePerMinute   int      `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
 }
