@@ -143,10 +143,6 @@ Telegram settings
 ``SHOW_KICK_MESSAGE=true``
     Send Telegram message when someone is kicked from IRC channel.
 
-``KICK_MESSAGE_ALLOW_LIST=""``
-    List of users (separated by a space character) whose IRC kick messages will be sent to Telegram, even if SHOW_KICK_MESSAGE is false.
-    This is ignored if SHOW_KICK_MESSAGE is set to true.
-
 ``SHOW_LEAVE_MESSAGE=false``
     Send Telegram message when someone leaves IRC channel either by quitting or parting.
 
