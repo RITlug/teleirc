@@ -1,6 +1,7 @@
 package irc
 
 import (
+	"fmt"
 	"testing"
 
 	gomock "github.com/golang/mock/gomock"
@@ -15,6 +16,41 @@ func TestJoinHandler_On(t *testing.T) {
 
 	tgSettings := internal.TelegramSettings{
 		ShowJoinMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("joinHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME joins"))
+
+	myHandler := joinHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+	})
+}
+
+func TestJoinHandlerWithAllowList_On(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowJoinMessage:      true,
+		JoinMessageAllowList: []string{"TEST", "USER"},
 	}
 
 	mockClient := NewMockClientInterface(ctrl)
@@ -70,7 +106,48 @@ func TestJoinHandler_Off(t *testing.T) {
 		MaxTimes(0)
 
 	myHandler := joinHandler(mockClient)
-	myHandler(&girc.Client{}, girc.Event{})
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+	})
+}
+
+func TestJoinHandlerWithAllowList_Off(t *testing.T) {
+	var name string
+	name = "TEST_NAME"
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowJoinMessage:      false,
+		JoinMessageAllowList: []string{name},
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("joinHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq(fmt.Sprintf("* %s joins", name)))
+
+	myHandler := joinHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: name,
+		},
+	})
 }
 
 func TestPartHandler_On(t *testing.T) {
@@ -80,6 +157,41 @@ func TestPartHandler_On(t *testing.T) {
 
 	tgSettings := internal.TelegramSettings{
 		ShowLeaveMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("partHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME parts"))
+
+	myHandler := partHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+	})
+}
+
+func TestPartHandlerWithAllowList_On(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowLeaveMessage:      true,
+		LeaveMessageAllowList: []string{"TEST", "USER"},
 	}
 
 	mockClient := NewMockClientInterface(ctrl)
@@ -135,7 +247,49 @@ func TestPartHandler_Off(t *testing.T) {
 		MaxTimes(0)
 
 	myHandler := partHandler(mockClient)
-	myHandler(&girc.Client{}, girc.Event{})
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+	})
+}
+
+func TestPartHandlerWithAllowList_Off(t *testing.T) {
+	var name string
+	name = "TEST_NAME"
+
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowLeaveMessage:      false,
+		LeaveMessageAllowList: []string{name},
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("partHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq(fmt.Sprintf("* %s parts", name)))
+
+	myHandler := partHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: name,
+		},
+	})
 }
 
 func TestQuitHandler_On(t *testing.T) {
