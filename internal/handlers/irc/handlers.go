@@ -14,6 +14,7 @@ const (
 	kickFmt         = "* %s kicked %s from %s: %s"
 	topicChangeFmt  = "* %s changed topic to: %s"
 	topicClearedFmt = "* %s removed topic"
+	nickFmt         = "* %s is now known as: %s"
 )
 
 /*
@@ -198,6 +199,25 @@ func kickHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	}
 }
 
+func nickHandler(c ClientInterface) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.Logger().LogDebug("nickHandler triggered")
+		if c.TgSettings().ShowNickMessage {
+			// e.Source.Name is the original name.
+			// e.Params[0] is the new nick name.
+			// However, let's assume it is possible (though unlikely)
+			// e.Params can be empty.
+			var newName string
+			if len(e.Params) == 0 {
+				newName = "Unspecified Name"
+			} else {
+				newName = e.Params[0]
+			}
+			c.SendToTg(fmt.Sprintf(nickFmt, e.Source.Name, newName))
+		}
+	}
+}
+
 /*
 getHandlerMapping returns a mapping of girc event types to handlers
 */
@@ -207,6 +227,7 @@ func getHandlerMapping() map[string]Handler {
 		girc.DISCONNECTED: disconnectHandler,
 		girc.JOIN:         joinHandler,
 		girc.KICK:         kickHandler,
+		girc.NICK:         nickHandler,
 		girc.PRIVMSG:      messageHandler,
 		girc.PART:         partHandler,
 		girc.TOPIC:        topicHandler,
