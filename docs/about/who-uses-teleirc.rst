@@ -8,6 +8,10 @@ v2.x.x
 
 The following projects and communities use RITlug TeleIRC v2.0.0 or later:
 
+- `Arch Linux Mexico <https://github.com/archlinuxmx/>`_ (`@archlinuxmx <https://t.me/archlinuxmx>`_ | `#archlinux-mx <https://web.libera.chat/#archlinux-mx>`_)
+
+- `Chaskis IRC Bot Framework <https://github.com/xforever1313/Chaskis>`_ (`@ChaskisIrc <https://t.me/ChaskisIrc>`_ | `#chaskis <https://web.libera.chat/#chaskis>`_)
+
 - mIRC Italia Crew (`@mircitaliacrew <https://t.me/mircitaliacrew>`_ | `#mircitaliacrew <https://webchat.freenode.net/#mircitaliacrew>`_)
 
 
@@ -18,8 +22,6 @@ v1.x.x
 The following projects and communities use a v1.x.x release of RITlug TeleIRC:
 
 - `BSD Argentina <http://sysarmy.com/bsdar>`_ (`@bsdar <https://t.me/bsdar>`_ | `#bsdar <https://webchat.freenode.net/?channels=bsdar>`_)
-
-- `Chaskis IRC Bot Framework <https://github.com/xforever1313/Chaskis>`_ (`@ChaskisIrc <https://t.me/ChaskisIrc>`_ | `#chaskis <https://webchat.freenode.net/?channels=chaskis>`_)
 
 - `CityZen app <https://cityzenapp.co>`_ (`@CityZenApp <https://t.me/CityZenApp>`_ | `#cityzen <https://webchat.freenode.net/?channels=cityzen>`_)
 
