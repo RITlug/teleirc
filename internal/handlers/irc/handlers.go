@@ -8,10 +8,12 @@ import (
 )
 
 const (
-	joinFmt = "* %s joins"
-	partFmt = "* %s parts"
-	quitFmt = "* %s quit (%s)"
-	kickFmt = "* %s kicked %s from %s: %s"
+	joinFmt         = "* %s joins"
+	partFmt         = "* %s parts"
+	quitFmt         = "* %s quit (%s)"
+	kickFmt         = "* %s kicked %s from %s: %s"
+	topicChangeFmt  = "* %s changed topic to: %s"
+	topicClearedFmt = "* %s removed topic"
 )
 
 /*
@@ -119,6 +121,23 @@ func partHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	}
 }
 
+func topicHandler(c ClientInterface) func(*girc.Client, girc.Event) {
+	return func(gc *girc.Client, e girc.Event) {
+		c.Logger().LogDebug("topicHandler triggered")
+		if c.TgSettings().ShowTopicMessage {
+			// e.Source.Name is the user who changed the topic.
+			// e.Params[0] is the channel where the topic changed.
+			// e.Params[1] is the new topic.  We should assume that
+			// this may or may not appear as its possible to clear a topic.
+			if len(e.Params) <= 1 {
+				c.SendToTg(fmt.Sprintf(topicClearedFmt, e.Source.Name))
+			} else {
+				c.SendToTg(fmt.Sprintf(topicChangeFmt, e.Source.Name, e.Params[1]))
+			}
+		}
+	}
+}
+
 func quitHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("quitHandler triggered")
@@ -158,6 +177,7 @@ func getHandlerMapping() map[string]Handler {
 		girc.KICK:         kickHandler,
 		girc.PRIVMSG:      messageHandler,
 		girc.PART:         partHandler,
+		girc.TOPIC:        topicHandler,
 		girc.QUIT:         quitHandler,
 	}
 }
