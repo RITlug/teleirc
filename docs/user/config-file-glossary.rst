@@ -143,12 +143,23 @@ Telegram settings
 ``SHOW_KICK_MESSAGE=true``
     Send Telegram message when someone is kicked from IRC channel
 
+``KICK_MESSAGE_ALLOW_LIST=""``
+    List of users (separated by a space character) whose IRC kick messages will be sent to Telegram, even if SHOW_KICK_MESSAGE is false.
+    This is ignored if SHOW_KICK_MESSAGE is set to true.
+
 ``SHOW_LEAVE_MESSAGE=false``
     Send Telegram message when someone leaves IRC channel
 
 ``LEAVE_MESSAGE_ALLOW_LIST=""``
     List of users (separated by a space character) whose IRC leave messages will be sent to Telegram, even if SHOW_LEAVE_MESSAGE is false.
     This is ignored if SHOW_LEAVE_MESSAGE is set to true.
+
+``SHOW_DISCONNECT_MESSAGE=true``
+    Send Telegram message when someone disconnects from the IRC channel
+
+``DISCONNECT_MESSAGE_ALLOW_LIST=""``
+    List of users (separated by a space character) whose IRC disconnect messages will be sent to Telegram, even if SHOW_DISCONNECT_MESSAGE is false.
+    This is ignored if SHOW_DISCONNECT_MESSAGE is set to true.
 
 **************
 Imgur settings
