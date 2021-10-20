@@ -130,6 +130,9 @@ Telegram settings
 ``MAX_MESSAGES_PER_MINUTE=20``
     Maximum number of messages sent to Telegram from IRC per minute.
 
+``SHOW_TOPIC_MESSAGE=true``
+    Send Telegram message when the topic in the IRC channel is changed.
+
 ``SHOW_ACTION_MESSAGE=true``
     Relay action messages (e.g. ``/me thinks TeleIRC is cool!``).
 

@@ -51,6 +51,7 @@ type TelegramSettings struct {
 	ChatID                 int64    `env:"TELEGRAM_CHAT_ID,required"`
 	Prefix                 string   `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
 	Suffix                 string   `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:">"`
+  ShowTopicMessage       bool     `env:"SHOW_TOPIC_MESSAGE" envDefault:"false"`
 	ShowJoinMessage        bool     `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
 	JoinMessageAllowList   []string `env:"JOIN_MESSAGE_ALLOW_LIST" envDefault:"[]string{}"`
 	ShowActionMessage      bool     `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`

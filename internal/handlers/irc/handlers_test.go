@@ -555,6 +555,120 @@ func TestKickHandlerNoReason(t *testing.T) {
 	})
 }
 
+func TestTopicHandler_On(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowTopicMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("topicHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME changed topic to: NEW TOPIC!"))
+
+	myHandler := topicHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"#testchannel",
+			"NEW TOPIC!",
+		},
+	})
+}
+
+func TestTopicHandler_Off(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowTopicMessage: false,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("topicHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Any()).
+		MaxTimes(0)
+
+	myHandler := topicHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"#testchannel",
+			"NEW TOPIC!",
+		},
+	})
+}
+
+func TestTopicHandlerCleared(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowTopicMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("topicHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME removed topic"))
+
+	myHandler := topicHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"#testchannel",
+		},
+	})
+}
+
 func TestConnectHandlerKey(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
