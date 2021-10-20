@@ -36,6 +36,38 @@ func checkBlacklist(c ClientInterface, toCheck string) bool {
 	return false
 }
 
+func shouldSendJoin(c ClientInterface, toCheck string) bool {
+	var settings = c.TgSettings()
+	if settings.ShowJoinMessage {
+		return true
+	} else if settings.JoinMessageAllowList == nil {
+		return false
+	}
+
+	for _, name := range settings.JoinMessageAllowList {
+		if strings.EqualFold(toCheck, name) {
+			return true
+		}
+	}
+	return false
+}
+
+func shouldSendLeave(c ClientInterface, toCheck string) bool {
+	var settings = c.TgSettings()
+	if settings.ShowLeaveMessage {
+		return true
+	} else if settings.LeaveMessageAllowList == nil {
+		return false
+	}
+
+	for _, name := range settings.LeaveMessageAllowList {
+		if strings.EqualFold(toCheck, name) {
+			return true
+		}
+	}
+	return false
+}
+
 func hasNoForwardPrefix(c ClientInterface, toCheck string) bool {
 	noForwardPrefix := c.IRCSettings().NoForwardPrefix
 
@@ -106,7 +138,7 @@ func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 func joinHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("joinHandler triggered")
-		if c.TgSettings().ShowJoinMessage {
+		if (e.Source != nil) && shouldSendJoin(c, e.Source.Name) {
 			c.SendToTg(fmt.Sprintf(joinFmt, e.Source.Name))
 		}
 	}
@@ -115,7 +147,7 @@ func joinHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 func partHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("partHandler triggered")
-		if c.TgSettings().ShowLeaveMessage {
+		if (e.Source != nil) && shouldSendLeave(c, e.Source.Name) {
 			c.SendToTg(fmt.Sprintf(partFmt, e.Source.Name))
 		}
 	}
@@ -141,7 +173,7 @@ func topicHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 func quitHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("quitHandler triggered")
-		if c.TgSettings().ShowLeaveMessage {
+		if (e.Source != nil) && shouldSendLeave(c, e.Source.Name) {
 			c.SendToTg(fmt.Sprintf(quitFmt, e.Source.Name, e.Params[0]))
 		}
 	}
