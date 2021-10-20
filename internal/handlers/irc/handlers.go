@@ -99,7 +99,7 @@ func connectHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 func disconnectHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("disconnectHandler triggered")
-		if c.TgSettings().ShowDisconnectMesssage {
+		if c.TgSettings().ShowDisconnectMessage {
 			c.SendToTg("Lost connection to '" + c.IRCSettings().Channel + "' on '" + c.IRCSettings().Server + "'")
 		}
 	}

@@ -738,7 +738,7 @@ func TestDisconnectHandlerWhenDisabled(t *testing.T) {
 	defer ctrl.Finish()
 
 	tgSettings := internal.TelegramSettings{
-		ShowDisconnectMesssage: false,
+		ShowDisconnectMessage: false,
 	}
 
 	mockClient := NewMockClientInterface(ctrl)
@@ -776,7 +776,7 @@ func TestDisconnectHandlerWhenEnabled(t *testing.T) {
 	}
 
 	tgSettings := internal.TelegramSettings{
-		ShowDisconnectMesssage: true,
+		ShowDisconnectMessage: true,
 	}
 
 	mockClient := NewMockClientInterface(ctrl)
