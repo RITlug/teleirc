@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/caarlos0/env/v6"
 	"github.com/go-playground/validator"
@@ -46,16 +47,18 @@ type IRCSettings struct {
 
 // TelegramSettings includes settings related to the Telegram bot/message relaying
 type TelegramSettings struct {
-	Token                  string `env:"TELEIRC_TOKEN,required"`
-	ChatID                 int64  `env:"TELEGRAM_CHAT_ID,required"`
-	Prefix                 string `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
-	Suffix                 string `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:">"`
-	ShowJoinMessage        bool   `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
-	ShowActionMessage      bool   `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
-	ShowLeaveMessage       bool   `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
-	ShowKickMessage        bool   `env:"SHOW_KICK_MESSAGE" envDefault:"false"`
-	ShowDisconnectMesssage bool   `env:"SHOW_DISCONNECT_MESSAGE" envDefault:"false"`
-	MaxMessagePerMinute    int    `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
+	Token                  string   `env:"TELEIRC_TOKEN,required"`
+	ChatID                 int64    `env:"TELEGRAM_CHAT_ID,required"`
+	Prefix                 string   `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
+	Suffix                 string   `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:">"`
+	ShowJoinMessage        bool     `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
+	JoinMessageAllowList   []string `env:"JOIN_MESSAGE_ALLOW_LIST" envDefault:"[]string{}"`
+	ShowActionMessage      bool     `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
+	ShowLeaveMessage       bool     `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
+	LeaveMessageAllowList  []string `env:"LEAVE_MESSAGE_ALLOW_LIST" envDefault:"[]string{}"`
+	ShowKickMessage        bool     `env:"SHOW_KICK_MESSAGE" envDefault:"false"`
+	ShowDisconnectMesssage bool     `env:"SHOW_DISCONNECT_MESSAGE" envDefault:"false"`
+	MaxMessagePerMinute    int      `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
 }
 
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
@@ -99,6 +102,20 @@ func (ce ConfigErrors) Error() string {
 }
 
 /*
+For environment variables that are meant to be a list separated by whitespace,
+we need to do that manually.   This function does just that.
+*/
+func splitEnvVar(list []string) []string {
+	if list == nil {
+		return list
+	} else if len(list) == 0 {
+		return list
+	}
+
+	return strings.Split(list[0], " ")
+}
+
+/*
 LoadConfig loads in the .env file in the provided path (or ".env" by default)
 If the user-provided config is valid, return a new Settings struct that contains these settings.
 Otherwise, return the error that caused the failure.
@@ -130,5 +147,10 @@ func LoadConfig(path string) (*Settings, error) {
 		}
 		return nil, fieldErrs
 	}
+
+	settings.IRC.IRCBlacklist = splitEnvVar(settings.IRC.IRCBlacklist)
+	settings.Telegram.JoinMessageAllowList = splitEnvVar(settings.Telegram.JoinMessageAllowList)
+	settings.Telegram.LeaveMessageAllowList = splitEnvVar(settings.Telegram.LeaveMessageAllowList)
+
 	return settings, nil
 }

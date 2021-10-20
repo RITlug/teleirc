@@ -122,26 +122,36 @@ Telegram settings
 *****************
 
 ``TELEGRAM_CHAT_ID=-0000000000000``
-    Telegram chat ID of bridged group (:ref:`how do I get this? <chat-id>`)
+    Telegram chat ID of bridged group (:ref:`how do I get this? <chat-id>`).
 
 ``TELEIRC_TOKEN=000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA``
-    Private API token for Telegram bot
+    Private API token for Telegram bot.
 
 ``MAX_MESSAGES_PER_MINUTE=20``
-    Maximum number of messages sent to Telegram from IRC per minute
+    Maximum number of messages sent to Telegram from IRC per minute.
 
 ``SHOW_ACTION_MESSAGE=true``
-    Relay action messages (e.g. ``/me thinks TeleIRC is cool!``)
+    Relay action messages (e.g. ``/me thinks TeleIRC is cool!``).
 
 ``SHOW_JOIN_MESSAGE=false``
-    Send Telegram message when someone joins IRC channel
+    Send Telegram message when someone joins IRC channel.
+
+``JOIN_MESSAGE_ALLOW_LIST=""``
+    List of users (separated by a space character) whose IRC leave messages will be sent to Telegram, even if SHOW_JOIN_MESSAGE is false.
+    This is ignored if SHOW_JOIN_MESSAGE is set to true.
 
 ``SHOW_KICK_MESSAGE=true``
-    Send Telegram message when someone is kicked from IRC channel
+    Send Telegram message when someone is kicked from IRC channel.
 
 ``SHOW_LEAVE_MESSAGE=false``
-    Send Telegram message when someone leaves IRC channel
+    Send Telegram message when someone leaves IRC channel either by quitting or parting.
 
+``LEAVE_MESSAGE_ALLOW_LIST=""``
+    List of users (separated by a space character) whose IRC leave messages will be sent to Telegram, even if SHOW_LEAVE_MESSAGE is false.
+    This is ignored if SHOW_LEAVE_MESSAGE is set to true.
+
+``SHOW_DISCONNECT_MESSAGE=true``
+    Sends a message to Telegram when the bot disconnects from the IRC side.
 
 **************
 Imgur settings
