@@ -778,6 +778,7 @@ func TestNickHandlerNoNick(t *testing.T) {
 		Params: []string{},
 	})
 }
+
 func TestConnectHandlerKey(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
