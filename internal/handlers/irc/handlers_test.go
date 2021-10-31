@@ -669,6 +669,116 @@ func TestTopicHandlerCleared(t *testing.T) {
 	})
 }
 
+func TestNickHandler_On(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowNickMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("nickHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME is now known as: CHANGED_NAME"))
+
+	myHandler := nickHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"CHANGED_NAME",
+		},
+	})
+}
+
+func TestNickHandler_Off(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowNickMessage: false,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("nickHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Any()).
+		MaxTimes(0)
+
+	myHandler := nickHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{
+			"CHANGED_NAME",
+		},
+	})
+}
+
+func TestNickHandlerNoNick(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	tgSettings := internal.TelegramSettings{
+		ShowNickMessage: true,
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("nickHandler triggered"))
+	mockClient.
+		EXPECT().
+		TgSettings().
+		Return(&tgSettings)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Eq("* TEST_NAME is now known as: Unspecified Name"))
+
+	myHandler := nickHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "TEST_NAME",
+		},
+		Params: []string{},
+	})
+}
+
 func TestConnectHandlerKey(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
