@@ -114,8 +114,7 @@ func TestJoinHandler_Off(t *testing.T) {
 }
 
 func TestJoinHandlerWithAllowList_Off(t *testing.T) {
-	var name string
-	name = "TEST_NAME"
+	var name string = "TEST_NAME"
 	ctrl := gomock.NewController(t)
 
 	defer ctrl.Finish()
@@ -255,8 +254,7 @@ func TestPartHandler_Off(t *testing.T) {
 }
 
 func TestPartHandlerWithAllowList_Off(t *testing.T) {
-	var name string
-	name = "TEST_NAME"
+	var name string = "TEST_NAME"
 
 	ctrl := gomock.NewController(t)
 
@@ -406,8 +404,7 @@ func TestQuitHandler_Off(t *testing.T) {
 }
 
 func TestQuitHandlerWithAllowList_Off(t *testing.T) {
-	var name string
-	name = "TEST_NAME"
+	var name string = "TEST_NAME"
 
 	ctrl := gomock.NewController(t)
 
