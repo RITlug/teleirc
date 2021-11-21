@@ -1,0 +1,85 @@
+---
+# Note: CC_TEST_REPORTER_ID, the env var required to upload test coverage to Code Climate, is set from the CircleCI web
+# interface as a private environment variable.
+# https://app.circleci.com/settings/project/github/RITlug/teleirc/environment-variables
+
+# https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - go_1-15
+      - go_1-16
+      - go_1-17
+      - build_docs
+
+commands:
+  golintci-lint:
+    description: Run linter checks on TeleIRC.
+    steps:
+      - checkout
+      - run: 
+          name: Download and install golintci-lint.
+          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.43.0
+      - run:
+          name: Run Go linter checks.
+          command: golangci-lint run
+  teleirc-test:
+    description: Run Go tests for TeleIRC.
+    steps:
+      - checkout
+      - run:
+          name: Run Go test suite.
+          command: go test -coverprofile=c.out ./...
+
+jobs:
+  go_1-15:
+    docker:
+      - image: cimg/go:1.15
+    steps:
+      - golintci-lint
+      - teleirc-test
+  go_1-16:
+    docker:
+      - image: cimg/go:1.16
+    steps:
+      - golintci-lint
+      - teleirc-test
+  go_1-17:
+    docker:
+      - image: cimg/go:1.17
+    steps:
+      - golintci-lint
+      - run:
+          name: Initialize Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /tmp/cc-test-reporter
+            chmod +x /tmp/cc-test-reporter
+            /tmp/cc-test-reporter before-build
+      - teleirc-test
+      - run:
+          name: Upload test coverage results to Code Climate.
+          # sed removes the package prefix, which is not a local path in directory
+          command: |
+            sed -i 's/github.com\/ritlug\/teleirc\///g' c.out
+            /tmp/cc-test-reporter after-build
+  build_docs:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Python pip cache for Sphinx and dependencies.
+          key: teleirc-docs-pipenv-{{ checksum "docs/requirements.txt" }}
+      - run:
+          name: Install dependencies via pip.
+          command: pip install -r docs/requirements.txt
+      - save_cache:
+          name: Saving Python pip cache for Sphinx and dependencies.
+          key: teleirc-docs-pipenv-{{ checksum "docs/requirements.txt" }}
+          paths:
+            - /home/circleci/.pyenv
+      - run:
+          name: Build Sphinx documentation site.
+          command: sh docs/build_docs.sh

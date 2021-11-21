@@ -4,7 +4,7 @@ TeleIRC
 <a href="https://github.com/RITlug/teleirc"><img src="/assets/svg/horizontal_color.svg" alt="TeleIRC logo by Ura Design" width="60%" height="auto"></a>
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Build Status](https://travis-ci.org/RITlug/teleirc.svg?branch=devel)](https://travis-ci.org/RITlug/teleirc)
+[![CircleCI](https://circleci.com/gh/RITlug/teleirc/tree/main.svg?style=shielf)](https://circleci.com/gh/RITlug/teleirc/tree/main)
 [![Documentation Status](https://readthedocs.org/projects/teleirc/badge/?version=latest)](http://docs.teleirc.com/en/latest/?badge=latest)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/maintainability)](https://codeclimate.com/github/RITlug/teleirc/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/test_coverage)](https://codeclimate.com/github/RITlug/teleirc/test_coverage)
