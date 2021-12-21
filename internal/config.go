@@ -54,7 +54,7 @@ type TelegramSettings struct {
 	ShowTopicMessage      bool     `env:"SHOW_TOPIC_MESSAGE" envDefault:"false"`
 	ShowJoinMessage       bool     `env:"SHOW_JOIN_MESSAGE" envDefault:"false"`
 	JoinMessageAllowList  []string `env:"JOIN_MESSAGE_ALLOW_LIST" envDefault:"[]string{}"`
-	ShowActionMessage     bool     `env:"SHOW_ACTION_MESSAGE" envDefault:"false"`
+	ShowActionMessage     bool     `env:"SHOW_ACTION_MESSAGE" envDefault:"true"`
 	ShowLeaveMessage      bool     `env:"SHOW_LEAVE_MESSAGE" envDefault:"false"`
 	LeaveMessageAllowList []string `env:"LEAVE_MESSAGE_ALLOW_LIST" envDefault:"[]string{}"`
 	ShowKickMessage       bool     `env:"SHOW_KICK_MESSAGE" envDefault:"false"`
