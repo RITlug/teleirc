@@ -130,6 +130,15 @@ Telegram settings
 ``MAX_MESSAGES_PER_MINUTE=20``
     Maximum number of messages sent to Telegram from IRC per minute.
 
+``TELEGRAM_MESSAGE_REPLY_PREFIX="["
+    Prefix separator for Telegram reply
+
+``TELEGRAM_MESSAGE_REPLY_SUFFIX="]"
+    Suffix separator for Telegram reply
+
+``TELEGRAM_MESSAGE_REPLY_LENGTH=15
+    Length of quoted reply message before truncation
+
 ``SHOW_TOPIC_MESSAGE=true``
     Send Telegram message when the topic in the IRC channel is changed.
 
