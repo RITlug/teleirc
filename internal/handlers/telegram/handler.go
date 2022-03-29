@@ -94,7 +94,7 @@ func replyHandler(tg *Client, u tgbotapi.Update) {
 
 	// Only show a portion of the reply text
 	if len(replyText) > tg.Settings.ReplyLength {
-		replyText = replyText[0:tg.Settings.ReplyLength] + "..."
+		replyText = replyText[0:tg.Settings.ReplyLength] + "…"
 	}
 
 	formatted := fmt.Sprintf("%s%s%s %sRe %s: %s%s %s",
