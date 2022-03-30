@@ -52,11 +52,15 @@ func main() {
 	go ircClient.StartBot(ircChan, tgClient.SendMessage)
 	go tgClient.StartBot(tgChan, ircClient.SendMessage)
 
+	exitError := false
+
 	select {
 	case ircErr := <-ircChan:
 		logger.LogError(ircErr)
+		exitError = true
 	case tgErr := <-tgChan:
 		logger.LogError(tgErr)
+		exitError = true
 	case signal := <-signalChannel:
 		logger.LogInfo("Signal Received: " + signal.String())
 		break
@@ -65,4 +69,8 @@ func main() {
 	logger.LogInfo("Shutting Down...")
 	ircClient.Close()
 	logger.LogInfo("Exiting")
+
+	if exitError {
+		os.Exit(1)
+	}
 }
