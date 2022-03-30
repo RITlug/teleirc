@@ -57,6 +57,12 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 		tg.logger.LogError(err)
 		errChan <- err
 	}
+
+	if tg.api == nil {
+		tg.logger.LogError("Failed to authorize to Telegram")
+		errChan <- err
+	}
+
 	tg.logger.LogInfo("Authorized on account", tg.api.Self.UserName)
 	tg.sendToIrc = sendMessage
 
