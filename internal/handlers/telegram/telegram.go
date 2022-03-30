@@ -59,7 +59,7 @@ func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	}
 
 	if tg.api == nil {
-		tg.logger.LogError("Failed to authorize to Telegram")
+		tg.logger.LogError("Failed to authenticate to Telegram")
 		errChan <- err
 	}
 
