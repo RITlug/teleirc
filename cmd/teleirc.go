@@ -15,7 +15,7 @@ import (
 
 var (
 	flagPath    = flag.String("conf", ".env", "config file")
-	flagDebug   = flag.Bool("debug", false, "disable debugging")
+	flagDebug   = flag.Bool("debug", false, "enable debugging output")
 	flagVersion = flag.Bool("version", false, "displays current version of TeleIRC")
 	version     string
 )
