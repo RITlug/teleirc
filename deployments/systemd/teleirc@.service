@@ -1,12 +1,12 @@
 [Unit]
-Description=TeleIRC: Telegram + IRC bridge bot
+Description=TeleIRC: Telegram + IRC bridge bot for %I
 Requires=network.target
 After=multi-user.target
 
 [Service]
 Type=simple
 User=teleirc
-ExecStart=/usr/local/bin/teleirc -conf /etc/teleirc/env
+ExecStart=/usr/local/bin/teleirc -conf /etc/teleirc/%i
 Restart=always
 RestartSec=60
 
