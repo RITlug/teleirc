@@ -182,36 +182,39 @@ Upstream offers a [systemd unit file][15] to automate TeleIRC on a Linux system 
 This example uses the upstream systemd unit file to automatically run TeleIRC on a Linux system.
 
 This example was tested on a CentOS 8 system and is easily adaptable for other `*NIX` distributions.
-It uses `v2.0.0` as a default:
+It uses `v2.2.1` as a default:
 
 ```sh
-# Change ~/teleirc and ~/teleirc-env with equivalents on your system.
-
 # Download TeleIRC deployment assets from GitHub.
-$ curl --location --output ~/teleirc https://github.com/RITlug/teleirc/releases/download/v2.0.0/teleirc-2.0.0-linux-64bit
-$ curl --location --output ~/teleirc-env https://raw.githubusercontent.com/RITlug/teleirc/v2.0.0/env.example
-$ curl --location --output ~/teleirc.service https://raw.githubusercontent.com/RITlug/teleirc/v2.0.0/deployments/systemd/teleirc.service
+$ curl --location --output ~/teleirc https://github.com/RITlug/teleirc/releases/download/v2.2.1/teleirc-2.2.1-linux-x86_64
+$ curl --location --output ~/teleirc.sysusers https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/deployments/systemd/teleirc.sysusers
+$ curl --location --output ~/teleirc.tmpfiles https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/deployments/systemd/teleirc.tmpfiles
+$ curl --location --output ~/teleirc@.service https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/deployments/systemd/teleirc@.service
+$ curl --location --output ~/teleirc.env https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/env.example
 
-# Harden/fix file permissions.
-$ chmod 755 ~/teleirc
-$ chmod 600 ~/teleirc-env
-$ chmod 644 ~/teleirc.service
-
-# Install TeleIRC locally on system.
-$ sudo chown root:root ~/teleirc*
-$ mkdir -p /etc/teleirc/
-$ sudo mv ~/teleirc /usr/local/bin/teleirc
-$ sudo mv ~/teleirc-env /etc/teleirc/env
-$ sudo mv ~/teleirc.service /usr/lib/systemd/system/multi-user.target.wants/teleirc.service
+# Install TeleIRC files and user
+$ sudo install -Dm755 -o root -g root ~/teleirc /usr/local/bin/teleirc
+$ sudo install -Dm644 -o root -g root ~/teleirc.sysusers /etc/sysusers.d/teleirc.conf
+$ sudo install -Dm644 -o root -g root ~/teleirc.tmpfiles /etc/tmpfiles.d/teleirc.conf
+$ sudo install -Dm644 -o root -g root ~/teleirc@.service /etc/systemd/system/teleirc@.service
+$ sudo systemd-sysusers /etc/sysusers.d/teleirc.conf
+$ sudo systemd-tmpfiles --create /etc/tmpfiles.d/teleirc.conf
+$ sudo install -Dm644 -o root -g root ~/teleirc.env /etc/teleirc/example
+$ rm ~/teleirc ~/teleirc.sysusers ~/teleirc.tmpfiles ~/teleirc@.service ~/teleirc.env
 
 # Systems with SELinux ONLY.
 $ sudo chcon --type bin_t --user system_u /usr/local/bin/teleirc
-$ sudo chcon --type etc_t --user system_u /etc/teleirc/env
-$ sudo chcon --type systemd_unit_file_t --user system_u /usr/lib/systemd/system/multi-user.target.wants/teleirc.service
+$ sudo chcon --type etc_t --user system_u -R /etc/teleirc/
+$ sudo chcon --type etc_t --user system_u /etc/sysusers.d/teleirc.conf
+$ sudo chcon --type etc_t --user system_u /etc/tmpfiles.d/teleirc.conf
+$ sudo chcon --type systemd_unit_file_t --user system_u /etc/systemd/system/teleirc@.service
 
 # Start and enable TeleIRC.
-$ sudo systemctl enable --now teleirc.service
+$ sudo systemctl enable --now teleirc@example.service
 ```
+
+To run multiple instances, create other files in /etc/teleirc/ and enable the
+service named teleirc@FILENAME.service.
 
 
 ## Run container
@@ -245,6 +248,6 @@ Needs better documentation by someone with experience running and using the cont
 [12]: https://github.com/RITlug/teleirc/issues/new/choose
 [13]: https://raw.githubusercontent.com/RITlug/teleirc/master/deployments/container/Dockerfile
 [14]: https://github.com/RITlug/teleirc/releases
-[15]: https://github.com/RITlug/teleirc/blob/master/deployments/systemd/teleirc.service
+[15]: https://github.com/RITlug/teleirc/blob/master/deployments/systemd/teleirc@.service
 [16]: https://systemd.io/
 [17]: https://github.com/jwflory/ansible-role-teleirc
