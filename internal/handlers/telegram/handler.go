@@ -56,6 +56,7 @@ Telegram update into a simple string for IRC.
 */
 func messageHandler(tg *Client, u tgbotapi.Update) {
 	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
+	formatted := ""
 
 	if tg.IRCSettings.NoForwardPrefix != "" && strings.HasPrefix(u.Message.Text, tg.IRCSettings.NoForwardPrefix) {
 		return
@@ -67,12 +68,45 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 		return
 	}
 
-	formatted := fmt.Sprintf("%s%s%s %s",
+	// Telegram user replied to a message
+	if u.Message.ReplyToMessage != nil {
+		replyHandler(tg, u)
+		return
+	}
+
+	formatted = fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
 		username,
 		tg.Settings.Suffix,
 		// Trim unexpected trailing whitespace
 		strings.Trim(u.Message.Text, " "))
+
+	tg.sendToIrc(formatted)
+}
+
+/*
+replyHandler handles when users reply to a Telegram message
+*/
+func replyHandler(tg *Client, u tgbotapi.Update) {
+	replyText := strings.Trim(u.Message.ReplyToMessage.Text, " ")
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
+	replyUser := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.ReplyToMessage.From)
+
+	// Only show a portion of the reply text
+	if len(replyText) > tg.Settings.ReplyLength {
+		replyText = replyText[0:tg.Settings.ReplyLength] + "…"
+	}
+
+	formatted := fmt.Sprintf("%s%s%s %sRe %s: %s%s %s",
+		tg.Settings.Prefix,
+		username,
+		tg.Settings.Suffix,
+		tg.Settings.ReplyPrefix,
+		replyUser,
+		replyText,
+		tg.Settings.ReplySuffix,
+		u.Message.Text)
+
 	tg.sendToIrc(formatted)
 }
 

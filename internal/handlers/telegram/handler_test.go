@@ -746,6 +746,108 @@ func TestMessageZwsp(t *testing.T) {
 	messageHandler(clientObj, updateObj)
 }
 
+func TestMessageReply(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	replyUser := &tgbotapi.User{
+		ID:        2,
+		UserName:  "replyUser",
+		FirstName: "Reply",
+		LastName:  "User",
+	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
+	initMessage := &tgbotapi.Message{
+		From: testUser,
+		Text: "Initial Text",
+		Chat: testChat,
+	}
+	correct := "<replyUser> [Re test: Initial Text] Response Text"
+
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From:           replyUser,
+			Text:           "Response Text",
+			Chat:           testChat,
+			ReplyToMessage: initMessage,
+		},
+	}
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix:      "<",
+			Suffix:      ">",
+			ReplyPrefix: "[",
+			ReplySuffix: "]",
+			ReplyLength: 15,
+			ChatID:      100,
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	messageHandler(clientObj, updateObj)
+}
+
+func TestMessageReplyZwsp(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+	replyUser := &tgbotapi.User{
+		ID:        2,
+		UserName:  "replyUser",
+		FirstName: "Reply",
+		LastName:  "User",
+	}
+	testChat := &tgbotapi.Chat{
+		ID: 100,
+	}
+	initMessage := &tgbotapi.Message{
+		From: testUser,
+		Text: "Initial Text",
+		Chat: testChat,
+	}
+	correct := fmt.Sprintf("<%s> [Re %s: Initial Text] Response Text", "r"+"\u200b"+"eplyUser", "t"+"\u200b"+"est")
+
+	updateObj := tgbotapi.Update{
+		Message: &tgbotapi.Message{
+			From:           replyUser,
+			Text:           "Response Text",
+			Chat:           testChat,
+			ReplyToMessage: initMessage,
+		},
+	}
+	clientObj := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix:      "<",
+			Suffix:      ">",
+			ReplyPrefix: "[",
+			ReplySuffix: "]",
+			ReplyLength: 15,
+			ChatID:      100,
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: true,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	messageHandler(clientObj, updateObj)
+}
+
 func TestMessageFromWrongTelegramChat(t *testing.T) {
 	testUser := &tgbotapi.User{
 		ID:        1,
