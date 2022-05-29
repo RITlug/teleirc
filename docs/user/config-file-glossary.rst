@@ -173,6 +173,18 @@ Imgur settings
 **************
 
 ``IMGUR_CLIENT_ID=7d6b00b87043f58``
-    Imgur API client ID value to access Imgur API.
-    Uses a default API key.
-    If you are bridging to a very active Telegram group, *please register your own API key*.
+    Imgur API client ID value to access Imgur API. Uses a default client ID.
+    If you are bridging to a very active Telegram group,
+    *please :ref:`register your own application <imgur-setup>`*.
+
+``IMGUR_CLIENT_SECRET=""``
+    Imgur API client secret.
+    Only needed when :ref:`uploading to an account <imgur-login>`.
+
+``IMGUR_REFRESH_TOKEN=""``
+    Imgur API refresh_token for the account where images should be uploaded.
+    Only needed when :ref:`uploading to an account <imgur-login>`.
+
+``IMGUR_ALBUM_HASH=""``
+    The album hash for the Imgur album uploaded images should belong to.
+    :ref:`How to find this <imgur-album>`
