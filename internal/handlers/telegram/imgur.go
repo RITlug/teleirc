@@ -79,5 +79,10 @@ func getImgurLink(tg *Client, tgLink string) string {
 		tg.logger.LogError("Could not retrieve imgur json data:", err)
 	}
 
+	if resp.Data.Deletehash != "" {
+		deleteLink := "https://imgur.com/delete/" + resp.Data.Deletehash
+		tg.logger.LogInfo("Deletion link for", resp.Data.Link, "is", deleteLink)
+	}
+
 	return resp.Data.Link
 }
