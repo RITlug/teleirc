@@ -68,7 +68,11 @@ type TelegramSettings struct {
 
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
 type ImgurSettings struct {
-	ImgurClientID string `env:"IMGUR_CLIENT_ID" envDefault:"7d6b00b87043f58"`
+	ImgurClientID     string `env:"IMGUR_CLIENT_ID" envDefault:"7d6b00b87043f58"`
+	ImgurClientSecret string `env:"IMGUR_CLIENT_SECRET" envDefault:""`
+	ImgurRefreshToken string `env:"IMGUR_REFRESH_TOKEN" envDefault:""`
+	ImgurAccessToken  string ``
+	ImgurAlbumHash    string `env:"IMGUR_ALBUM_HASH" envDefault:""`
 }
 
 // Settings includes all user-configurable settings for TeleIRC

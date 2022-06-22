@@ -66,3 +66,69 @@ By default, bots cannot see messages unless a person uses a command to interact 
 Since TeleIRC forwards all sent messages from Telegram to IRC, it must see all messages to work.
 
 Messages are not stored or tracked by TeleIRC (but may optionally be logged by an administrator).
+
+
+*****
+Imgur
+*****
+
+.. _imgur-setup:
+
+How do I get an Imgur API Client ID?
+====================================
+
+If you are bridging to a busy telegram group, please register your own application.
+
+Visit Imgur's `application registration page <https://api.imgur.com/oauth2/addclient>`
+to create a new application. Choose a name, set the type to "OAuth 2
+authorization without a callback URL", and enter your email address and a
+description for the app. From the next page, copy the Client ID into your
+configuration file. If you intend to upload to an account (rather than
+anonymously), also copy your client secret.
+
+These can be retrieved later from your `applications page <https://imgur.com/account/settings/apps>`
+
+.. _imgur-login:
+
+How do I upload to my Imgur account, instead of anonymously?
+============================================================
+
+If you only configure a Client ID, uploaded images will not be linked with any
+account. If you want them to belong to an account, in addition to the Client ID
+above you will need to put your app's **client secret** into the configuration
+file and connect TeleIRC to your Imgur account using OAuth2. Replace the
+`client_id` parameter in this link with yours and then visit it
+to authorize the app.
+
+```
+https://api.imgur.com/oauth2/authorize?response_type=token&client_id=YOUR_CLIENT_ID
+```
+
+You will then be redirected to the imgur homepage, with some additional
+parameters in the URL:
+
+```
+https://imgur.com/#access_token=e3b0...c442&expires_in=315360000&token_type=bearer&refresh_token=98fc...1c14&account_username=...
+```
+
+From these parameters copy the string of characters after `refresh_token=`, in
+this case `98fc...1c14`, into the `IMGUR_REFRESH_TOKEN` variable in your
+configuration file, then restart the bridge.
+
+.. _imgur-album:
+
+How do I find the album hash?
+=============================
+
+The easiest way is by signing in to Imgur, clicking your name at the top right,
+clicking "Images", opening your browser's developer tools, switching to the
+"Network" tab, and then choosing the album you want from the dropdown on the
+page.
+
+In the network inspector will be a request for a URL like the following:
+
+```
+https://yourname.imgur.com/ajax/images?sort=3&order=0&album=r7bbAyI&page=1&perPage=60
+```
+
+In this example, the album hash is `r7bbAyI`.
