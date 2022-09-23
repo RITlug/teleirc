@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	"regexp"
 
 	"github.com/lrstanley/girc"
 )
