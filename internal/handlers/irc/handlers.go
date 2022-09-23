@@ -2,6 +2,7 @@ package irc
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 	"regexp"
 
@@ -112,8 +113,8 @@ messageHandler handles the PRIVMSG IRC event, which entails both private
 and channel messages. However, it only cares about channel messages
 */
 func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
-	var colorStripper = regexp.MustCompile(`[\x02\x1F\x0F\x16]|\x03(\d\d?(,\d\d?)?)?`);
-	
+	var colorStripper = regexp.MustCompile(`[\x02\x1F\x0F\x16]|\x03(\d\d?(,\d\d?)?)?`)
+
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("messageHandler triggered")
 		// Only send if user is not in blacklist
@@ -132,10 +133,10 @@ func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 				if hasNoForwardPrefix(c, e.Params[1]) {
 					return // sender didn't want this forwarded
 				}
-				
+
 				// Strip of mIRC formatting
-				formatted = colorStripper.ReplaceAllString(formatted, "");
-				
+				formatted = colorStripper.ReplaceAllString(formatted, "")
+
 				c.SendToTg(formatted)
 			}
 		}
