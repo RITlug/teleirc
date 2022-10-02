@@ -882,3 +882,34 @@ func TestMessageFromWrongTelegramChat(t *testing.T) {
 
 	messageHandler(clientObj, updateObj)
 }
+
+func TestLocationHandlerWithLocationEnabled(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+
+	location := &tgbotapi.Location{
+		Latitude:  43.0845274,
+		Longitude: -77.6781174,
+	}
+
+	correct := "test shared their location: (43.0845274, -77.6781174)"
+
+	messageObj := tgbotapi.Message{
+		From:     testUser,
+		Location: location,
+	}
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	locationHandler(clientObj, &messageObj)
+}
