@@ -194,7 +194,7 @@ locationHandler receivers a location object from Telegram, and sends
 a notification to IRC.
 */
 func locationHandler(tg *Client, u *tgbotapi.Message) {
-	if tg.IRCSettings.ShowLocationMessage == false {
+	if !tg.IRCSettings.ShowLocationMessage {
 		return
 	}
 
