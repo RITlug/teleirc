@@ -896,7 +896,7 @@ func TestLocationHandlerWithLocationEnabled(t *testing.T) {
 		Longitude: -77.6781174,
 	}
 
-	correct := "test shared their location: (43.0845274, -77.6781174)"
+	correct := "test shared their location: (43.0845274, -77.6781174)."
 
 	messageObj := tgbotapi.Message{
 		From:     testUser,

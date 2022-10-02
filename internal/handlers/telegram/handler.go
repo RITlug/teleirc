@@ -207,7 +207,7 @@ func locationHandler(tg *Client, u *tgbotapi.Message) {
 	formatted += strconv.FormatFloat(u.Location.Latitude, 'f', -1, 64)
 	formatted += ", "
 	formatted += strconv.FormatFloat(u.Location.Longitude, 'f', -1, 64)
-	formatted += ")"
+	formatted += ")."
 
 	tg.sendToIrc(formatted)
 }
