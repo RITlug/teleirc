@@ -904,10 +904,40 @@ func TestLocationHandlerWithLocationEnabled(t *testing.T) {
 	}
 	clientObj := &Client{
 		IRCSettings: &internal.IRCSettings{
-			ShowZWSP: false,
+			ShowZWSP:            false,
+			ShowLocationMessage: true,
 		},
 		sendToIrc: func(s string) {
 			assert.Equal(t, correct, s)
+		},
+	}
+
+	locationHandler(clientObj, &messageObj)
+}
+
+func TestLocationHandlerWithLocationDisabled(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+
+	location := &tgbotapi.Location{
+		Latitude:  43.0845274,
+		Longitude: -77.6781174,
+	}
+
+	messageObj := tgbotapi.Message{
+		From:     testUser,
+		Location: location,
+	}
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			ShowLocationMessage: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Fail(t, "Setting disabled, this should not have been called")
 		},
 	}
 
