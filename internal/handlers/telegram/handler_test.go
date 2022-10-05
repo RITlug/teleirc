@@ -891,7 +891,8 @@ func TestLocationHandlerWithLocationEnabled(t *testing.T) {
 		LastName:  "123",
 	}
 
-	location := &tgbotapi.Location{
+       // https://pkg.go.dev/github.com/go-telegram-bot-api/telegram-bot-api#Location
+       location := &tgbotapi.Location{
 		Latitude:  43.0845274,
 		Longitude: -77.6781174,
 	}
