@@ -34,6 +34,7 @@ type IRCSettings struct {
 	ShowJoinMessage     bool     `env:"IRC_SHOW_JOIN_MESSAGE" envDefault:"true"`
 	ShowLeaveMessage    bool     `env:"IRC_SHOW_LEAVE_MESSAGE" envDefault:"true"`
 	ShowZWSP            bool     `env:"IRC_SHOW_ZWSP" envDefault:"true"`
+	ShowLocationMessage bool     `env:"IRC_SHOW_LOCATION_MESSAGE" envDefault:"false"`
 	NickServUser        string   `env:"IRC_NICKSERV_USER" envDefault:""`
 	NickServPassword    string   `env:"IRC_NICKSERV_PASS" envDefault:""`
 	NickServService     string   `env:"IRC_NICKSERV_SERVICE" envDefault:""`

@@ -2,6 +2,7 @@ package telegram
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
@@ -42,6 +43,9 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 		case u.Message.Photo != nil:
 			tg.logger.LogDebug("photoHandler triggered")
 			photoHandler(tg, u)
+		case u.Message.Location != nil:
+			tg.logger.LogDebug("locationHandler triggered")
+			locationHandler(tg, u.Message)
 		default:
 			tg.logger.LogWarning("Triggered, but message type is currently unsupported")
 			tg.logger.LogWarning("Unhandled Update:", u)
@@ -181,6 +185,29 @@ func documentHandler(tg *Client, u *tgbotapi.Message) {
 	} else if u.Document.FileName != "" {
 		formatted += " on Telegram with title: " + "'" + u.Document.FileName + "'."
 	}
+
+	tg.sendToIrc(formatted)
+}
+
+/*
+locationHandler receivers a location object from Telegram, and sends
+a notification to IRC.
+*/
+func locationHandler(tg *Client, u *tgbotapi.Message) {
+	if !tg.IRCSettings.ShowLocationMessage {
+		return
+	}
+
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From)
+	formatted := username + " shared their location: ("
+
+	// f means do not use an exponent.
+	// -1 means use the smallest number of digits needed so parseFloat will return f exactly.
+	// 64 to represent a standard 64 bit floating point number.
+	formatted += strconv.FormatFloat(u.Location.Latitude, 'f', -1, 64)
+	formatted += ", "
+	formatted += strconv.FormatFloat(u.Location.Longitude, 'f', -1, 64)
+	formatted += ")."
 
 	tg.sendToIrc(formatted)
 }
