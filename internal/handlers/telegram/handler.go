@@ -120,6 +120,7 @@ joinHandler handles when users join the Telegram group
 func joinHandler(tg *Client, users *[]tgbotapi.User) {
 	if tg.IRCSettings.ShowJoinMessage {
 		for _, user := range *users {
+			user := user
 			username := GetFullUsername(tg.IRCSettings.ShowZWSP, &user)
 			formatted := username + " has joined the Telegram Group!"
 			tg.sendToIrc(formatted)
