@@ -762,39 +762,107 @@ func TestMessageReply(t *testing.T) {
 	testChat := &tgbotapi.Chat{
 		ID: 100,
 	}
-	initMessage := &tgbotapi.Message{
-		From: testUser,
-		Text: "Initial Text",
-		Chat: testChat,
-	}
-	correct := "<replyUser> [Re test: Initial Text] Response Text"
 
-	updateObj := tgbotapi.Update{
-		Message: &tgbotapi.Message{
-			From:           replyUser,
-			Text:           "Response Text",
-			Chat:           testChat,
-			ReplyToMessage: initMessage,
+	tests := []struct {
+		name     string
+		updateFn func() tgbotapi.Update
+		expected string
+	}{
+		{
+			name: "ascii",
+			updateFn: func() tgbotapi.Update {
+				return tgbotapi.Update{
+					Message: &tgbotapi.Message{
+						From: replyUser,
+						Text: "Response Text",
+						Chat: testChat,
+						ReplyToMessage: &tgbotapi.Message{
+							From: testUser,
+							Text: "Initial Text",
+							Chat: testChat,
+						},
+					},
+				}
+			},
+			expected: "<replyUser> [Re test: Initial Text] Response Text",
 		},
-	}
-	clientObj := &Client{
-		Settings: &internal.TelegramSettings{
-			Prefix:      "<",
-			Suffix:      ">",
-			ReplyPrefix: "[",
-			ReplySuffix: "]",
-			ReplyLength: 15,
-			ChatID:      100,
+		{
+			name: "cyrillic-short",
+			updateFn: func() tgbotapi.Update {
+				return tgbotapi.Update{
+					Message: &tgbotapi.Message{
+						From: replyUser,
+						Text: "Response Text",
+						Chat: testChat,
+						ReplyToMessage: &tgbotapi.Message{
+							From: testUser,
+							Text: "Тест",
+							Chat: testChat,
+						},
+					},
+				}
+			},
+			expected: "<replyUser> [Re test: Тест] Response Text",
 		},
-		IRCSettings: &internal.IRCSettings{
-			ShowZWSP: false,
+		{
+			name: "cyrillic-long",
+			updateFn: func() tgbotapi.Update {
+				return tgbotapi.Update{
+					Message: &tgbotapi.Message{
+						From: replyUser,
+						Text: "Response Text",
+						Chat: testChat,
+						ReplyToMessage: &tgbotapi.Message{
+							From: testUser,
+							Text: "Уикипедия е свободна енциклопедия",
+							Chat: testChat,
+						},
+					},
+				}
+			},
+			expected: "<replyUser> [Re test: Уикипедия е сво…] Response Text",
 		},
-		sendToIrc: func(s string) {
-			assert.Equal(t, correct, s)
+		{
+			name: "japanese-long",
+			updateFn: func() tgbotapi.Update {
+				return tgbotapi.Update{
+					Message: &tgbotapi.Message{
+						From: replyUser,
+						Text: "Response Text",
+						Chat: testChat,
+						ReplyToMessage: &tgbotapi.Message{
+							From: testUser,
+							Text: "1234567テストテストテスト",
+							Chat: testChat,
+						},
+					},
+				}
+			},
+			expected: "<replyUser> [Re test: 1234567テストテストテス…] Response Text",
 		},
 	}
 
-	messageHandler(clientObj, updateObj)
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			clientObj := &Client{
+				Settings: &internal.TelegramSettings{
+					Prefix:      "<",
+					Suffix:      ">",
+					ReplyPrefix: "[",
+					ReplySuffix: "]",
+					ReplyLength: 15,
+					ChatID:      100,
+				},
+				IRCSettings: &internal.IRCSettings{
+					ShowZWSP: false,
+				},
+				sendToIrc: func(actual string) {
+					assert.Equal(t, test.expected, actual)
+				},
+			}
+			messageHandler(clientObj, test.updateFn())
+		})
+	}
 }
 
 func TestMessageReplyZwsp(t *testing.T) {
@@ -891,8 +959,8 @@ func TestLocationHandlerWithLocationEnabled(t *testing.T) {
 		LastName:  "123",
 	}
 
-       // https://pkg.go.dev/github.com/go-telegram-bot-api/telegram-bot-api#Location
-       location := &tgbotapi.Location{
+	// https://pkg.go.dev/github.com/go-telegram-bot-api/telegram-bot-api#Location
+	location := &tgbotapi.Location{
 		Latitude:  43.0845274,
 		Longitude: -77.6781174,
 	}
