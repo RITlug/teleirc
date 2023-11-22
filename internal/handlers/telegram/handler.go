@@ -97,8 +97,8 @@ func replyHandler(tg *Client, u tgbotapi.Update) {
 	replyUser := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.ReplyToMessage.From)
 
 	// Only show a portion of the reply text
-	if len(replyText) > tg.Settings.ReplyLength {
-		replyText = replyText[0:tg.Settings.ReplyLength] + "…"
+	if replyTextAsRunes := []rune(replyText); len(replyTextAsRunes) > tg.Settings.ReplyLength {
+		replyText = string(replyTextAsRunes[:tg.Settings.ReplyLength]) + "…"
 	}
 
 	formatted := fmt.Sprintf("%s%s%s %sRe %s: %s%s %s",
