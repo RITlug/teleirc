@@ -2,7 +2,9 @@ package irc
 
 import (
 	"net"
+	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/lrstanley/girc"
 	"github.com/ritlug/teleirc/internal"
@@ -91,7 +93,27 @@ func (c Client) ConnectDialer(dialer girc.Dialer) error {
 Message sends a PRIVMSG to target (either channel, service, or user).
 */
 func (c Client) Message(channel string, msg string) {
-	c.Cmd.Message(channel, msg)
+	maxLength := c.MaxEventLength()
+
+	if len(msg) <= maxLength {
+		c.Cmd.Message(channel, msg)
+		return
+	}
+
+	var msgPart strings.Builder
+
+	for _, r := range msg {
+		if nextLen := msgPart.Len() + utf8.RuneLen(r); nextLen > maxLength {
+			c.Cmd.Message(channel, msgPart.String())
+			msgPart.Reset()
+		}
+
+		msgPart.WriteRune(r)
+	}
+
+	if msgPart.Len() > 0 {
+		c.Cmd.Message(channel, msgPart.String())
+	}
 }
 
 /*
