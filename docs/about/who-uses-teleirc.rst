@@ -14,6 +14,8 @@ The following projects and communities use RITlug TeleIRC v2.0.0 or later:
 
 - mIRC Italia Crew (`@mircitaliacrew <https://t.me/mircitaliacrew>`_ | `#mircitaliacrew <https://webchat.freenode.net/#mircitaliacrew>`_)
 
+- `Ruby Brasil <https://github.com/guru-br>`_ (`@RubyBrasilOffTopic <https://t.me/RubyBrasilOffTopic>`_ | `#rubybr <https://web.libera.chat/#rubybr>`_)
+
 
 ******
 v1.x.x

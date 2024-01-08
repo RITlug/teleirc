@@ -37,7 +37,8 @@ Adds ZWSP to username to prevent username pinging across platform.
 func GetFullUserZwsp(u *tgbotapi.User) string {
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
-	return u.FirstName + " (@" + u.UserName[:1] + "\u200b" + u.UserName[1:] + ")"
+	userNameAsRunes := []rune(u.UserName)
+	return u.FirstName + " (@" + string(userNameAsRunes[:1]) + "\u200b" + string(userNameAsRunes[1:]) + ")"
 }
 
 /*
@@ -47,7 +48,8 @@ username.
 func ZwspUsername(u *tgbotapi.User) string {
 	// Add ZWSP to prevent pinging across platforms
 	// See https://github.com/42wim/matterbridge/issues/175
-	return u.UserName[:1] + "\u200b" + u.UserName[1:]
+	userNameAsRunes := []rune(u.UserName)
+	return string(userNameAsRunes[:1]) + "\u200b" + string(userNameAsRunes[1:])
 }
 
 /*
