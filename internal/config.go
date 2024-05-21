@@ -30,6 +30,7 @@ type IRCSettings struct {
 	SendStickerEmoji    bool     `env:"IRC_SEND_STICKER_EMOJI" envDefault:"true"`
 	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"true"`
 	Prefix              string   `env:"IRC_PREFIX" envDefault:"<"`
+	PingTimeout         int64    `env:"IRC_PING_TIMEOUT" envDefault:"60000000000"`
 	Suffix              string   `env:"IRC_SUFFIX" envDefault:">"`
 	ShowJoinMessage     bool     `env:"IRC_SHOW_JOIN_MESSAGE" envDefault:"true"`
 	ShowLeaveMessage    bool     `env:"IRC_SHOW_LEAVE_MESSAGE" envDefault:"true"`

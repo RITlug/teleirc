@@ -11,11 +11,12 @@ import (
 
 func TestNewClientBasic(t *testing.T) {
 	ircSettings := &internal.IRCSettings{
-		Server:   "irc.batcave.intl",
-		Port:     1337,
-		BotIdent: "alfred",
-		BotName:  "Alfred Pennyworth",
-		BotNick:  "alfred-p",
+		Server:      "irc.batcave.intl",
+		Port:        1337,
+		BotIdent:    "alfred",
+		BotName:     "Alfred Pennyworth",
+		BotNick:     "alfred-p",
+		PingTimeout: 60000000000,
 	}
 	logger := internal.Debug{
 		DebugLevel: false,
@@ -24,12 +25,13 @@ func TestNewClientBasic(t *testing.T) {
 
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
-		Server:    "irc.batcave.intl",
-		Port:      1337,
-		Nick:      "alfred-p",
-		Name:      "Alfred Pennyworth",
-		User:      "alfred",
-		PingDelay: expectedPing,
+		Server:      "irc.batcave.intl",
+		Port:        1337,
+		Nick:        "alfred-p",
+		Name:        "Alfred Pennyworth",
+		User:        "alfred",
+		PingDelay:   expectedPing,
+		PingTimeout: 60000000000,
 	}
 	assert.Equal(t, client.Settings, ircSettings, "Client settings should be properly set")
 	assert.Equal(t, client.Config, expectedConfig, "girc config should be properly set")
@@ -41,6 +43,7 @@ func TestNewClientFull(t *testing.T) {
 		Server:           "irc.batcave.intl",
 		ServerPass:       "BatmanNeverDies!",
 		Port:             1337,
+		PingTimeout:      60000000000,
 		BotIdent:         "alfred",
 		BotName:          "Alfred Pennyworth",
 		BotNick:          "alfred-p",
@@ -53,14 +56,15 @@ func TestNewClientFull(t *testing.T) {
 	client := NewClient(ircSettings, nil, logger)
 	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
-		Bind:       "129.21.13.37",
-		Server:     "irc.batcave.intl",
-		ServerPass: "BatmanNeverDies!",
-		Port:       1337,
-		Nick:       "alfred-p",
-		Name:       "Alfred Pennyworth",
-		User:       "alfred",
-		PingDelay:  expectedPing,
+		Bind:        "129.21.13.37",
+		Server:      "irc.batcave.intl",
+		ServerPass:  "BatmanNeverDies!",
+		Port:        1337,
+		Nick:        "alfred-p",
+		Name:        "Alfred Pennyworth",
+		User:        "alfred",
+		PingDelay:   expectedPing,
+		PingTimeout: 60000000000,
 		SASL: &girc.SASLPlain{
 			User: "irc_moderators",
 			Pass: "ProtectGotham",
