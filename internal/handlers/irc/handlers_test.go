@@ -937,7 +937,8 @@ func TestMessageHandlerInBlacklist(t *testing.T) {
 	mockClient.
 		EXPECT().
 		IRCSettings().
-		Return(&ircSettings)
+		Return(&ircSettings).
+		MaxTimes(2)
 	mockClient.
 		EXPECT().
 		SendToTg(gomock.Any()).
@@ -972,7 +973,8 @@ func TestMessageHandlerNotChannel(t *testing.T) {
 	mockClient.
 		EXPECT().
 		IRCSettings().
-		Return(&ircSettings)
+		Return(&ircSettings).
+		MaxTimes(2)
 	mockClient.
 		EXPECT().
 		SendToTg(gomock.Any()).
@@ -1043,6 +1045,7 @@ func TestMessageHandlerFull(t *testing.T) {
 		IRCBlacklist: []string{},
 		Prefix:       "<<",
 		Suffix:       ">>",
+		Channel:      "#testchannel",
 	}
 
 	mockClient := NewMockClientInterface(ctrl)
@@ -1072,6 +1075,49 @@ func TestMessageHandlerFull(t *testing.T) {
 		Command: girc.PRIVMSG,
 		Params: []string{
 			"#testchannel",
+			"a message",
+		},
+	})
+}
+
+func TestMessageHandlerWrongChannel(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	ircSettings := internal.IRCSettings{
+		IRCBlacklist: []string{},
+		Channel:      "#testchannel",
+	}
+
+	mockClient := NewMockClientInterface(ctrl)
+	mockLogger := internal.NewMockDebugLogger(ctrl)
+	mockClient.
+		EXPECT().
+		Logger().
+		Return(mockLogger)
+	mockLogger.
+		EXPECT().
+		LogDebug(gomock.Eq("messageHandler triggered"))
+	mockClient.
+		EXPECT().
+		IRCSettings().
+		Return(&ircSettings).
+		MaxTimes(2)
+	mockClient.
+		EXPECT().
+		SendToTg(gomock.Any()).
+		MaxTimes(0)
+
+	myHandler := messageHandler(mockClient)
+	myHandler(&girc.Client{}, girc.Event{
+		Source: &girc.Source{
+			Name: "SomeUser",
+		},
+		// Need to be PRIVMSG
+		Command: girc.PRIVMSG,
+		Params: []string{
+			"#otherchannel",
 			"a message",
 		},
 	})
