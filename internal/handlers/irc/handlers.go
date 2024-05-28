@@ -113,13 +113,16 @@ and channel messages. However, it only cares about channel messages
 */
 func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 	var colorStripper = regexp.MustCompile(`[\x02\x1F\x0F\x16]|\x03(\d\d?(,\d\d?)?)?`)
+	var ircChannel = c.IRCSettings().Channel
 
 	return func(gc *girc.Client, e girc.Event) {
 		c.Logger().LogDebug("messageHandler triggered")
-		// Only send if user is not in blacklist
-		if !(checkBlacklist(c, e.Source.Name)) {
 
-			if e.IsFromChannel() {
+		// Only send if user is not in blacklist ...
+		if !(checkBlacklist(c, e.Source.Name)) {
+			// ... and if the channel matches. Array index is safe because IsFromChannel
+			// itself does it this way.
+			if e.IsFromChannel() && e.Params[0] == ircChannel {
 				formatted := ""
 				if e.IsAction() {
 					msg := e.Last()
