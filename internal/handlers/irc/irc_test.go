@@ -22,14 +22,14 @@ func TestNewClientBasic(t *testing.T) {
 	}
 	client := NewClient(ircSettings, nil, logger)
 
-	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
-		Server:    "irc.batcave.intl",
-		Port:      1337,
-		Nick:      "alfred-p",
-		Name:      "Alfred Pennyworth",
-		User:      "alfred",
-		PingDelay: expectedPing,
+		Server:      "irc.batcave.intl",
+		Port:        1337,
+		Nick:        "alfred-p",
+		Name:        "Alfred Pennyworth",
+		User:        "alfred",
+		PingDelay:   20 * time.Second,
+		PingTimeout: time.Minute,
 	}
 	assert.Equal(t, client.Settings, ircSettings, "Client settings should be properly set")
 	assert.Equal(t, client.Config, expectedConfig, "girc config should be properly set")
@@ -51,16 +51,16 @@ func TestNewClientFull(t *testing.T) {
 		DebugLevel: false,
 	}
 	client := NewClient(ircSettings, nil, logger)
-	expectedPing, _ := time.ParseDuration("20s")
 	expectedConfig := girc.Config{
-		Bind:       "129.21.13.37",
-		Server:     "irc.batcave.intl",
-		ServerPass: "BatmanNeverDies!",
-		Port:       1337,
-		Nick:       "alfred-p",
-		Name:       "Alfred Pennyworth",
-		User:       "alfred",
-		PingDelay:  expectedPing,
+		Bind:        "129.21.13.37",
+		Server:      "irc.batcave.intl",
+		ServerPass:  "BatmanNeverDies!",
+		Port:        1337,
+		Nick:        "alfred-p",
+		Name:        "Alfred Pennyworth",
+		User:        "alfred",
+		PingDelay:   20 * time.Second,
+		PingTimeout: time.Minute,
 		SASL: &girc.SASLPlain{
 			User: "irc_moderators",
 			Pass: "ProtectGotham",
