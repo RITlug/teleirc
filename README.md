@@ -27,7 +27,7 @@ A public Telegram supergroup and IRC channel (on Freenode) are available for tes
 Our developer community is found in these channels.
 
 * **[Telegram](https://t.me/teleirc)**
-* **[IRC](https://webchat.freenode.net/?channels=rit-lug-teleirc)** (#rit-lug-teleirc @ irc.freenode.net)
+* **[IRC](https://web.libera.chat/#rit-teleirc)** (#rit-teleirc @ irc.libera.chat)
 
 
 ## Contribute to TeleIRC
