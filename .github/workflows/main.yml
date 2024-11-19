@@ -1,54 +1,31 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+name: Build and Test TeleIRC
 
-name: Docker
+on: [push]
 
-on:
-  push:
-    branches: [main]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
+# Cancel job in favor of newer commit
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: go-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build-and-push-image:
-    name: Build and Push Image
-
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    strategy:
+      matrix:
+        go-version: [ '1.18', '1.19', '1.20' ]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: ${{ matrix.go-version }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build TeleIRC
+      run: ./build_binary.sh
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          context: .
-          file: ./deployments/container/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+    - name: Test
+      run: go test -v ./...
