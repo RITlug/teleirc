@@ -165,9 +165,14 @@ func photoHandler(tg *Client, u tgbotapi.Update) {
 	if caption == "" {
 		caption = "No caption provided."
 	}
-	formatted := "'" + caption + "' uploaded by " + username + ": " + link
 
-	tg.sendToIrc(formatted)
+	// TeleIRC can fail to upload to Imgur
+	if link == "" {
+		tg.logger.LogError("Failed imgur photo upload for", username)
+	} else {
+		formatted := "'" + caption + "' uploaded by " + username + ": " + link
+		tg.sendToIrc(formatted)
+	}
 }
 
 /*
