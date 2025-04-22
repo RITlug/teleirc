@@ -17,13 +17,13 @@ Note this does not apply to v1.x.x releases; see the [v1.3.4 documentation][1].
     1. [Configure a Freenode IRC channel](#configure-a-freenode-irc-channel)
     1. [Configure Imgur Image Upload (IIU)](#configure-imgur-image-upload-iiu)
 1. [Deployment Guide](#deployment-guide)
+    1. [Run container](#run-container)
     1. [Run binary](#run-binary)
         1. [Pre-requirements](#pre-requirements)
         1. [Build TeleIRC](#build-teleirc)
         1. [Configuration](#configuration)
         1. [Start bot](#start-bot)
             1. [Example Linux setup](#example-linux-setup)
-    1. [Run container](#run-container)
 
 
 ## Overview
@@ -110,6 +110,7 @@ Note that images will be publicly visible on the Internet if the URL is known.
 
 By default, TeleIRC uses the TeleIRC-registered Imgur API key.
 We highly recommend registering your own API key in high-traffic channels.
+Otherwise, API rate limiting can occur.
 
 To register your own Imgur API key, follow these steps:
 
@@ -122,8 +123,24 @@ To register your own Imgur API key, follow these steps:
 
 There are two ways to deploy TeleIRC persistently:
 
-1. Run Go binary
 1. Run TeleIRC in a container
+1. Run Go binary
+
+
+### Run container
+
+Containers are the easiest way to deploy TeleIRC.
+Dockerfiles and other deployment resources are available in ``deployments/``.
+
+#### Build TeleIRC
+
+1. Ensure you have [docker](https://www.docker.com/) installed
+1. Enter container deployment directory (`cd deployments/container`)
+1. Build image (`./build_image.sh`)
+1. Run container (`docker run teleirc:latest`)
+
+**NOTE**:
+**This deployment method assumes you have a complete .env file**
 
 
 ### Run binary
@@ -137,7 +154,7 @@ If you use a pre-built binary from a [GitHub Release][14], skip to [_Configurati
 #### Pre-requirements
 
 - git
-- go (v1.14 and v1.15 supported)
+- go (v1.15 through v1.22 supported)
 
 Packages for these pre-requirements are available on most `*NIX` distributions.
 Check your distribution documentation for more info on how to install these packages.
@@ -171,6 +188,7 @@ To start the bot, you need to consider the following factors:
 1. Where will the binary go?
 1. Where is your config file on the system?
 1. How will you automate the bot to start-up automatically after a system reboot?
+
 
 ##### Example Linux setup
 
@@ -215,23 +233,6 @@ $ sudo systemctl enable --now teleirc@example.service
 
 To run multiple instances, create other files in /etc/teleirc/ and enable the
 service named teleirc@FILENAME.service.
-
-
-## Run container
-
-Containers are another way to deploy TeleIRC.
-Dockerfiles and other deployment resources are available in ``deployments/``.
-
-**NOTE**:
-At time of v2.0.0 release, a container image is available, but mostly untested.
-Feeling bold and adventurous?
-Take our `Dockerfile` for a spin and [let us know on GitHub][12] how it works for you.
-
-[_Download Dockerfile (beta)_][13]
-
-<!-- #TODO
-Needs better documentation by someone with experience running and using the container image for TeleIRC v2.
--->
 
 
 [1]: /en/v1.3.4/
