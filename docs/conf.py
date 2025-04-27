@@ -49,7 +49,7 @@ master_doc = 'index'
 project = 'RITlug TeleIRC'
 copyright = '2018-2020 CC BY 4.0'
 author = \
-    'Justin W. Flory, ' \
+    'Justin Wheeler, ' \
     'Kennedy Kong, ' \
     'Kevin Assogba, ' \
     'Nicholas Jones, ' \
