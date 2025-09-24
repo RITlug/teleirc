@@ -127,7 +127,7 @@ func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 				if e.IsAction() {
 					msg := e.Last()
 					// Strips out ACTION word from text
-					formatted = "* " + e.Source.Name + " " + msg[8:len(msg)-1]
+					formatted = "* " + e.Source.Name + msg[7:len(msg)-1]
 				} else {
 					formatted = c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
 				}
