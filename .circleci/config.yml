@@ -9,9 +9,9 @@ version: 2.1
 workflows:
   main:
     jobs:
-      - go_1-15
-      - go_1-16
-      - go_1-17
+      - go_1-18
+      - go_1-19
+      - go_1-20
       - build_docs
 
 commands:
@@ -34,21 +34,21 @@ commands:
           command: go test -coverprofile=c.out ./...
 
 jobs:
-  go_1-15:
+  go_1-18:
     docker:
-      - image: cimg/go:1.15
+      - image: cimg/go:1.18
     steps:
       - golintci-lint
       - teleirc-test
-  go_1-16:
+  go_1-19:
     docker:
-      - image: cimg/go:1.16
+      - image: cimg/go:1.19
     steps:
       - golintci-lint
       - teleirc-test
-  go_1-17:
+  go_1-20:
     docker:
-      - image: cimg/go:1.17
+      - image: cimg/go:1.20
     steps:
       - golintci-lint
       - run:
