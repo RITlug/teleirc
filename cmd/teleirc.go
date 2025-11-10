@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"strconv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
@@ -14,8 +15,8 @@ import (
 )
 
 var (
-	flagPath    = flag.String("conf", ".env", "config file")
-	flagDebug   = flag.Bool("debug", false, "enable debugging output")
+	flagPath    = flag.String("conf", "", "config file")
+	flagDebug   = flag.Bool("debug", func() bool { env, _ := strconv.ParseBool(os.Getenv("DEBUG")); return env }(), "enable debugging output")
 	flagVersion = flag.Bool("version", false, "displays current version of TeleIRC")
 	version     string
 )

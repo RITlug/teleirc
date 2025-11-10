@@ -16,8 +16,6 @@ RUN adduser -D teleirc-user
 USER teleirc-user
 
 COPY --from=builder /app/teleirc /opt/teleirc/teleirc
-COPY --from=builder /app/.env /opt/teleirc/conf
 
 WORKDIR /opt/teleirc
 ENTRYPOINT [ "./teleirc" ]
-CMD [ "-conf", "/opt/teleirc/conf", "-debug", "true" ]
