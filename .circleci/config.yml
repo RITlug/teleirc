@@ -69,7 +69,13 @@ jobs:
     docker:
       - image: cimg/go:1.25
     steps:
-      - golintci-lint
+      - checkout
+      - run:
+          name: Download and install golintci-lint.
+          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.62.2
+      - run:
+          name: Run Go linter checks.
+          command: golangci-lint run
       - run:
           name: Initialize Code Climate test-reporter
           command: |
