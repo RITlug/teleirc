@@ -12,6 +12,7 @@ workflows:
       - go_1-18
       - go_1-19
       - go_1-20
+      - go_1-25
       - build_docs
 
 commands:
@@ -19,7 +20,7 @@ commands:
     description: Run linter checks on TeleIRC.
     steps:
       - checkout
-      - run: 
+      - run:
           name: Download and install golintci-lint.
           command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.43.0
       - run:
@@ -49,6 +50,24 @@ jobs:
   go_1-20:
     docker:
       - image: cimg/go:1.20
+    steps:
+      - golintci-lint
+      - run:
+          name: Initialize Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /tmp/cc-test-reporter
+            chmod +x /tmp/cc-test-reporter
+            /tmp/cc-test-reporter before-build
+      - teleirc-test
+      - run:
+          name: Upload test coverage results to Code Climate.
+          # sed removes the package prefix, which is not a local path in directory
+          command: |
+            sed -i 's/github.com\/ritlug\/teleirc\///g' c.out
+            /tmp/cc-test-reporter after-build
+  go_1-25:
+    docker:
+      - image: cimg/go:1.25
     steps:
       - golintci-lint
       - run:
