@@ -130,7 +130,7 @@ There are two ways to deploy TeleIRC persistently:
 ### Run container
 
 Containers are the easiest way to deploy TeleIRC.
-Dockerfiles and other deployment resources are available in ``deployments/``.
+[Dockerfiles][13] and other deployment resources are available in ``deployments/``.
 
 #### Build TeleIRC
 
@@ -200,15 +200,15 @@ Upstream offers a [systemd unit file][15] to automate TeleIRC on a Linux system 
 This example uses the upstream systemd unit file to automatically run TeleIRC on a Linux system.
 
 This example was tested on a CentOS 8 system and is easily adaptable for other `*NIX` distributions.
-It uses `v2.2.1` as a default:
+It uses `v2.3.0` as a default:
 
 ```sh
 # Download TeleIRC deployment assets from GitHub.
-$ curl --location --output ~/teleirc https://github.com/RITlug/teleirc/releases/download/v2.2.1/teleirc-2.2.1-linux-x86_64
-$ curl --location --output ~/teleirc.sysusers https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/deployments/systemd/teleirc.sysusers
-$ curl --location --output ~/teleirc.tmpfiles https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/deployments/systemd/teleirc.tmpfiles
-$ curl --location --output ~/teleirc@.service https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/deployments/systemd/teleirc@.service
-$ curl --location --output ~/teleirc.env https://raw.githubusercontent.com/RITlug/teleirc/v2.2.1/env.example
+$ curl --location --output ~/teleirc https://github.com/RITlug/teleirc/releases/download/v2.3.0/teleirc-2.3.0-linux-x86_64
+$ curl --location --output ~/teleirc.sysusers https://raw.githubusercontent.com/RITlug/teleirc/v2.3.0/deployments/systemd/teleirc.sysusers
+$ curl --location --output ~/teleirc.tmpfiles https://raw.githubusercontent.com/RITlug/teleirc/v2.3.0/deployments/systemd/teleirc.tmpfiles
+$ curl --location --output ~/teleirc@.service https://raw.githubusercontent.com/RITlug/teleirc/v2.3.0/deployments/systemd/teleirc@.service
+$ curl --location --output ~/teleirc.env https://raw.githubusercontent.com/RITlug/teleirc/v2.3.0/env.example
 
 # Install TeleIRC files and user
 $ sudo install -Dm755 -o root -g root ~/teleirc /usr/local/bin/teleirc
