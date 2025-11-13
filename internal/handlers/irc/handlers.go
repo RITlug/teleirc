@@ -2,6 +2,7 @@ package irc
 
 import (
 	"fmt"
+	"html"
 	"regexp"
 	"strings"
 
@@ -129,7 +130,13 @@ func messageHandler(c ClientInterface) func(*girc.Client, girc.Event) {
 					// Strips out ACTION word from text
 					formatted = "* " + e.Source.Name + msg[7:len(msg)-1]
 				} else {
-					formatted = c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
+					if c.TgSettings().QuoteNick {
+						ircNicknameFormatted := c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix
+						ircMessageNoHtml := regexp.MustCompile(`<.*?>`).ReplaceAllString(e.Params[1], "")
+						formatted = "<blockquote>" + html.EscapeString(ircNicknameFormatted) + "</blockquote>\n" + html.EscapeString(strings.NewReplacer(">", "", "<", "").Replace(ircMessageNoHtml))
+					} else {
+						formatted = c.IRCSettings().Prefix + e.Source.Name + c.IRCSettings().Suffix + " " + e.Params[1]
+					}
 				}
 
 				if hasNoForwardPrefix(c, e.Params[1]) {
