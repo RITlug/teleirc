@@ -34,6 +34,9 @@ SendMessage sends a message to the Telegram channel specified in the settings
 func (tg *Client) SendMessage(msg string) {
 	newMsg := tgbotapi.NewMessage(tg.Settings.ChatID, "")
 	newMsg.Text = msg
+	if tg.Settings.QuoteNick {
+		newMsg.ParseMode = "HTML"
+	}
 
 	if _, err := tg.api.Send(newMsg); err != nil {
 		var attempts int = 0
