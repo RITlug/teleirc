@@ -6,7 +6,6 @@ version: '3'
 services:
   teleirc:
     build:
-      context: ../../
-      dockerfile: ./deployments/container/Dockerfile
-    env_file: ../../.env
+      context: https://github.com/RITlug/teleirc.git
+      dockerfile: deployments/container/Dockerfile
     user: teleirc
