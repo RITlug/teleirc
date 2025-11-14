@@ -66,6 +66,7 @@ type TelegramSettings struct {
 	ShowNickMessage       bool     `env:"SHOW_NICK_MESSAGE" envDefault:"false"`
 	ShowDisconnectMessage bool     `env:"SHOW_DISCONNECT_MESSAGE" envDefault:"false"`
 	MaxMessagePerMinute   int      `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
+	PreferName            bool     `env:"PREFER_FIRSTNAME" envDefault:"false"`
 	QuoteNick             bool     `env:"QUOTE_NICKNAME" envDefault:"false"`
 }
 

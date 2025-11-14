@@ -190,6 +190,10 @@ Telegram settings
 ``SHOW_DISCONNECT_MESSAGE=true``
     Sends a message to Telegram when the bot disconnects from the IRC side.
 
+``PREFER_FIRSTNAME=false``
+    Prefer users adjustable «First name» from Telegram, over their @usernames, when sending messages to IRC channel
+    (Fallback will still be the @username if first name is not available)
+
 ``QUOTE_NICKNAME=false``
     Place IRC nickname in a blockquote section of the message to Telegram, instead of inline message prefix.
 
