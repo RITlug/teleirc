@@ -3,8 +3,21 @@ Config file glossary
 ####################
 
 This page is a glossary of different settings in the ``env.example`` configuration file.
-All values shown are the default settings.
-This glossary is intended for advanced users.
+
+.. note::
+    All values shown are the default settings.
+    This glossary is intended for advanced users.
+
+
+************
+General settings
+************
+
+Configuration settings
+========================
+
+``DEBUG=false``
+    (Optional) Verbose logging, enabled when set to `true`
 
 
 ************
