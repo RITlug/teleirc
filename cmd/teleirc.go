@@ -15,8 +15,10 @@ import (
 )
 
 var (
-	flagPath    = flag.String("conf", "", "config file")
+	flagPath    = flag.String("conf", ".env", "config file")
 	flagDebug   = flag.Bool("debug", func() bool { env, _ := strconv.ParseBool(os.Getenv("DEBUG")); return env }(), "enable debugging output")
+	flagMuteIrc = flag.Bool("muteirc", func() bool { env, _ := strconv.ParseBool(os.Getenv("DISABLE_RELAY_TO_IRC")); return env }(), "disable Telegram messages to IRC")
+	flagMuteTg  = flag.Bool("mutetelegram", func() bool { env, _ := strconv.ParseBool(os.Getenv("DISABLE_RELAY_TO_TELEGRAM")); return env }(), "disable IRC messages to Telegram")
 	flagVersion = flag.Bool("version", false, "displays current version of TeleIRC")
 	version     string
 )
@@ -34,6 +36,13 @@ func main() {
 	// Notify that logger is enabled
 	logger.LogDebug("Debug mode enabled!")
 
+	if *flagMuteIrc {
+		logger.LogInfo("Relaying messages to IRC is turned OFF!")
+	}
+	if *flagMuteTg {
+		logger.LogInfo("Relaying messages to Telegram is turned OFF!")
+	}
+
 	settings, err := internal.LoadConfig(*flagPath)
 	if err != nil {
 		logger.LogError(err)
@@ -44,10 +53,10 @@ func main() {
 	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
 
 	var tgapi *tgbotapi.BotAPI
-	tgClient := tg.NewClient(&settings.Telegram, &settings.IRC, &settings.Imgur, tgapi, logger)
+	tgClient := tg.NewClient(&settings.Telegram, &settings.IRC, &settings.Imgur, tgapi, logger, *flagMuteIrc)
 	tgChan := make(chan error)
 
-	ircClient := irc.NewClient(&settings.IRC, &settings.Telegram, logger)
+	ircClient := irc.NewClient(&settings.IRC, &settings.Telegram, logger, *flagMuteTg)
 	ircChan := make(chan error)
 
 	go ircClient.StartBot(ircChan, tgClient.SendMessage)

@@ -19,6 +19,12 @@ Configuration settings
 ``DEBUG=false``
     (Optional) Verbose logging, enabled when set to `true`
 
+``DISABLE_RELAY_TO_IRC=false``
+    (Optional) Fully disables bridging messages from Telegram → IRC when set to `true`
+
+``DISABLE_RELAY_TO_TELEGRAM=false``
+    (Optional) Fully disables bridging messages from IRC → Telegram when set to `true`
+
 
 ************
 IRC settings
