@@ -97,6 +97,9 @@ Message settings
 ``IRC_SEND_DOCUMENT=false``
     Send documents and files from Telegram to IRC (`why is this false by default? <https://github.com/RITlug/teleirc/issues/115>`_)
 
+``IRC_SEND_PHOTO=true``
+    All photos which the Telegram Bot receives are uploaded to imgur, and an imgur-link is then posted to IRC
+
 ``IRC_EDITED_PREFIX="(edited) "``
     Prefix to prepend to messages when a user edits a Telegram message and it is resent to IRC
 

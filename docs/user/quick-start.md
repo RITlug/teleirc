@@ -101,17 +101,23 @@ If your IRC channel is on the Freenode IRC network, use these exact commands to 
 1. `/query ChanServ ACCESS #channel ADD *!*@freenode/staff/* +Aiotv`
 1. `/query ChanServ ACCESS #channel ADD <bot NickServ account or hostmask> +V`
 
-### Configure Imgur Image Upload (IIU)
+### Adjust default Imgur Image Upload (IIU)
 
-_By default_, TeleIRC uploads images sent to the Telegram group to [Imgur][7].
 Since IRC does not support images, Imgur is an intermediary approach to sending pictures sent on Telegram over to IRC.
-Note that images will be publicly visible on the Internet if the URL is known.
-[See context][8] for why Imgur is enabled by default.
+
+> [!IMPORTANT]
+> _By default_, all images the Telegram Bot reads are uploaded by TeleIRC to [Imgur][7].
+> [See context][8] for why Imgur upload is enabled by default.
 
 By default, TeleIRC uses the TeleIRC-registered Imgur API key.
 We highly recommend registering your own API key in high-traffic channels.
 Otherwise, API rate limiting can occur.
 
+#### Optionally disable all Imgur image uploads from Telegram
+
+* Set `IRC_SEND_PHOTO` to `false` in your `.env` file
+
+#### Alternatively use your own Imgur API details
 To register your own Imgur API key, follow these steps:
 
 1. Create an Imgur account

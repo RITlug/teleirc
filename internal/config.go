@@ -28,7 +28,8 @@ type IRCSettings struct {
 	BotName             string   `env:"IRC_BOT_REALNAME" envDefault:"Powered by TeleIRC <github.com/RITlug/teleirc>"`
 	BotNick             string   `env:"IRC_BOT_NAME,required" validate:"notempty"`
 	SendStickerEmoji    bool     `env:"IRC_SEND_STICKER_EMOJI" envDefault:"true"`
-	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"true"`
+	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"false"`
+	SendPhoto           bool     `env:"IRC_SEND_PHOTO" envDefault:"true"`
 	Prefix              string   `env:"IRC_PREFIX" envDefault:"<"`
 	Suffix              string   `env:"IRC_SUFFIX" envDefault:">"`
 	ShowJoinMessage     bool     `env:"IRC_SHOW_JOIN_MESSAGE" envDefault:"true"`
