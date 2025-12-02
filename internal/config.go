@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/caarlos0/env/v6"
@@ -28,7 +29,8 @@ type IRCSettings struct {
 	BotName             string   `env:"IRC_BOT_REALNAME" envDefault:"Powered by TeleIRC <github.com/RITlug/teleirc>"`
 	BotNick             string   `env:"IRC_BOT_NAME,required" validate:"notempty"`
 	SendStickerEmoji    bool     `env:"IRC_SEND_STICKER_EMOJI" envDefault:"true"`
-	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"true"`
+	SendDocument        bool     `env:"IRC_SEND_DOCUMENT" envDefault:"false"`
+	SendPhoto           bool     `env:"IRC_SEND_PHOTO" envDefault:"true"`
 	Prefix              string   `env:"IRC_PREFIX" envDefault:"<"`
 	Suffix              string   `env:"IRC_SUFFIX" envDefault:">"`
 	ShowJoinMessage     bool     `env:"IRC_SHOW_JOIN_MESSAGE" envDefault:"true"`
@@ -65,6 +67,8 @@ type TelegramSettings struct {
 	ShowNickMessage       bool     `env:"SHOW_NICK_MESSAGE" envDefault:"false"`
 	ShowDisconnectMessage bool     `env:"SHOW_DISCONNECT_MESSAGE" envDefault:"false"`
 	MaxMessagePerMinute   int      `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
+	PreferName            bool     `env:"PREFER_FIRSTNAME" envDefault:"false"`
+	QuoteNick             bool     `env:"QUOTE_NICKNAME" envDefault:"false"`
 }
 
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
@@ -135,13 +139,33 @@ func LoadConfig(path string) (*Settings, error) {
 	if err := validate.RegisterValidation("notempty", validateEmptyString); err != nil {
 		return nil, err
 	}
-	// Attempt to load environment variables from path if path was provided
-	if path != ".env" && path != "" {
-		if err := godotenv.Load(path); err != nil {
-			return nil, err
+	// If a path was provided, try to load it.
+	if path != "" {
+		if info, err := os.Stat(path); err == nil {
+			// If the path is a directory, look for <path>/.env.
+			if info.IsDir() {
+				envFile := filepath.Join(path, defaultPath)
+				if _, err := os.Stat(envFile); err == nil {
+					if err := godotenv.Load(envFile); err != nil {
+						return nil, err
+					}
+				}
+			} else {
+				// path exists and is a file — attempt to load it
+				if err := godotenv.Load(path); err != nil {
+					return nil, err
+				}
+			}
+		} else {
+			// If the provided path does not exist, continue and rely on passed process ENV variables
+			if os.IsNotExist(err) {
+				warning.Printf("config path %q not provided or does not exist; continuing and using process environment variables", path)
+			} else {
+				return nil, err
+			}
 		}
 	} else if _, err := os.Stat(defaultPath); !os.IsNotExist(err) {
-		// Attempt to load from defaultPath if defaultPath exists
+		// Attempt to load from defaultPath if it exists
 		if err := godotenv.Load(defaultPath); err != nil {
 			return nil, err
 		}

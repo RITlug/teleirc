@@ -101,17 +101,23 @@ If your IRC channel is on the Freenode IRC network, use these exact commands to 
 1. `/query ChanServ ACCESS #channel ADD *!*@freenode/staff/* +Aiotv`
 1. `/query ChanServ ACCESS #channel ADD <bot NickServ account or hostmask> +V`
 
-### Configure Imgur Image Upload (IIU)
+### Adjust default Imgur Image Upload (IIU)
 
-_By default_, TeleIRC uploads images sent to the Telegram group to [Imgur][7].
 Since IRC does not support images, Imgur is an intermediary approach to sending pictures sent on Telegram over to IRC.
-Note that images will be publicly visible on the Internet if the URL is known.
-[See context][8] for why Imgur is enabled by default.
+
+> [!IMPORTANT]
+> _By default_, all images the Telegram Bot reads are uploaded by TeleIRC to [Imgur][7].
+> [See context][8] for why Imgur upload is enabled by default.
 
 By default, TeleIRC uses the TeleIRC-registered Imgur API key.
 We highly recommend registering your own API key in high-traffic channels.
 Otherwise, API rate limiting can occur.
 
+#### Optionally disable all Imgur image uploads from Telegram
+
+* Set `IRC_SEND_PHOTO` to `false` in your `.env` file
+
+#### Alternatively use your own Imgur API details
 To register your own Imgur API key, follow these steps:
 
 1. Create an Imgur account
@@ -132,15 +138,35 @@ There are two ways to deploy TeleIRC persistently:
 Containers are the easiest way to deploy TeleIRC.
 Dockerfiles and other deployment resources are available in ``deployments/``.
 
-#### Build TeleIRC
+Ensure you have [docker](https://www.docker.com/) installed.
 
-1. Ensure you have [docker](https://www.docker.com/) installed
+#### Build TeleIRC docker image
+
 1. Enter container deployment directory (`cd deployments/container`)
 1. Build image (`./build_image.sh`)
 1. Run container (`docker run teleirc:latest`)
 
-**NOTE**:
-**This deployment method assumes you have a complete .env file**
+> [!NOTE]
+> This deployment can optionally copy a standalone .env file
+
+
+#### Run TeleIRC using Docker compose
+
+1. Enter container deployment directory (`cd deployments/container`)
+1. Run service using `docker compose`:
+
+```bash
+IRC_SERVER=chat.freenode.net \
+IRC_CHANNEL='#channelname' \
+IRC_BOT_NAME='teleirc' \
+TELEIRC_TOKEN='000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA' \
+TELEGRAM_CHAT_ID='-0000000000000' \
+docker compose up -d teleirc
+```
+
+> [!TIP]
+> Instead you can also add `environment:` entries via `docker-compose.yml`, or pass a standalone `.env` file using the CLI:
+> `docker compose --env-file ../../.env up --build -d teleirc`
 
 
 ### Run binary

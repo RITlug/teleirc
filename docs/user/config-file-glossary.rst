@@ -3,8 +3,27 @@ Config file glossary
 ####################
 
 This page is a glossary of different settings in the ``env.example`` configuration file.
-All values shown are the default settings.
-This glossary is intended for advanced users.
+
+.. note::
+    All values shown are the default settings.
+    This glossary is intended for advanced users.
+
+
+************
+General settings
+************
+
+Configuration settings
+========================
+
+``DEBUG=false``
+    (Optional) Verbose logging, enabled when set to `true`
+
+``DISABLE_RELAY_TO_IRC=false``
+    (Optional) Fully disables bridging messages from Telegram → IRC when set to `true`
+
+``DISABLE_RELAY_TO_TELEGRAM=false``
+    (Optional) Fully disables bridging messages from IRC → Telegram when set to `true`
 
 
 ************
@@ -97,6 +116,9 @@ Message settings
 ``IRC_SEND_DOCUMENT=false``
     Send documents and files from Telegram to IRC (`why is this false by default? <https://github.com/RITlug/teleirc/issues/115>`_)
 
+``IRC_SEND_PHOTO=true``
+    All photos which the Telegram Bot receives are uploaded to imgur, and an imgur-link is then posted to IRC
+
 ``IRC_EDITED_PREFIX="(edited) "``
     Prefix to prepend to messages when a user edits a Telegram message and it is resent to IRC
 
@@ -170,6 +192,13 @@ Telegram settings
 
 ``SHOW_DISCONNECT_MESSAGE=true``
     Sends a message to Telegram when the bot disconnects from the IRC side.
+
+``PREFER_FIRSTNAME=false``
+    Prefer users adjustable «First name» from Telegram, over their @usernames, when sending messages to IRC channel
+    (Fallback will still be the @username if first name is not available)
+
+``QUOTE_NICKNAME=false``
+    Place IRC nickname in a blockquote section of the message to Telegram, instead of inline message prefix.
 
 **************
 Imgur settings
