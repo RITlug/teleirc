@@ -138,15 +138,35 @@ There are two ways to deploy TeleIRC persistently:
 Containers are the easiest way to deploy TeleIRC.
 Dockerfiles and other deployment resources are available in ``deployments/``.
 
-#### Build TeleIRC
+Ensure you have [docker](https://www.docker.com/) installed.
 
-1. Ensure you have [docker](https://www.docker.com/) installed
+#### Build TeleIRC docker image
+
 1. Enter container deployment directory (`cd deployments/container`)
 1. Build image (`./build_image.sh`)
 1. Run container (`docker run teleirc:latest`)
 
-**NOTE**:
-**This deployment method assumes you have a complete .env file**
+> [!NOTE]
+> This deployment can optionally copy a standalone .env file
+
+
+#### Run TeleIRC using Docker compose
+
+1. Enter container deployment directory (`cd deployments/container`)
+1. Run service using `docker compose`:
+
+```bash
+IRC_SERVER=chat.freenode.net \
+IRC_CHANNEL='#channelname' \
+IRC_BOT_NAME='teleirc' \
+TELEIRC_TOKEN='000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA' \
+TELEGRAM_CHAT_ID='-0000000000000' \
+docker compose up -d teleirc
+```
+
+> [!TIP]
+> Instead you can also add `environment:` entries via `docker-compose.yml`, or pass a standalone `.env` file using the CLI:
+> `docker compose --env-file ../../.env up --build -d teleirc`
 
 
 ### Run binary
