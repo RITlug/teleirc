@@ -17,10 +17,16 @@ type Handler = func(tg *Client, u tgbotapi.Update)
 
 /*
 updateHandler takes in a Telegram Update channel, and determines
-which handler to fire off
+which handler to fire off (optionally only if user is in whitelist)
 */
 func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 	for u := range updates {
+		if u.Message != nil && u.Message.From != nil && !checkAllowedUsernames(tg.Settings.UsernameWhitelist, u.Message.From.UserName) {
+			tg.logger.LogDebug("Telegram Username is not in whitelist: " + u.Message.From.UserName)
+			tg.logger.LogDebug("Whitelisted Telegram Users: " + strings.Join(tg.Settings.UsernameWhitelist, ", "))
+			continue
+		}
+
 		switch {
 		case u.Message == nil:
 			tg.logger.LogError("Missing message data")

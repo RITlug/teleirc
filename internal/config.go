@@ -65,6 +65,7 @@ type TelegramSettings struct {
 	ShowNickMessage       bool     `env:"SHOW_NICK_MESSAGE" envDefault:"false"`
 	ShowDisconnectMessage bool     `env:"SHOW_DISCONNECT_MESSAGE" envDefault:"false"`
 	MaxMessagePerMinute   int      `env:"MAX_MESSAGE_PER_MINUTE" envDefault:"20"`
+	UsernameWhitelist     []string `env:"WHITELIST_USERNAMES" envSeparator:","`
 }
 
 // ImgurSettings includes settings related to Imgur uploading for Telegram photos
