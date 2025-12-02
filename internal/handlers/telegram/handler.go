@@ -21,12 +21,10 @@ which handler to fire off (optionally only if user is in whitelist)
 */
 func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 	for u := range updates {
-		if u.Message.From != nil && len(tg.Settings.UsernameWhitelist) > 0 {
-			if !checkAllowedUsernames(tg.Settings.UsernameWhitelist, u.Message.From.UserName) {
-				tg.logger.LogDebug("Telegram Username is not in whitelist: " + u.Message.From.UserName)
-				tg.logger.LogDebug("Whitelisted Telegram Users: " + strings.Join(tg.Settings.UsernameWhitelist, ", "))
-				continue
-			}
+		if u.Message != nil && u.Message.From != nil && !checkAllowedUsernames(tg.Settings.UsernameWhitelist, u.Message.From.UserName) {
+			tg.logger.LogDebug("Telegram Username is not in whitelist: " + u.Message.From.UserName)
+			tg.logger.LogDebug("Whitelisted Telegram Users: " + strings.Join(tg.Settings.UsernameWhitelist, ", "))
+			continue
 		}
 
 		switch {
