@@ -429,8 +429,8 @@ const listTemplateHTML = `<!DOCTYPE html>
                         <!-- Media preview -->
                         <div class="md:w-64 bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-3 min-h-[100px]">
                             {{if eq .ContentType "video"}}
-                            <video controls preload="metadata" class="mini-video w-full">
-                                <source src="{{.RawURL}}" type="video/mp4">
+                            <video controls preload="metadata" class="mini-video w-full" poster="">
+                                <source src="{{.RawURL}}#t=0.5" type="video/mp4">
                             </video>
                             {{else if eq .ContentType "audio"}}
                             <div class="w-full flex flex-col items-center gap-2">
