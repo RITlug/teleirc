@@ -327,10 +327,8 @@ func (s *Server) handleRaw(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update last opened timestamp
-	if err := s.storage.UpdateLastOpened(id); err != nil {
-		log.Printf("[%s] Failed to update last opened: %v", s.config.ServiceName, err)
-	}
+	// Note: We don't update last_opened here because /r/ is used by
+	// mini-players on the list page. Only the player page (/{id}) updates it.
 
 	// Serve the file
 	fullPath := s.storage.GetFullPath(info.Path)
