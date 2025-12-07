@@ -139,10 +139,10 @@ func (d *Database) Get(id string) (*FileRecord, error) {
 func (d *Database) UpdateLastOpened(id string) error {
 	query := `
 	UPDATE files
-	SET last_opened_at = CURRENT_TIMESTAMP, open_count = open_count + 1
+	SET last_opened_at = ?, open_count = open_count + 1
 	WHERE id = ?
 	`
-	_, err := d.db.Exec(query, id)
+	_, err := d.db.Exec(query, time.Now(), id)
 	if err != nil {
 		return fmt.Errorf("failed to update last opened: %w", err)
 	}
