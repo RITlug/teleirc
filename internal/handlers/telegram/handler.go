@@ -46,6 +46,12 @@ func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 		case u.Message.Location != nil:
 			tg.logger.LogDebug("locationHandler triggered")
 			locationHandler(tg, u.Message)
+		case u.Message.Video != nil:
+			tg.logger.LogDebug("videoHandler triggered")
+			videoHandler(tg, u.Message)
+		case u.Message.Voice != nil:
+			tg.logger.LogDebug("voiceHandler triggered")
+			voiceHandler(tg, u.Message)
 		default:
 			tg.logger.LogWarning("Triggered, but message type is currently unsupported")
 			tg.logger.LogWarning("Unhandled Update:", u)
@@ -214,6 +220,38 @@ func locationHandler(tg *Client, u *tgbotapi.Message) {
 	formatted += ", "
 	formatted += strconv.FormatFloat(u.Location.Longitude, 'f', -1, 64)
 	formatted += ")."
+
+	tg.sendToIrc(formatted)
+}
+
+/*
+videoHandler receives a video object from Telegram, and sends
+a notification to IRC.
+*/
+func videoHandler(tg *Client, u *tgbotapi.Message) {
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From)
+	formatted := username + " shared a video"
+	if u.Caption != "" {
+		formatted += " on Telegram with caption: '" + u.Caption + "'."
+	} else {
+		formatted += " on Telegram."
+	}
+
+	tg.sendToIrc(formatted)
+}
+
+/*
+voiceHandler receives a voice message object from Telegram, and sends
+a notification to IRC.
+*/
+func voiceHandler(tg *Client, u *tgbotapi.Message) {
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From)
+	formatted := username + " shared a voice message"
+	if u.Caption != "" {
+		formatted += " on Telegram with caption: '" + u.Caption + "'."
+	} else {
+		formatted += " on Telegram."
+	}
 
 	tg.sendToIrc(formatted)
 }
