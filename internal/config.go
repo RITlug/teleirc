@@ -76,11 +76,19 @@ type ImgurSettings struct {
 	ImgurAlbumHash    string `env:"IMGUR_ALBUM_HASH" envDefault:""`
 }
 
+// MediaShareSettings includes settings for the MediaShare file hosting service
+type MediaShareSettings struct {
+	Enabled  bool   `env:"MEDIASHARE_ENABLED" envDefault:"false"`
+	Endpoint string `env:"MEDIASHARE_ENDPOINT" envDefault:""`
+	APIKey   string `env:"MEDIASHARE_API_KEY" envDefault:""`
+}
+
 // Settings includes all user-configurable settings for TeleIRC
 type Settings struct {
-	IRC      IRCSettings
-	Telegram TelegramSettings
-	Imgur    ImgurSettings
+	IRC        IRCSettings
+	Telegram   TelegramSettings
+	Imgur      ImgurSettings
+	MediaShare MediaShareSettings
 }
 
 func validateEmptyString(fl validator.FieldLevel) bool {
