@@ -86,6 +86,7 @@ func (s *Server) setupRoutes() {
 	s.mux.HandleFunc("/upload", s.handleUpload)
 	s.mux.HandleFunc("/r/", s.handleRaw)
 	s.mux.HandleFunc("/health", s.handleHealth)
+	s.mux.HandleFunc("/main-image", s.handleMainImageFile)
 	s.mux.HandleFunc("/", s.handleRoot)
 }
 
@@ -316,11 +317,18 @@ func (s *Server) handleList(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleMainImage(w http.ResponseWriter, r *http.Request) {
+	// Use /main-image endpoint to serve the actual file
+	imagePath := "/main-image"
+	// If MainImage looks like a URL (starts with http), use it directly
+	if strings.HasPrefix(s.config.MainImage, "http://") || strings.HasPrefix(s.config.MainImage, "https://") {
+		imagePath = s.config.MainImage
+	}
+
 	data := MainImageData{
 		ServiceName: s.config.ServiceName,
 		Lang:        s.i18n.Lang(),
 		T:           s.i18n.GetTranslations(),
-		ImagePath:   s.config.MainImage,
+		ImagePath:   imagePath,
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -328,6 +336,21 @@ func (s *Server) handleMainImage(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[%s] Main image template error: %v", s.config.ServiceName, err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
+}
+
+func (s *Server) handleMainImageFile(w http.ResponseWriter, r *http.Request) {
+	if s.config.MainImage == "" {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Don't serve if it's an external URL
+	if strings.HasPrefix(s.config.MainImage, "http://") || strings.HasPrefix(s.config.MainImage, "https://") {
+		http.NotFound(w, r)
+		return
+	}
+
+	http.ServeFile(w, r, s.config.MainImage)
 }
 
 func (s *Server) handleRaw(w http.ResponseWriter, r *http.Request) {
