@@ -234,8 +234,30 @@ func TestNotFound(t *testing.T) {
 }
 
 func TestListEndpoint(t *testing.T) {
-	server, tmpDir := setupTestServer(t)
+	// Create test server with ShowList enabled
+	tmpDir, err := os.MkdirTemp("", "mediashare_list_test")
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer os.RemoveAll(tmpDir)
+
+	config := &Config{
+		Port:           8080,
+		APIKey:         "testkey",
+		BaseURL:        "http://localhost:8080",
+		StoragePath:    tmpDir,
+		DBPath:         tmpDir + "/test.db",
+		MaxFileSize:    10 * 1024 * 1024,
+		RetentionHours: 72,
+		ServiceName:    "MediaShareTest",
+		Language:       "en",
+		ShowList:       true,
+	}
+
+	server, err := NewServer(config)
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer server.Close()
 
 	// First upload a file

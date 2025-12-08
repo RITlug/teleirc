@@ -22,6 +22,7 @@ type Config struct {
 	RetentionHours int
 	ServiceName    string
 	Language       string
+	ShowList       bool
 }
 
 // Server is the HTTP server for MediaShare.
@@ -192,9 +193,13 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Root path - show file list
+	// Root path - show file list if enabled, otherwise 404
 	if r.URL.Path == "/" {
-		s.handleList(w, r)
+		if s.config.ShowList {
+			s.handleList(w, r)
+		} else {
+			s.sendNotFound(w)
+		}
 		return
 	}
 

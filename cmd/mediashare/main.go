@@ -21,6 +21,7 @@ func main() {
 	retention := flag.Int("retention", 0, "File retention in hours (overrides MEDIASHARE_RETENTION_HOURS)")
 	serviceName := flag.String("name", "", "Service name for branding (overrides MEDIASHARE_SERVICE_NAME)")
 	language := flag.String("lang", "", "Language code pl/en (overrides MEDIASHARE_LANGUAGE)")
+	showList := flag.Bool("showlist", false, "Show file list on main page (overrides MEDIASHARE_SHOW_LIST)")
 	flag.Parse()
 
 	// Load configuration from environment with flag overrides
@@ -34,6 +35,7 @@ func main() {
 		RetentionHours: getEnvInt("MEDIASHARE_RETENTION_HOURS", 72),
 		ServiceName:    getEnv("MEDIASHARE_SERVICE_NAME", "MediaShare"),
 		Language:       getEnv("MEDIASHARE_LANGUAGE", "pl"),
+		ShowList:       getEnvBool("MEDIASHARE_SHOW_LIST", false),
 	}
 
 	// Apply flag overrides
@@ -63,6 +65,9 @@ func main() {
 	}
 	if *language != "" {
 		config.Language = *language
+	}
+	if *showList {
+		config.ShowList = true
 	}
 
 	// Ensure storage directory exists
@@ -102,6 +107,15 @@ func getEnvInt64(key string, defaultValue int64) int64 {
 	if value := os.Getenv(key); value != "" {
 		if intVal, err := strconv.ParseInt(value, 10, 64); err == nil {
 			return intVal
+		}
+	}
+	return defaultValue
+}
+
+func getEnvBool(key string, defaultValue bool) bool {
+	if value := os.Getenv(key); value != "" {
+		if boolVal, err := strconv.ParseBool(value); err == nil {
+			return boolVal
 		}
 	}
 	return defaultValue
