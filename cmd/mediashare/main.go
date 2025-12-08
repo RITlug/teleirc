@@ -22,6 +22,7 @@ func main() {
 	serviceName := flag.String("name", "", "Service name for branding (overrides MEDIASHARE_SERVICE_NAME)")
 	language := flag.String("lang", "", "Language code pl/en (overrides MEDIASHARE_LANGUAGE)")
 	showList := flag.Bool("showlist", false, "Show file list on main page (overrides MEDIASHARE_SHOW_LIST)")
+	mainImage := flag.String("mainimg", "", "Path/URL to main page image (overrides MEDIASHARE_MAIN_IMG)")
 	flag.Parse()
 
 	// Load configuration from environment with flag overrides
@@ -36,6 +37,7 @@ func main() {
 		ServiceName:    getEnv("MEDIASHARE_SERVICE_NAME", "MediaShare"),
 		Language:       getEnv("MEDIASHARE_LANGUAGE", "pl"),
 		ShowList:       getEnvBool("MEDIASHARE_SHOW_LIST", false),
+		MainImage:      getEnv("MEDIASHARE_MAIN_IMG", ""),
 	}
 
 	// Apply flag overrides
@@ -68,6 +70,9 @@ func main() {
 	}
 	if *showList {
 		config.ShowList = true
+	}
+	if *mainImage != "" {
+		config.MainImage = *mainImage
 	}
 
 	// Ensure storage directory exists

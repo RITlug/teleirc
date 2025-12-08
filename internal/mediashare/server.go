@@ -23,6 +23,7 @@ type Config struct {
 	ServiceName    string
 	Language       string
 	ShowList       bool
+	MainImage      string
 }
 
 // Server is the HTTP server for MediaShare.
@@ -193,9 +194,11 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Root path - show file list if enabled, otherwise 404
+	// Root path - show main image, file list, or 404
 	if r.URL.Path == "/" {
-		if s.config.ShowList {
+		if s.config.MainImage != "" {
+			s.handleMainImage(w, r)
+		} else if s.config.ShowList {
 			s.handleList(w, r)
 		} else {
 			s.sendNotFound(w)
@@ -308,6 +311,21 @@ func (s *Server) handleList(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := ListTemplate.Execute(w, data); err != nil {
 		log.Printf("[%s] List template error: %v", s.config.ServiceName, err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	}
+}
+
+func (s *Server) handleMainImage(w http.ResponseWriter, r *http.Request) {
+	data := MainImageData{
+		ServiceName: s.config.ServiceName,
+		Lang:        s.i18n.Lang(),
+		T:           s.i18n.GetTranslations(),
+		ImagePath:   s.config.MainImage,
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	if err := MainImageTemplate.Execute(w, data); err != nil {
+		log.Printf("[%s] Main image template error: %v", s.config.ServiceName, err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 }
