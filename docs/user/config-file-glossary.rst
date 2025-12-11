@@ -24,6 +24,8 @@ Server connection settings
 ``IRC_SERVER=chat.freenode.net``
     IRC server to connect to
 
+.. CAUTION:: Required setting (cannot be empty)
+
 ``IRC_SERVER_PASSWORD=""``
     IRC server password
 
@@ -33,13 +35,13 @@ Server connection settings
 Encryption options
 ------------------
 
-``IRC_USE_SSL=true``
-    Connect to the IRC server with SSL
+``IRC_USE_SSL=false``
+    Connect to the IRC server with SSL when set to `true`
 
-``IRC_CERT_ALLOW_EXPIRED=false``
+``IRC_CERT_ALLOW_EXPIRED=true``
     Allow connecting to IRC server with an expired TLS/SSL certificate
 
-``IRC_CERT_ALLOW_SELFSIGNED=false``
+``IRC_CERT_ALLOW_SELFSIGNED=true``
     Allows TeleIRC to accept TLS/SSL certificates from non-trusted/unknown Certificate Authorities (CA)
 
 Channel settings
@@ -47,6 +49,8 @@ Channel settings
 
 ``IRC_CHANNEL="#channel"``
     IRC channel for bot to join
+
+.. CAUTION:: Required setting (cannot be empty)
 
 ``IRC_CHANNEL_KEY=""``
     IRC channel key, for password-protected channels
@@ -60,6 +64,8 @@ Bot settings
 ``IRC_BOT_NAME=teleirc``
     IRC nickname for bot.
     Most IRC clients and bridges show this nickname.
+
+.. CAUTION:: Required setting (cannot be empty)
 
 ``IRC_BOT_REALNAME="Powered by TeleIRC <github.com/RITlug/teleirc>"``
     IRC ``REALNAME`` for bot.
@@ -85,19 +91,19 @@ NickServ options
 Message settings
 ================
 
-``IRC_PREFIX="<"``
+``TELEGRAM_MESSAGE_PREFIX="<"``
     Text displayed before Telegram name in IRC
 
-``IRC_SUFFIX=">"``
+``TELEGRAM_MESSAGE_SUFFIX=">"``
     Text displayed after Telegram name in IRC
 
 ``IRC_SEND_STICKER_EMOJI=true``
     Send emojis associated with a sticker to IRC (when a Telegram user sends a sticker)
 
-``IRC_SEND_DOCUMENT=false``
-    Send documents and files from Telegram to IRC (`why is this false by default? <https://github.com/RITlug/teleirc/issues/115>`_)
+``IRC_SEND_DOCUMENT=true``
+    Send documents and files from Telegram to IRC (`why is this true by default? <https://github.com/RITlug/teleirc/issues/115>`_)
 
-``IRC_EDITED_PREFIX="(edited) "``
+``IRC_EDITED_PREFIX="[EDIT] "``
     Prefix to prepend to messages when a user edits a Telegram message and it is resent to IRC
 
 ``IRC_MAX_MESSAGE_LENGTH=400``
@@ -107,8 +113,14 @@ Message settings
 ``IRC_SHOW_ZWSP=true``
     Prevents users with the same Telegram and IRC username from pinging themselves across platforms.
 
+``IRC_SHOW_JOIN_MESSAGE=true``
+    Show in IRC when someone joins the Telegram chat.
+
+``IRC_SHOW_LEAVE_MESSAGE=true``
+    Show in IRC when someone leaves the Telegram chat.
+
 ``IRC_SHOW_LOCATION_MESSAGE=false``
-If a user shares their location on Telegram, this will forward the GPS coordinates of their location to IRC if set to true.
+    If a user shares their location on Telegram, this will forward the GPS coordinates of their location to IRC if set to true.
 
 ``IRC_NO_FORWARD_PREFIX="[off]"``
     A string users can prefix their message with to prevent it from being relayed across the bridge.
@@ -124,25 +136,35 @@ If a user shares their location on Telegram, this will forward the GPS coordinat
 Telegram settings
 *****************
 
-``TELEGRAM_CHAT_ID=-0000000000000``
-    Telegram chat ID of bridged group (:ref:`how do I get this? <chat-id>`).
+``TELEGRAM_CHAT_ID=``
+    Telegram chat ID of bridged group (:ref:`how do I get this? <chat-id>`). Like: `-0000000000000`
 
-``TELEIRC_TOKEN=000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA``
-    Private API token for Telegram bot.
+.. CAUTION:: Required setting (cannot be empty)
 
-``MAX_MESSAGES_PER_MINUTE=20``
-    Maximum number of messages sent to Telegram from IRC per minute.
+``TELEIRC_TOKEN=``
+    Private API token for Telegram bot. Like: `000000000:AAAAAAaAAa2AaAAaoAAAA-a_aaAAaAaaaAA`
 
-``TELEGRAM_MESSAGE_REPLY_PREFIX="["
+.. CAUTION:: Required setting (cannot be empty)
+
+``MAX_MESSAGE_PER_MINUTE=20``
+    Maximum number of messages sent per minute from IRC to Telegram.
+
+``IRC_PREFIX="<"``
+    Text displayed before IRC nickname in messages sent to Telegram
+
+``IRC_SUFFIX=">"``
+    Text displayed after IRC nickname in messages sent to Telegram
+
+``TELEGRAM_MESSAGE_REPLY_PREFIX="["``
     Prefix separator for Telegram reply
 
-``TELEGRAM_MESSAGE_REPLY_SUFFIX="]"
+``TELEGRAM_MESSAGE_REPLY_SUFFIX="]"``
     Suffix separator for Telegram reply
 
-``TELEGRAM_MESSAGE_REPLY_LENGTH=15
+``TELEGRAM_MESSAGE_REPLY_LENGTH=15``
     Length of quoted reply message before truncation
 
-``SHOW_TOPIC_MESSAGE=true``
+``SHOW_TOPIC_MESSAGE=false``
     Send Telegram message when the topic in the IRC channel is changed.
 
 ``SHOW_ACTION_MESSAGE=true``
@@ -155,7 +177,7 @@ Telegram settings
     List of users (separated by a space character) whose IRC leave messages will be sent to Telegram, even if SHOW_JOIN_MESSAGE is false.
     This is ignored if SHOW_JOIN_MESSAGE is set to true.
 
-``SHOW_KICK_MESSAGE=true``
+``SHOW_KICK_MESSAGE=false``
     Send Telegram message when someone is kicked from IRC channel.
 
 ``SHOW_NICK_MESSAGE=false``
@@ -168,7 +190,7 @@ Telegram settings
     List of users (separated by a space character) whose IRC leave messages will be sent to Telegram, even if SHOW_LEAVE_MESSAGE is false.
     This is ignored if SHOW_LEAVE_MESSAGE is set to true.
 
-``SHOW_DISCONNECT_MESSAGE=true``
+``SHOW_DISCONNECT_MESSAGE=false``
     Sends a message to Telegram when the bot disconnects from the IRC side.
 
 **************
