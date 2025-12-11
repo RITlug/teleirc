@@ -196,7 +196,19 @@ To start the bot, you need to consider the following factors:
 _Looking for an easier way?_
 _Check out the [TeleIRC Ansible Role][17] for an automated installation of the following steps._
 
-Upstream offers a [systemd unit file][15] to automate TeleIRC on a Linux system that uses [systemd][16].
+**NOTE**: 
+You can also try an one-line installation using an [installation script][18] upstream offers. Just:
+
+`curl -fsSL https://raw.githubusercontent.com/RITlug/teleirc/refs/heads/main/deployments/systemd/install.sh | sh`
+
+This script will install an [systemd unit file][15] upstream offers to automatic TeleIRC on your Linux system;
+Let you to use an terminal editor to configure your TeleIRC;
+Then enable it that it will automate start with your system and start it immediately if you choose to do so.
+
+Notice: Using this installation script, You need check your system is using [systemd][16] as init and bash, sudo, curl are installed and nano or vim is installed.
+Also you'd better prepared the parameters needed to be set in TeleIRC's configuration.
+
+Upstream offers a systemd unit file to automate TeleIRC on a Linux system that uses systemd.
 This example uses the upstream systemd unit file to automatically run TeleIRC on a Linux system.
 
 This example was tested on a CentOS 8 system and is easily adaptable for other `*NIX` distributions.
@@ -252,3 +264,4 @@ service named teleirc@FILENAME.service.
 [15]: https://github.com/RITlug/teleirc/blob/master/deployments/systemd/teleirc@.service
 [16]: https://systemd.io/
 [17]: https://github.com/jwflory/ansible-role-teleirc
+[18]: https://github.com/RITlug/teleirc/blob/main/deployments/systemd/install.sh
