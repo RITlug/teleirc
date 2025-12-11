@@ -18,12 +18,13 @@ type Client struct {
 	TelegramSettings *internal.TelegramSettings
 	logger           internal.DebugLogger
 	sendToTg         func(string)
+	disableTgRelay   bool
 }
 
 /*
 NewClient returns a new IRCClient based on the provided settings
 */
-func NewClient(settings *internal.IRCSettings, telegramSettings *internal.TelegramSettings, logger internal.DebugLogger) Client {
+func NewClient(settings *internal.IRCSettings, telegramSettings *internal.TelegramSettings, logger internal.DebugLogger, disableTgRelay bool) Client {
 	logger.LogInfo("Creating new IRC bot client...")
 	client := girc.New(girc.Config{
 		Server: settings.Server,
@@ -52,7 +53,7 @@ func NewClient(settings *internal.IRCSettings, telegramSettings *internal.Telegr
 		}
 	}
 
-	return Client{client, settings, telegramSettings, logger, nil}
+	return Client{client, settings, telegramSettings, logger, nil, disableTgRelay}
 }
 
 /*
@@ -120,6 +121,10 @@ func (c Client) Logger() internal.DebugLogger {
 SendToTg sends a message to Telegram
 */
 func (c Client) SendToTg(msg string) {
+	if c.disableTgRelay {
+		c.logger.LogDebug("Relaying to Telegram is disabled, skipping IRC message")
+		return
+	}
 	c.sendToTg(msg)
 }
 

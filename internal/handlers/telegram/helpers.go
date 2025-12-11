@@ -5,9 +5,12 @@ import (
 )
 
 /*
-GetUsername takes showZWSP condition and user then returns username with or without ​.
+GetUsername takes showZWSP and preferFirstname conditions and user then returns First name or username with or without ​.
 */
-func GetUsername(showZWSP bool, u *tgbotapi.User) string {
+func GetUsername(showZWSP bool, u *tgbotapi.User, preferFirstname bool) string {
+	if preferFirstname && u.FirstName != "" {
+		return u.FirstName
+	}
 	if u.UserName == "" {
 		return u.FirstName
 	}
@@ -18,9 +21,12 @@ func GetUsername(showZWSP bool, u *tgbotapi.User) string {
 }
 
 /*
-GetFullUsername takes showZWSP condition and user then returns full username with or without ​.
+GetFullUsername takes showZWSP and preferFirstname conditions and user then returns full name or username with or without ​.
 */
-func GetFullUsername(showZWSP bool, u *tgbotapi.User) string {
+func GetFullUsername(showZWSP bool, u *tgbotapi.User, preferFirstname bool) string {
+	if preferFirstname && u.FirstName != "" {
+		return u.FirstName
+	}
 	if u.UserName == "" {
 		return u.FirstName
 	}

@@ -59,7 +59,7 @@ messageHandler handles the Message Telegram Object, which formats the
 Telegram update into a simple string for IRC.
 */
 func messageHandler(tg *Client, u tgbotapi.Update) {
-	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From, tg.Settings.PreferName)
 	formatted := ""
 
 	if tg.IRCSettings.NoForwardPrefix != "" && strings.HasPrefix(u.Message.Text, tg.IRCSettings.NoForwardPrefix) {
@@ -93,8 +93,8 @@ replyHandler handles when users reply to a Telegram message
 */
 func replyHandler(tg *Client, u tgbotapi.Update) {
 	replyText := strings.Trim(u.Message.ReplyToMessage.Text, " ")
-	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
-	replyUser := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.ReplyToMessage.From)
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From, tg.Settings.PreferName)
+	replyUser := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.ReplyToMessage.From, tg.Settings.PreferName)
 
 	// Only show a portion of the reply text
 	if replyTextAsRunes := []rune(replyText); len(replyTextAsRunes) > tg.Settings.ReplyLength {
@@ -121,7 +121,7 @@ func joinHandler(tg *Client, users *[]tgbotapi.User) {
 	if tg.IRCSettings.ShowJoinMessage {
 		for _, user := range *users {
 			user := user
-			username := GetFullUsername(tg.IRCSettings.ShowZWSP, &user)
+			username := GetFullUsername(tg.IRCSettings.ShowZWSP, &user, tg.Settings.PreferName)
 			formatted := username + " has joined the Telegram Group!"
 			tg.sendToIrc(formatted)
 		}
@@ -133,7 +133,7 @@ partHandler handles when users leave the Telegram group
 */
 func partHandler(tg *Client, user *tgbotapi.User) {
 	if tg.IRCSettings.ShowLeaveMessage {
-		username := GetFullUsername(tg.IRCSettings.ShowZWSP, user)
+		username := GetFullUsername(tg.IRCSettings.ShowZWSP, user, tg.Settings.PreferName)
 		formatted := username + " has left the Telegram Group!"
 
 		tg.sendToIrc(formatted)
@@ -145,7 +145,7 @@ stickerHandler handles the Message.Sticker Telegram Object, which formats the
 Telegram message into its base Emoji unicode character.
 */
 func stickerHandler(tg *Client, u tgbotapi.Update) {
-	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From, tg.Settings.PreferName)
 	formatted := fmt.Sprintf("%s%s%s %s",
 		tg.Settings.Prefix,
 		username,
@@ -160,7 +160,7 @@ exists, and sends notification to IRC
 */
 func photoHandler(tg *Client, u tgbotapi.Update) {
 	link := uploadImage(tg, u)
-	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From)
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.Message.From, tg.Settings.PreferName)
 	caption := u.Message.Caption
 	if caption == "" {
 		caption = "No caption provided."
@@ -180,7 +180,7 @@ documentHandler receives a document object from Telegram, and sends
 a notification to IRC.
 */
 func documentHandler(tg *Client, u *tgbotapi.Message) {
-	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From)
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From, tg.Settings.PreferName)
 	formatted := username + " shared a file"
 	if u.Document.MimeType != "" {
 		formatted += " (" + u.Document.MimeType + ")"
@@ -204,7 +204,7 @@ func locationHandler(tg *Client, u *tgbotapi.Message) {
 		return
 	}
 
-	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From)
+	username := GetUsername(tg.IRCSettings.ShowZWSP, u.From, tg.Settings.PreferName)
 	formatted := username + " shared their location: ("
 
 	// f means do not use an exponent.
