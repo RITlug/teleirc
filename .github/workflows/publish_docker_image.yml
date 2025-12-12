@@ -78,10 +78,14 @@ jobs:
       - name: Compute tags to use
         id: compute_tags
         run: |
-          if [ -n "${{ github.event.inputs.image_tag }}" ] && [ "${{ github.event.inputs.image_tag }}" != "" ]; then
-            echo "tags=${REGISTRY}/${IMAGE_NAME}:${{ github.event.inputs.image_tag }}" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "tags=${REGISTRY}/${IMAGE_NAME}:latest" >> "$GITHUB_OUTPUT"
           else
-            echo "tags=${{ steps.meta.outputs.tags }}" >> "$GITHUB_OUTPUT"
+            if [ -n "${{ github.event.inputs.image_tag }}" ] && [ "${{ github.event.inputs.image_tag }}" != "" ]; then
+              echo "tags=${REGISTRY}/${IMAGE_NAME}:${{ github.event.inputs.image_tag }}" >> "$GITHUB_OUTPUT"
+            else
+              echo "tags=${{ steps.meta.outputs.tags }}" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       - name: Build and push Docker image
