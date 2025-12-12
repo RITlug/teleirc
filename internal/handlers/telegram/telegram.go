@@ -28,19 +28,21 @@ func NewClient(settings *internal.TelegramSettings, ircsettings *internal.IRCSet
 }
 
 /*
-SendMessage sends a message to the Telegram channel specified in the settings
+SendMessage sends a message to the Telegram channels specified in the settings
 */
 func (tg *Client) SendMessage(msg string) {
-	newMsg := tgbotapi.NewMessage(tg.Settings.ChatID, "")
-	newMsg.Text = msg
+	for _, chatID := range tg.Settings.ChatIDs {
+		newMsg := tgbotapi.NewMessage(chatID, "")
+		newMsg.Text = msg
 
-	if _, err := tg.api.Send(newMsg); err != nil {
-		var attempts int = 0
-		// Try resending 3 times if the message is successfully sent
-		for err != nil && attempts < 3 {
-			tg.logger.LogError(err)
-			attempts++
-			_, err = tg.api.Send(newMsg)
+		if _, err := tg.api.Send(newMsg); err != nil {
+			var attempts int = 0
+			// Try resending 3 times if the message fails to send
+			for err != nil && attempts < 3 {
+				tg.logger.LogError(err)
+				attempts++
+				_, err = tg.api.Send(newMsg)
+			}
 		}
 	}
 }

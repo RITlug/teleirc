@@ -49,7 +49,7 @@ type IRCSettings struct {
 // TelegramSettings includes settings related to the Telegram bot/message relaying
 type TelegramSettings struct {
 	Token                 string   `env:"TELEIRC_TOKEN,required"`
-	ChatID                int64    `env:"TELEGRAM_CHAT_ID,required"`
+	ChatIDs               []int64  `env:"TELEGRAM_CHAT_IDS,required"`
 	Prefix                string   `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
 	Suffix                string   `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:">"`
 	ReplyPrefix           string   `env:"TELEGRAM_MESSAGE_REPLY_PREFIX" envDefault:"["`
@@ -137,8 +137,10 @@ func LoadConfig(path string) (*Settings, error) {
 	}
 	// Attempt to load environment variables from path if path was provided
 	if path != ".env" && path != "" {
-		if err := godotenv.Load(path); err != nil {
-			return nil, err
+		if _, err := os.Stat(path); !os.IsNotExist(err) {
+			if err := godotenv.Load(path); err != nil {
+				return nil, err
+			}
 		}
 	} else if _, err := os.Stat(defaultPath); !os.IsNotExist(err) {
 		// Attempt to load from defaultPath if defaultPath exists

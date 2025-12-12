@@ -67,8 +67,16 @@ func messageHandler(tg *Client, u tgbotapi.Update) {
 	}
 
 	// Don't forward messages to IRC that didn't come from the
-	// chat we're bridging
-	if u.Message.Chat.ID != tg.Settings.ChatID {
+	// chats we're bridging
+	chatID := u.Message.Chat.ID
+	isValidChat := false
+	for _, id := range tg.Settings.ChatIDs {
+		if id == chatID {
+			isValidChat = true
+			break
+		}
+	}
+	if !isValidChat {
 		return
 	}
 
