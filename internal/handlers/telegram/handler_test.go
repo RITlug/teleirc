@@ -622,8 +622,8 @@ func TestMessageRandomWithUsername(t *testing.T) {
 
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
-			Prefix: "<",
-			Suffix: ">",
+			Prefix:  "<",
+			Suffix:  ">",
 			ChatIDs: []int64{100},
 		},
 		IRCSettings: &internal.IRCSettings{
@@ -659,8 +659,8 @@ func TestMessageRandomWithoutUsername(t *testing.T) {
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
-			Prefix: "<",
-			Suffix: ">",
+			Prefix:  "<",
+			Suffix:  ">",
 			ChatIDs: []int64{100},
 		},
 		IRCSettings: &internal.IRCSettings{
@@ -694,8 +694,8 @@ func TestMessageRandomWithNoForward(t *testing.T) {
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
-			Prefix: "<",
-			Suffix: ">",
+			Prefix:  "<",
+			Suffix:  ">",
 			ChatIDs: []int64{100},
 		},
 		IRCSettings: &internal.IRCSettings{
@@ -731,8 +731,8 @@ func TestMessageZwsp(t *testing.T) {
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
-			Prefix: "<",
-			Suffix: ">",
+			Prefix:  "<",
+			Suffix:  ">",
 			ChatIDs: []int64{100},
 		},
 		IRCSettings: &internal.IRCSettings{
@@ -936,8 +936,8 @@ func TestMessageFromWrongTelegramChat(t *testing.T) {
 	}
 	clientObj := &Client{
 		Settings: &internal.TelegramSettings{
-			Prefix: "<",
-			Suffix: ">",
+			Prefix:  "<",
+			Suffix:  ">",
 			ChatIDs: []int64{101},
 		},
 		IRCSettings: &internal.IRCSettings{

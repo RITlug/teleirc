@@ -160,6 +160,10 @@ func LoadConfig(path string) (*Settings, error) {
 		return nil, fieldErrs
 	}
 
+	if len(settings.Telegram.ChatIDs) < 1 {
+		return nil, fmt.Errorf("TELEGRAM_CHAT_IDS must contain at least one chat ID")
+	}
+
 	settings.IRC.IRCBlacklist = splitEnvVar(settings.IRC.IRCBlacklist)
 	settings.Telegram.JoinMessageAllowList = splitEnvVar(settings.Telegram.JoinMessageAllowList)
 	settings.Telegram.LeaveMessageAllowList = splitEnvVar(settings.Telegram.LeaveMessageAllowList)
