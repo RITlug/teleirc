@@ -79,3 +79,4 @@ func TestNewClientMultipleChats(t *testing.T) {
 	client := NewClient(tgSettings, nil, imgurSettings, tgapi, logger)
 	assert.Equal(t, client.Settings.ChatIDs, []int64{-1000000000000, -2000000000000}, "Client should support multiple ChatIDs")
 	assert.Len(t, client.Settings.ChatIDs, 2, "Should have two chat IDs")
+}
