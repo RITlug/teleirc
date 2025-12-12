@@ -996,7 +996,20 @@ func TestMessageFromValidMultipleChats(t *testing.T) {
 			Chat: testChat2,
 		},
 	}
-	messageHandler(clientObj, updateObj2)
+	clientObj2 := &Client{
+		Settings: &internal.TelegramSettings{
+			Prefix:  "<",
+			Suffix:  ">",
+			ChatIDs: []int64{100, 101},
+		},
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, "<test> Another Text", s)
+		},
+	}
+	messageHandler(clientObj2, updateObj2)
 
 	// Test message from invalid chat should not be forwarded
 	updateObj3 := tgbotapi.Update{
