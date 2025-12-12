@@ -49,7 +49,7 @@ type IRCSettings struct {
 // TelegramSettings includes settings related to the Telegram bot/message relaying
 type TelegramSettings struct {
 	Token                 string   `env:"TELEIRC_TOKEN,required"`
-	ChatIDs               []int64  `env:"TELEGRAM_CHAT_IDS,required"`
+	ChatIDs               []int64  `env:"TELEGRAM_CHAT_ID,required"`
 	Prefix                string   `env:"TELEGRAM_MESSAGE_PREFIX" envDefault:"<"`
 	Suffix                string   `env:"TELEGRAM_MESSAGE_SUFFIX" envDefault:">"`
 	ReplyPrefix           string   `env:"TELEGRAM_MESSAGE_REPLY_PREFIX" envDefault:"["`
@@ -161,7 +161,7 @@ func LoadConfig(path string) (*Settings, error) {
 	}
 
 	if len(settings.Telegram.ChatIDs) < 1 {
-		return nil, fmt.Errorf("TELEGRAM_CHAT_IDS must contain at least one chat ID")
+		return nil, fmt.Errorf("TELEGRAM_CHAT_ID must contain at least one chat ID")
 	}
 
 	settings.IRC.IRCBlacklist = splitEnvVar(settings.IRC.IRCBlacklist)
