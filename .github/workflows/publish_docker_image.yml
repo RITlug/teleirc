@@ -3,6 +3,24 @@ name: Build and Push Docker Image
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag (e.g. v1.2.3 or latest)'
+        required: false
+        default: 'latest'
+      push:
+        description: 'Push image to registry? (true/false)'
+        required: false
+        default: 'true'
+      run_tests:
+        description: 'Run test suite before building? (true/false)'
+        required: false
+        default: 'false'
+      dockerfile:
+        description: 'Path to Dockerfile'
+        required: false
+        default: './deployments/container/Dockerfile'
 
 env:
   REGISTRY: ghcr.io
@@ -39,11 +57,38 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Ensure .env exists (create from .env.example if missing)
+        run: |
+          if [ ! -f .env ] && [ -f env.example ]; then
+            cp env.example .env
+            echo ".env created from .env.example"
+          elif [ -f .env ]; then
+            echo ".env already exists"
+          else
+            echo "env.example not found; no .env created"
+          fi
+
+      - name: Run tests
+        if: ${{ github.event.inputs.run_tests == 'true' }}
+        run: |
+          echo "run_tests input is true — running test suite"
+          # replace the following line with your actual test command(s)
+          echo "No tests defined; add your test command here"
+
+      - name: Compute tags to use
+        id: compute_tags
+        run: |
+          if [ -n "${{ github.event.inputs.image_tag }}" ] && [ "${{ github.event.inputs.image_tag }}" != "" ]; then
+            echo "tags=${REGISTRY}/${IMAGE_NAME}:${{ github.event.inputs.image_tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tags=${{ steps.meta.outputs.tags }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          push: true
+          push: ${{ github.event_name == 'push' || github.event.inputs.push == 'true' }}
           context: .
-          file: ./deployments/container/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
+          file: ${{ github.event.inputs.dockerfile && github.event.inputs.dockerfile || './deployments/container/Dockerfile' }}
+          tags: ${{ steps.compute_tags.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
