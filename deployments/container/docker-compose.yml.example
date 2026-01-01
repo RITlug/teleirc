@@ -10,3 +10,23 @@ services:
       dockerfile: ./deployments/container/Dockerfile
     env_file: ../../.env
     user: teleirc
+    depends_on:
+      - mediashare
+
+  mediashare:
+    build:
+      context: ../../
+      dockerfile: ./deployments/container/mediashare.Dockerfile
+    ports:
+      - "8090:8090"
+    volumes:
+      - mediashare-data:/app/data
+    environment:
+      - MEDIASHARE_API_KEY=${MEDIASHARE_API_KEY}
+      - MEDIASHARE_BASE_URL=${MEDIASHARE_BASE_URL:-http://localhost:8090}
+      - MEDIASHARE_RETENTION_HOURS=${MEDIASHARE_RETENTION_HOURS:-168}
+      - MEDIASHARE_LANG=${MEDIASHARE_LANG:-en}
+      - MEDIASHARE_SERVICE_NAME=${MEDIASHARE_SERVICE_NAME:-MediaShare}
+
+volumes:
+  mediashare-data:
