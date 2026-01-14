@@ -3,8 +3,27 @@ Config file glossary
 ####################
 
 This page is a glossary of different settings in the ``env.example`` configuration file.
-All values shown are the default settings.
-This glossary is intended for advanced users.
+
+.. note::
+    All values shown are the default settings.
+    This glossary is intended for advanced users.
+
+
+************
+General settings
+************
+
+Configuration settings
+========================
+
+``DEBUG=false``
+    (Optional) Verbose logging, enabled when set to `true`
+
+``DISABLE_RELAY_TO_IRC=false``
+    (Optional) Fully disables bridging messages from Telegram → IRC when set to `true`
+
+``DISABLE_RELAY_TO_TELEGRAM=false``
+    (Optional) Fully disables bridging messages from IRC → Telegram when set to `true`
 
 
 ************
@@ -192,6 +211,13 @@ Telegram settings
 
 ``SHOW_DISCONNECT_MESSAGE=false``
     Sends a message to Telegram when the bot disconnects from the IRC side.
+
+``PREFER_FIRSTNAME=false``
+    Prefer users adjustable «First name» from Telegram, over their @usernames, when sending messages to IRC channel
+    (Fallback will still be the @username if first name is not available)
+
+``QUOTE_NICKNAME=false``
+    Place IRC nickname in a blockquote section of the message to Telegram, instead of inline message prefix.
 
 **************
 Imgur settings
