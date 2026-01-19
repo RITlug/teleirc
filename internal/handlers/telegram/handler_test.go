@@ -1012,3 +1012,139 @@ func TestLocationHandlerWithLocationDisabled(t *testing.T) {
 
 	locationHandler(clientObj, &messageObj)
 }
+
+/*
+TestVideoHandlerWithCaption tests video handler with a caption
+*/
+func TestVideoHandlerWithCaption(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+
+	correct := "test shared a video on Telegram with caption: 'Check this out!'."
+
+	messageObj := tgbotapi.Message{
+		From: testUser,
+		Video: &tgbotapi.Video{
+			FileID:   "AgADBAAD...",
+			Width:    1080,
+			Height:   1920,
+			Duration: 60,
+		},
+		Caption: "Check this out!",
+	}
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	videoHandler(clientObj, &messageObj)
+}
+
+/*
+TestVideoHandlerWithoutCaption tests video handler without a caption
+*/
+func TestVideoHandlerWithoutCaption(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+
+	correct := "test shared a video on Telegram."
+
+	messageObj := tgbotapi.Message{
+		From: testUser,
+		Video: &tgbotapi.Video{
+			FileID:   "AgADBAAD...",
+			Width:    1080,
+			Height:   1920,
+			Duration: 60,
+		},
+		Caption: "",
+	}
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	videoHandler(clientObj, &messageObj)
+}
+
+/*
+TestVoiceHandlerWithCaption tests voice handler with a caption
+*/
+func TestVoiceHandlerWithCaption(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+
+	correct := "test shared a voice message on Telegram with caption: 'Listen to this!'."
+
+	messageObj := tgbotapi.Message{
+		From: testUser,
+		Voice: &tgbotapi.Voice{
+			FileID:   "AwADBAAD...",
+			Duration: 30,
+		},
+		Caption: "Listen to this!",
+	}
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	voiceHandler(clientObj, &messageObj)
+}
+
+/*
+TestVoiceHandlerWithoutCaption tests voice handler without a caption
+*/
+func TestVoiceHandlerWithoutCaption(t *testing.T) {
+	testUser := &tgbotapi.User{
+		ID:        1,
+		UserName:  "test",
+		FirstName: "testing",
+		LastName:  "123",
+	}
+
+	correct := "test shared a voice message on Telegram."
+
+	messageObj := tgbotapi.Message{
+		From: testUser,
+		Voice: &tgbotapi.Voice{
+			FileID:   "AwADBAAD...",
+			Duration: 30,
+		},
+		Caption: "",
+	}
+	clientObj := &Client{
+		IRCSettings: &internal.IRCSettings{
+			ShowZWSP: false,
+		},
+		sendToIrc: func(s string) {
+			assert.Equal(t, correct, s)
+		},
+	}
+
+	voiceHandler(clientObj, &messageObj)
+}

@@ -29,7 +29,7 @@ func TestNewClientBasic(t *testing.T) {
 		DebugLevel: false,
 	}
 	var tgapi *tgbotapi.BotAPI
-	client := NewClient(tgRequiredSettings, nil, imgurSettings, tgapi, logger)
+	client := NewClient(tgRequiredSettings, nil, imgurSettings, nil, tgapi, logger)
 	assert.Equal(t, client.Settings, tgExpectedSettings, "Basic client settings should be properly set")
 }
 
@@ -59,7 +59,7 @@ func TestNewClientFull(t *testing.T) {
 		DebugLevel: false,
 	}
 	var tgapi *tgbotapi.BotAPI
-	client := NewClient(tgSettings, nil, imgurSettings, tgapi, logger)
+	client := NewClient(tgSettings, nil, imgurSettings, nil, tgapi, logger)
 	assert.Equal(t, client.Settings, tgSettings, "All client settings should be properly set")
 	assert.NotEqual(t, client.Settings, tgDefaultSettings, "tgSettings should override defaults")
 }
