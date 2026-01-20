@@ -193,6 +193,9 @@ Telegram settings
 ``SHOW_DISCONNECT_MESSAGE=false``
     Sends a message to Telegram when the bot disconnects from the IRC side.
 
+``QUOTE_NICKNAME=false``
+    Place IRC nickname in a blockquote section of the message to Telegram, instead of inline message prefix.
+
 **************
 Imgur settings
 **************
