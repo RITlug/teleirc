@@ -1,6 +1,8 @@
 package telegram
 
 import (
+	"strings"
+
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
@@ -66,4 +68,26 @@ func uploadImage(tg *Client, u tgbotapi.Update) string {
 	}
 
 	return getImgurLink(tg, tgLink)
+}
+
+/*
+checkAllowedUsernames checks the Telegram whitelist for a username, and returns whether
+or not the name is in the allow list
+*/
+func checkAllowedUsernames(whitelist []string, username string) bool {
+	// Empty whitelist means no filtering - all users allowed
+	if len(whitelist) == 0 {
+		return true
+	}
+	// Empty username with non-empty whitelist should be rejected
+	if len(username) == 0 {
+		return false
+	}
+	// Filter username against provided whitelist
+	for _, name := range whitelist {
+		if strings.EqualFold(username, name) {
+			return true
+		}
+	}
+	return false
 }

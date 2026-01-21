@@ -193,6 +193,11 @@ Telegram settings
 ``SHOW_DISCONNECT_MESSAGE=false``
     Sends a message to Telegram when the bot disconnects from the IRC side.
 
+``WHITELIST_USERNAMES=""``
+    (Optional) Comma-separated list of Telegram usernames whose messages will be sent to IRC channel.
+    (This always compares the actual @username - not «First name» or alike)
+
+
 **************
 Imgur settings
 **************
