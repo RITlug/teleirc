@@ -21,16 +21,16 @@ which handler to fire off
 */
 func updateHandler(tg *Client, updates tgbotapi.UpdatesChannel) {
 	for u := range updates {
-		// Don't process any messages that didn't come from the
-		// chat we're bridging
-		if u.Message.Chat.ID != tg.Settings.ChatID {
-			tg.logger.LogDebug("Ignored message from a telegram chat we're not bridging:", tg.Settings.ChatID)
-			continue
-		}
-
 		switch {
 		case u.Message == nil:
-			tg.logger.LogError("Missing message data")
+			// Non-message updates (edited messages, reactions, polls, inline
+			// queries, channel posts, etc.) are normal; skip silently.
+			tg.logger.LogDebug("Skipping non-message Telegram update")
+			continue
+		case u.Message.Chat.ID != tg.Settings.ChatID:
+			// Don't process any messages that didn't come from the
+			// chat we're bridging
+			tg.logger.LogDebug("Ignored message from a telegram chat we're not bridging:", u.Message.Chat.ID)
 			continue
 		case u.Message.NewChatMembers != nil:
 			tg.logger.LogDebug("joinHandler triggered")
