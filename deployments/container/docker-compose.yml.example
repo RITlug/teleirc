@@ -9,4 +9,6 @@ services:
       context: ../../
       dockerfile: ./deployments/container/Dockerfile
     env_file: ../../.env
-    user: teleirc
+    # Read configuration from the environment instead of the image's default -conf file.
+    command: ["-debug", "true"]
+    user: teleirc-user

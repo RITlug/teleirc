@@ -5,3 +5,4 @@ LICENSE
 build/Dockerfile*
 deployments/docker-compose.yml
 tests/*
+.env

@@ -16,8 +16,8 @@ RUN adduser -D teleirc-user
 USER teleirc-user
 
 COPY --from=builder /app/teleirc /opt/teleirc/teleirc
-COPY --from=builder /app/.env /opt/teleirc/conf
 
+# Mount the configuration file at /opt/teleirc/conf when running the container.
 WORKDIR /opt/teleirc
 ENTRYPOINT [ "./teleirc" ]
 CMD [ "-conf", "/opt/teleirc/conf", "-debug", "true" ]

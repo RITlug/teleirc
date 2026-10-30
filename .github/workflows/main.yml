@@ -1,31 +1,89 @@
-name: Build and Test TeleIRC
+name: CI
 
-on: [push]
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 
-# Cancel job in favor of newer commit
+permissions:
+  contents: read
+
+# Cancel superseded runs on pull requests; let every push to main finish.
 concurrency:
-  group: go-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.15
+
+  test:
+    name: Test (Go ${{ matrix.go-version }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         go-version: [ '1.18', '1.19', '1.20' ]
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v7
+        with:
+          # build_binary.sh runs `git describe`, which needs the tags.
+          fetch-depth: 0
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: ${{ matrix.go-version }}
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ matrix.go-version }}
 
-    - name: Build TeleIRC
-      run: ./build_binary.sh
+      - name: Build TeleIRC
+        run: ./build_binary.sh
 
-    - name: Test
-      run: go test -v ./...
+      - name: Run tests
+        run: go test -race -coverprofile=c.out ./...
+
+      - name: Summarize test coverage
+        if: matrix.go-version == '1.20'
+        run: |
+          total=$(go tool cover -func=c.out | tail -n 1 | awk '{print $NF}')
+          echo "Total test coverage: $total"
+          echo "### Test coverage: $total" >> "$GITHUB_STEP_SUMMARY"
+          go tool cover -html=c.out -o coverage.html
+
+      - name: Upload coverage report
+        if: matrix.go-version == '1.20'
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage.html
+
+  docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          # The pinned Sphinx 3.x in docs/requirements.txt does not support newer Pythons.
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: docs/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r docs/requirements.txt
+
+      - name: Build Sphinx documentation site
+        run: sh docs/build_docs.sh
