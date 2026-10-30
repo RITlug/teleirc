@@ -21,7 +21,7 @@ Host connection settings
 Server connection settings
 ==============================
 
-``IRC_SERVER=chat.freenode.net``
+``IRC_SERVER=irc.libera.chat``
     IRC server to connect to
 
 .. CAUTION:: Required setting (cannot be empty)
