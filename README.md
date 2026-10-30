@@ -6,8 +6,6 @@ TeleIRC
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![CircleCI](https://circleci.com/gh/RITlug/teleirc/tree/main.svg?style=shielf)](https://circleci.com/gh/RITlug/teleirc/tree/main)
 [![Documentation Status](https://readthedocs.org/projects/teleirc/badge/?version=latest)](http://docs.teleirc.com/en/latest/?badge=latest)
-[![Maintainability](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/maintainability)](https://codeclimate.com/github/RITlug/teleirc/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/f26acd099b16fce789b3/test_coverage)](https://codeclimate.com/github/RITlug/teleirc/test_coverage)
 
 Go implementation of a [Telegram](https://telegram.org/) <=> [IRC](https://en.wikipedia.org/wiki/Internet_Relay_Chat) bridge for use with any IRC channel and Telegram group
 
