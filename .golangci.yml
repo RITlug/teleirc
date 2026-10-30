@@ -1,0 +1,27 @@
+# golangci-lint v2 configuration.
+# https://golangci-lint.run/docs/configuration/file/
+#
+# Matches what the old CircleCI lint job (golangci-lint v1 defaults) and Code Climate enforced,
+# so moving to v2 does not introduce new failures. Tighten over time.
+version: "2"
+
+linters:
+  # errcheck, govet, ineffassign, staticcheck, unused
+  default: standard
+  settings:
+    staticcheck:
+      checks:
+        - all
+        # Style (stylecheck) and quick-fix suggestions were not enabled in v1's defaults.
+        - "-ST1*"
+        - "-QF1*"
+  exclusions:
+    presets:
+      # e.g. unchecked errors from `defer resp.Body.Close()`, as v1 excluded by default.
+      - common-false-positives
+      - std-error-handling
+
+formatters:
+  # Code Climate used to flag unformatted code; keep that check here.
+  enable:
+    - gofmt
