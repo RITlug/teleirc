@@ -9,6 +9,11 @@ linters:
   # errcheck, govet, ineffassign, staticcheck, unused
   default: standard
   settings:
+    govet:
+      disable:
+        # Flags stdlib calls marked //go:fix inline (e.g. ioutil.ReadAll) that cannot be
+        # inlined while go.mod targets go1.14. Re-enable after raising the go directive.
+        - inline
     staticcheck:
       checks:
         - all
