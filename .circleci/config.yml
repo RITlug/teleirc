@@ -1,8 +1,4 @@
 ---
-# Note: CC_TEST_REPORTER_ID, the env var required to upload test coverage to Code Climate, is set from the CircleCI web
-# interface as a private environment variable.
-# https://app.circleci.com/settings/project/github/RITlug/teleirc/environment-variables
-
 # https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
@@ -51,19 +47,16 @@ jobs:
       - image: cimg/go:1.17
     steps:
       - golintci-lint
-      - run:
-          name: Initialize Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /tmp/cc-test-reporter
-            chmod +x /tmp/cc-test-reporter
-            /tmp/cc-test-reporter before-build
       - teleirc-test
       - run:
-          name: Upload test coverage results to Code Climate.
-          # sed removes the package prefix, which is not a local path in directory
-          command: |
-            sed -i 's/github.com\/ritlug\/teleirc\///g' c.out
-            /tmp/cc-test-reporter after-build
+          name: Display test coverage summary.
+          command: go tool cover -func=c.out | tail -n 1
+      - run:
+          name: Generate HTML coverage report.
+          command: go tool cover -html=c.out -o coverage.html
+      - store_artifacts:
+          path: coverage.html
+          destination: coverage-report
   build_docs:
     docker:
       - image: cimg/python:3.10
