@@ -2,15 +2,22 @@
 package telegram
 
 import (
+	"sync"
+
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ritlug/teleirc/internal"
 )
+
+// newBotAPI is swapped out in tests to avoid calling the Telegram API.
+var newBotAPI = tgbotapi.NewBotAPI
 
 /*
 Client contains information for the Telegram bridge, including
 the TelegramSettings needed to run the bot
 */
 type Client struct {
+	// apiMu guards api, which StartBot sets while the IRC bot may already be calling SendMessage.
+	apiMu         sync.RWMutex
 	api           *tgbotapi.BotAPI
 	Settings      *internal.TelegramSettings
 	IRCSettings   *internal.IRCSettings
@@ -31,18 +38,30 @@ func NewClient(settings *internal.TelegramSettings, ircsettings *internal.IRCSet
 SendMessage sends a message to the Telegram channel specified in the settings
 */
 func (tg *Client) SendMessage(msg string) {
+	api := tg.getAPI()
+	if api == nil {
+		tg.logger.LogWarning("Not connected to Telegram, dropping message:", msg)
+		return
+	}
+
 	newMsg := tgbotapi.NewMessage(tg.Settings.ChatID, "")
 	newMsg.Text = msg
 
-	if _, err := tg.api.Send(newMsg); err != nil {
+	if _, err := api.Send(newMsg); err != nil {
 		var attempts int = 0
 		// Try resending 3 times if the message is successfully sent
 		for err != nil && attempts < 3 {
 			tg.logger.LogError(err)
 			attempts++
-			_, err = tg.api.Send(newMsg)
+			_, err = api.Send(newMsg)
 		}
 	}
+}
+
+func (tg *Client) getAPI() *tgbotapi.BotAPI {
+	tg.apiMu.RLock()
+	defer tg.apiMu.RUnlock()
+	return tg.api
 }
 
 /*
@@ -51,28 +70,28 @@ returning any errors that occur
 */
 func (tg *Client) StartBot(errChan chan<- error, sendMessage func(string)) {
 	tg.logger.LogInfo("Starting up Telegram bot...")
-	var err error
-	tg.api, err = tgbotapi.NewBotAPI(tg.Settings.Token)
+	api, err := newBotAPI(tg.Settings.Token)
 	if err != nil {
-		tg.logger.LogError(err)
+		tg.logger.LogError("Failed to authenticate to Telegram:", err)
 		errChan <- err
+		return
 	}
 
-	if tg.api == nil {
-		tg.logger.LogError("Failed to authenticate to Telegram")
-		errChan <- err
-	}
+	tg.apiMu.Lock()
+	tg.api = api
+	tg.apiMu.Unlock()
 
-	tg.logger.LogInfo("Authorized on account", tg.api.Self.UserName)
+	tg.logger.LogInfo("Authorized on account", api.Self.UserName)
 	tg.sendToIrc = sendMessage
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates, err := tg.api.GetUpdatesChan(u)
+	updates, err := api.GetUpdatesChan(u)
 	if err != nil {
-		errChan <- err
 		tg.logger.LogError(err)
+		errChan <- err
+		return
 	}
 
 	updateHandler(tg, updates)
