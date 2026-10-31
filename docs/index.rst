@@ -8,7 +8,7 @@ RITlug TeleIRC documentation
 
 .. note::
    This documentation is for v2.x.x releases of TeleIRC.
-   See the `v1.3.4 documentation </en/v1.3.4/>`_ for support with older releases.
+   See the `v1.3.4 documentation <https://docs.teleirc.com/en/v1.3.4/>`_ for support with older releases.
 
 RITlug TeleIRC is a Go implementation of a `Telegram <https://telegram.org/>`_ <=> `IRC <https://en.wikipedia.org/wiki/Internet_Relay_Chat>`_ bridge.
 TeleIRC works with any IRC channel and Telegram group.
