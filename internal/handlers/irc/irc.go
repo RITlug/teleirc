@@ -1,6 +1,7 @@
 package irc
 
 import (
+	"crypto/tls"
 	"net"
 	"time"
 
@@ -25,14 +26,23 @@ NewClient returns a new IRCClient based on the provided settings
 */
 func NewClient(settings *internal.IRCSettings, telegramSettings *internal.TelegramSettings, logger internal.DebugLogger) Client {
 	logger.LogInfo("Creating new IRC bot client...")
-	client := girc.New(girc.Config{
+	cfg := girc.Config{
 		Server: settings.Server,
 		Port:   settings.Port,
 		Nick:   settings.BotNick,
 		Name:   settings.BotName,
 		User:   settings.BotIdent,
 		SSL:    settings.UseSSL,
-	})
+	}
+
+	if settings.UseSSL && (settings.TLSAllowCertExpired || settings.TLSAllowSelfSigned) {
+		cfg.TLSConfig = &tls.Config{
+			InsecureSkipVerify: true, //nolint:gosec // explicitly opted in via env
+			ServerName:         settings.Server,
+		}
+	}
+
+	client := girc.New(cfg)
 
 	// Bind an IP address for IRC connection
 	if settings.BindAddress != "" {
