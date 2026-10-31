@@ -1,0 +1,16 @@
+# Read the Docs configuration for docs.teleirc.com.
+# https://docs.readthedocs.com/platform/stable/config-file/v2.html
+version: 2
+
+build:
+  os: ubuntu-24.04
+  tools:
+    # Keep in sync with the docs job in .github/workflows/main.yml.
+    python: "3.13"
+
+sphinx:
+  configuration: docs/conf.py
+
+python:
+  install:
+    - requirements: docs/requirements.txt
