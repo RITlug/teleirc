@@ -8,7 +8,7 @@ RITlug TeleIRC documentation
 
 .. note::
    This documentation is for v2.x.x releases of TeleIRC.
-   See the `v1.3.4 documentation </en/v1.3.4/>`_ for support with older releases.
+   See the `v1.3.4 documentation <https://docs.teleirc.com/en/v1.3.4/>`_ for support with older releases.
 
 RITlug TeleIRC is a Go implementation of a `Telegram <https://telegram.org/>`_ <=> `IRC <https://en.wikipedia.org/wiki/Internet_Relay_Chat>`_ bridge.
 TeleIRC works with any IRC channel and Telegram group.
@@ -46,11 +46,11 @@ Today, it is used by various communities.
 Live demo
 *********
 
-A public Telegram group and IRC channel on Freenode are available for testing.
+A public Telegram group and IRC channel on Libera.Chat are available for testing.
 Our developer community is also found in these channels.
 
 - Telegram: `@teleirc <https://telegram.me/teleirc>`_
-- IRC: `#rit-lug-teleirc <https://webchat.freenode.net/?channels=rit-lug-teleirc>`_ (chat.freenode.net)
+- IRC: `#rit-teleirc <https://web.libera.chat/#rit-teleirc>`_ (irc.libera.chat)
 
 
 *****

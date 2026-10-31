@@ -21,7 +21,7 @@ Today, it is used by various communities.
 
 ### Live demo
 
-A public Telegram supergroup and IRC channel (on Freenode) are available for testing.
+A public Telegram supergroup and IRC channel (on Libera.Chat) are available for testing.
 Our developer community is found in these channels.
 
 * **[Telegram](https://t.me/teleirc)**

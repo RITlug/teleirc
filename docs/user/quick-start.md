@@ -14,7 +14,7 @@ Note this does not apply to v1.x.x releases; see the [v1.3.4 documentation][1].
     1. [Optional BotFather tweaks](#optional-botfather-tweaks)
 1. [Configure IRC channel](#configure-irc-channel)
     1. [IRC channel overview](#irc-channel-overview)
-    1. [Configure a Freenode IRC channel](#configure-a-freenode-irc-channel)
+    1. [Configure a Libera.Chat IRC channel](#configure-a-liberachat-irc-channel)
     1. [Configure Imgur Image Upload (IIU)](#configure-imgur-image-upload-iiu)
 1. [Deployment Guide](#deployment-guide)
     1. [Run container](#run-container)
@@ -74,7 +74,7 @@ Because IRC networks can run different software, exact instructions may differ d
 So, this section is divided in two ways:
 
 1. High-level overview of how to set up your IRC channel
-1. How to actually do it on Freenode IRC network
+1. How to actually do it on the Libera.Chat IRC network
 
 ### IRC channel overview
 
@@ -87,19 +87,19 @@ No matter what IRC network you use, TeleIRC developers recommend this IRC channe
 * TeleIRC bot hostmask automatically receives voice on join (and thus, does not need to authenticate to write in channel).
 * IRC channel operators automatically receive operator privilege on join.
 
-### Configure a Freenode IRC channel
+### Configure a Libera.Chat IRC channel
 
-If your IRC channel is on the Freenode IRC network, use these exact commands to create a channel policy as described above:
+If your IRC channel is on the Libera.Chat IRC network, use these exact commands to create a channel policy as described above:
 
 1. `/join #channel`
 1. `/query ChanServ REGISTER #channel`
 1. `/query ChanServ SET #channel GUARD on`
-1. `/query ChanServ ACCESS #channel ADD <NickServ account> +AORfiorstv` (_repeat for each IRC user who needs admin access_) ([_what do these mean?_][6])
-1. `/query ChanServ SET mlock #channel +Ccnt`
+1. `/query ChanServ FLAGS #channel <NickServ account> +AORfiorstv` (_repeat for each IRC user who needs admin access_) ([_what do these mean?_][6])
+1. `/query ChanServ SET #channel MLOCK +Ccnt`
 1. `/mode #channel +q $~a`
-1. `/query ChanServ ACCESS #channel ADD *!*@gateway/* +V`
-1. `/query ChanServ ACCESS #channel ADD *!*@freenode/staff/* +Aiotv`
-1. `/query ChanServ ACCESS #channel ADD <bot NickServ account or hostmask> +V`
+1. `/query ChanServ FLAGS #channel *!*@gateway/* +V`
+1. `/query ChanServ FLAGS #channel *!*@libera/staff/* +Aiotv`
+1. `/query ChanServ FLAGS #channel <bot NickServ account or hostmask> +V`
 
 ### Configure Imgur Image Upload (IIU)
 
@@ -247,12 +247,12 @@ To run multiple instances, create other files in /etc/teleirc/ and enable the
 service named teleirc@FILENAME.service.
 
 
-[1]: /en/v1.3.4/
+[1]: https://docs.teleirc.com/en/v1.3.4/
 [2]: https://telegram.org/faq#q-what-39s-the-difference-between-groups-supergroups-and-channel
 [3]: https://core.telegram.org/bots#6-botfather
 [4]: https://core.telegram.org/bots#creating-a-new-bot
-[5]: /en/latest/user/faq/
-[6]: https://web.archive.org/web/20200515153553/http://toxin.jottit.com/freenode_chanserv_commands
+[5]: faq.rst
+[6]: https://libera.chat/guides/creatingchannels
 [7]: https://imgur.com/
 [8]: https://github.com/RITlug/teleirc/issues/115
 [9]: https://api.imgur.com/oauth2/addclient
