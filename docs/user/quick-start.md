@@ -247,11 +247,11 @@ To run multiple instances, create other files in /etc/teleirc/ and enable the
 service named teleirc@FILENAME.service.
 
 
-[1]: /en/v1.3.4/
+[1]: https://docs.teleirc.com/en/v1.3.4/
 [2]: https://telegram.org/faq#q-what-39s-the-difference-between-groups-supergroups-and-channel
 [3]: https://core.telegram.org/bots#6-botfather
 [4]: https://core.telegram.org/bots#creating-a-new-bot
-[5]: /en/latest/user/faq/
+[5]: faq.rst
 [6]: https://libera.chat/guides/creatingchannels
 [7]: https://imgur.com/
 [8]: https://github.com/RITlug/teleirc/issues/115

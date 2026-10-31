@@ -16,7 +16,7 @@ If you think something could be better, please [open an issue](https://github.co
 ## Table of contents
 
 1. [Set up a development environment](#set-up-a-development-environment)
-2. [Open a new pull request](#open-a-new-pull-request)
+2. [Open a new pull request](#open-a-pull-request)
 3. [Maintainer response time](#maintainer-response-time)
 
 
@@ -41,7 +41,7 @@ To set up a TeleIRC development environment, you need the following:
 ### Create Telegram bot
 
 Create a Telegram bot using the Telegram [BotFather](https://t.me/botfather).
-See the [TeleIRC Quick Start](/user/quick-start#create-a-telegram-bot) for more instructions on how to do this.
+See the [TeleIRC Quick Start](../user/quick-start.md#create-a-telegram-bot) for more instructions on how to do this.
 
 ### Create Telegram group
 
